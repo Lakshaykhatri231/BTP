@@ -1,128 +1,169 @@
 # SN-LPA: Size Normalized Label Propagation Algorithm
 
-SN-LPA is our improved version of TPOC-LPA for (overlapping) community detection. Its central change is a size-normalised
-Stage 2 score that targets the base paper's rich-get-richer defect.
+This repository contains the implementation of **SN-LPA**, a label-propagation algorithm for disjoint and overlapping community
+detection. It builds on the three-stage TPOC-LPA framework:
 
-B.Tech project (NSUT). It reproduces and analyses the base paper:
+> Kong, Huo, Wang, Guo. *Three-stage overlapping community detection algorithm based on label propagation.*
+> Expert Systems With Applications 317, 131873, 2026.
 
-> Kong, Huo, Wang, Guo (2026). *Three-stage overlapping community detection algorithm based on label propagation* (TPOC-LPA).
-> Expert Systems With Applications 317, 131873.
+TPOC-LPA scores candidate communities in Stage 2 by summing neighbour attractiveness, with no correction for community size.
+As a result, large communities attract more nodes simply because they are large. On dense graphs Stage 2 then collapses into a single
+community, and on sparse graphs it leaves many fragments. SN-LPA replaces this with a size-normalised gain and adds resolution-aware
+refinement steps: a granularity rule, a map-equation-stopped merge pass, and Synwalk boundary moves.
 
-**Status in one line:** the paper is reproduced (most published numbers matched). I found a real defect in its Stage 2 and added
-**opt-in** fixes. They help a lot on some graph types and hurt a little on others. **No change helps on every graph type**, so
-the defaults stay exactly the paper's algorithm.
+## Method
 
-## The algorithm and the defect
+SN-LPA keeps the three-stage structure of TPOC-LPA:
 
-TPOC-LPA has three stages:
 1. **Pre-selection.** Seed communities around the nodes with the highest importance (NI), grown with a tightness-sparsity gate (CTS).
-2. **Evolution.** Each node takes the community with the highest attractiveness until the labels settle.
-3. **Label filtering.** A weighted affiliation score (WAS, β = 0.8) lets a node keep several labels (overlap).
+2. **Evolution.** Each node joins the community with the highest gain until labels settle.
+3. **Label filtering.** A weighted affiliation score (WAS, β = 0.8) lets a node keep several labels, which produces overlap.
 
-**Defect:** Stage 2 (Eq. 12) adds up neighbour attractiveness with no size correction, so big communities keep getting bigger.
-On dense graphs everything collapses into one community (email-Eu: NMI 0.54 → 0.00; LFR μ=0.7: 0.05). On sparse graphs it
-leaves too many communities (Cora: 214 communities vs 7 classes). Eq. 12 is the γ = 0 end of the null-model family
-`Σ A(i,j) − γ·s_i·S_c/W` (γ = 1 is LPAm, Barber & Clark 2009).
+Stage 2 uses the null-model gain
 
-## Changes (all off by default)
+```
+gain(c, i) = Σ_{j ∈ N(i) ∩ c} A(i, j)  −  γ · s_i · S_c / W
+```
 
-| # | Option | What it does | Source |
+Here A(i,j) is the NI-weighted attractiveness, s_i is the strength of node i, S_c is the total strength of community c, and W is
+the total edge weight. With γ = 0 the gain is the original TPOC-LPA rule. γ = 1 subtracts the attraction expected by chance
+(as in LPAm, Barber & Clark 2009).
+
+The full pipeline consists of six modules (M1–M6):
+
+| Module | Option | Description | Based on |
 |---|---|---|---|
-| 1 | `sim="tri_overlap"` | Triangle-based edge similarity `c/(1+c)` replaces Jaccard | triangle-weighted LP literature |
-| 2 | `guard=True` | Return the Stage-2 round with the best modularity, not the last round | own |
-| 3 | `gamma=1.0` | Size-corrected Stage 2 (subtracts the chance term) | Barber & Clark 2009 |
-| 4 | `refine="granularity"` | Run γ=0 and γ=1. Keep γ=1 only if it gives ≤ 1.5× as many communities | own |
-| 5 | `merge=True, merge_min_gain=0.03` | Greedy ΔQ merge pass, accepted only if total ΔQ ≥ 0.03 | Liu & Murata 2010 |
-| 6 | `merge_criterion="mapeq"` | Stop merging at the minimum map-equation codelength | Kawamoto & Rosvall 2015 |
-| 8 | `moves=True` | Map-equation boundary moves, kept only if the regularized codelength also falls | Infomap; Smiljanić 2020 |
-| 9 | `moves="synwalk"` | The same boundary moves, scored with the Synwalk objective | Toth, Helic & Geiger 2022 |
-| 11 | `overlap="near_tie"` | Alternative Stage 3 (relative COPRA-style belonging) | Gregory 2010 |
+| M1 | `sim="tri_overlap"` | Triangle-based edge similarity `c/(1+c)` instead of Jaccard | triangle-weighted label propagation |
+| M2 | `guard=True` | Return the Stage 2 iteration with the highest modularity | — |
+| M3 | `gamma=1.0` | Size-normalised Stage 2 gain | Barber & Clark 2009 |
+| M4 | `refine="granularity"` | Run γ = 0 and γ = 1, keep γ = 1 unless it gives more than 1.5× as many communities | — |
+| M5 | `merge=True, merge_criterion="mapeq"` | Greedy community merging, stopped at the minimum map-equation codelength | Kawamoto & Rosvall 2015 |
+| M6 | `moves="synwalk"` | Boundary-node moves scored by the Synwalk objective, accepted under a regularised map-equation gate | Toth et al. 2022; Smiljanić et al. 2021 |
 
-SN-LPA = the recommended setting: `sim="tri_overlap", guard=True, refine="granularity", merge=True, merge_criterion="mapeq", moves="synwalk"`.
+All options default to off, so `tpoc_lpa(G)` runs the original TPOC-LPA. Additional variants are also available:
+- `moves=True`: map-equation boundary moves.
+- `merge_min_gain=0.03`: ΔQ-gated merging.
+- `overlap="near_tie"`: an alternative Stage 3.
 
-## Headline results (NMI)
+## Results
 
-| Benchmark | Paper | Our reproduction | Best of our changes |
-|---|---|---|---|
-| Karate | 1.0000 | 0.8372 | 0.8372 (one node; the paper's own plain-LPA baseline also gets 0.8372) |
-| Dolphin | 0.9053 | 0.9053 | 0.9495 |
-| Football | 0.9146 | 0.9095 | 0.9269 |
-| LFR n=1000 μ=0.6 (15 seeds) | 0.9869 | 0.9311 | 0.9830 |
-| LFR n=10000 μ=0.6 (3 seeds) | 0.9935 | 0.9879 | 0.9967 |
-| email-Eu (not in the paper) | — | 0.0000 | 0.67 |
-| LFR n=1000 μ=0.7 (not in the paper) | — | 0.0513 | 0.89 |
+NMI, with all methods run on the same graphs using the same metric code (see `kaggle-tpoc-lpa/phase6_baselines/RESULTS.md`).
 
-Held-out set (72 synthetic graphs never used for design): mean NMI 0.7814 (Phase 4) → 0.8069 (best pipeline).
-Results got worse on Coauthor-Physics, SNAP-DBLP (ΔQ merge) and a few sparse real graphs (≤ 0.008 with boundary moves).
-Every regression is listed in `kaggle-tpoc-lpa/phase6_baselines/RESULTS.md`.
+**Real networks (NMI)**
 
-## Repository layout
+| Network | Fastgreedy | LPA | Louvain | Walktrap | Infomap | TPOC-LPA | **SN-LPA** |
+|---|---|---|---|---|---|---|---|
+| Karate | 0.5646 | 0.5254 | 0.5244 | 0.4899 | 0.5805 | **0.8372** | **0.8372** |
+| Dolphin | 0.7026 | 0.8139 | 0.8297 | 0.6324 | 0.8993 | 0.9053 | **0.9495** |
+| Football | 0.6977 | 0.8666 | 0.8820 | 0.8874 | 0.8683 | 0.9095 | **0.9242** |
+| Polbooks | 0.5308 | 0.5495 | 0.5499 | 0.5427 | 0.5437 | 0.5156 | **0.5672** |
+| Polblogs | 0.6541 | 0.7094 | 0.6379 | 0.6441 | 0.5270 | 0.7094 | **0.7107** |
+| email-Eu-core | 0.4417 | 0.0122 | 0.5806 | 0.5685 | 0.5873 | 0.0000 | **0.6677** |
+| Cora | **0.4647** | 0.4328 | 0.4631 | 0.4427 | 0.4166 | 0.4192 | 0.4192 |
+| Citeseer | 0.3421 | 0.3405 | 0.3300 | **0.3541** | 0.3386 | 0.3465 | 0.3438 |
+| SNAP-Amazon | 0.9820 | 0.9610 | **0.9825** | 0.9774 | 0.9710 | 0.9586 | 0.9731 |
+| SNAP-Youtube | 0.5212 | 0.5040 | 0.5410 | 0.7222 | **0.7486** | 0.5195 | 0.5745 |
+| SNAP-DBLP | 0.6040 | 0.7657 | 0.6068 | 0.7497 | 0.7631 | 0.7626 | **0.7676** |
+| **Average** | 0.5914 | 0.5892 | 0.6298 | 0.6374 | 0.6585 | 0.6258 | **0.7031** |
+| **Mean rank** | 4.64 | 4.73 | 4.09 | 4.09 | 4.18 | 4.18 | **2.00** |
 
-```
-kaggle-tpoc-lpa/          all code (run commands from here)
-  tpoc_lpa.py             core algorithm; edits marked ">>> CHANGE k", paper code marked "# PAPER"
-  datasets.py, load_snap.py, lfr_sweep.py, eq_metric.py, dolphin_ground_truth.py
-  evaluate_phase1.py, test_stage3.py         Phase 1: reproduction gate
-  stage4.py, phase2_*.py, kernel*/           Phase 2: LLM Stage 4 (failed, closed) + Kaggle notebooks/logs
-  phase3_*.py, phase4_*.py, phase5_*.py      ablations and paper comparisons
-  phase5_overlap/         overlapping-LFR benchmark, persona Stage 3 (in progress)
-  phase6_baselines/       paper's baselines vs our pipeline (RESULTS.md, results/*.json)
-  kernel_final/           teacher-facing Kaggle notebook (Phase 1 vs final)
-paper/                    IEEE paper: edit template.tex, then `python3 build_paper.py`
-btp_update_deck/          supervisor progress deck (HTML slides) + mid-sem report
-datasets/MANIFEST.json    list of every graph used (the data itself is not in git)
-```
+**LFR benchmarks (NMI, mean over 5 seeds)**
 
-## Setup
+| Setting | Fastgreedy | LPA | Louvain | Walktrap | Infomap | TPOC-LPA | **SN-LPA** |
+|---|---|---|---|---|---|---|---|
+| N1 (n=1000, μ=0.1) | 0.8098 | 0.9880 | 0.9872 | 0.9969 | 0.9951 | 0.9942 | **0.9995** |
+| N2 (n=1000, μ=0.6) | 0.4749 | 0.4245 | 0.9184 | 0.9560 | 0.9637 | 0.9317 | **0.9815** |
+| N3 (n=5000, μ=0.1) | 0.9013 | **1.0000** | 0.9956 | **1.0000** | **1.0000** | **1.0000** | **1.0000** |
+| N4 (n=5000, μ=0.6) | 0.3879 | 0.9828 | 0.9110 | 0.9598 | **0.9945** | 0.9812 | 0.9940 |
+| N5 (n=10000, μ=0.1) | 0.8921 | **1.0000** | 0.9864 | **1.0000** | 0.9999 | **1.0000** | **1.0000** |
+| N6 (n=10000, μ=0.6) | 0.3825 | 0.9773 | 0.9101 | 0.9178 | **0.9900** | 0.9758 | 0.9895 |
+| **Average** | 0.6414 | 0.8954 | 0.9515 | 0.9718 | 0.9905 | 0.9805 | **0.9941** |
 
-Python 3.12. Packages:
+TPOC-LPA columns are our re-implementation; the original paper reports Karate 1.0000, Dolphin 0.9053, Football 0.9146 and N2 0.9869
+on its own graphs. Stochastic baselines are averaged over 10 runs (3 on SNAP and LFR).
 
-```
-pip install networkx==3.7 numpy scipy scikit-learn          # core
-pip install python-igraph infomap                           # phase6_baselines only
-pip install torch transformers bitsandbytes                 # Phase 2 LLM notebooks only (Kaggle GPU)
-```
+On overlapping LFR graphs SN-LPA matches or beats SLPA on families R1–R4.
 
-The overlapping-LFR generator (Phase 5) is C++:
-`cd kaggle-tpoc-lpa/phase5_overlap && g++ -O3 -w -o lfrbench lfr_overlap_generator/benchm.cpp`.
-The paper compiles with `tectonic paper/main.tex`.
+**Limitations.**
+- Infomap is clearly better on SNAP-Youtube (0.7486 vs 0.5745).
+- SLPA is better on overlap families R5–R6.
+- M2 and M4 cost NMI on Coauthor-Physics.
+- The boundary moves lose up to 0.008 NMI on some sparse citation and co-purchase graphs.
 
-### Data
-
-The graphs (~850 MB) are **not in the repository**. `datasets/MANIFEST.json` lists every file. Rebuild them like this:
-- Karate, Dolphin, Football, Lesmis, Polbooks, Polblogs, email-Eu, Cora, Citeseer, the SNAP graphs and the npz graphs (Amazon/Coauthor, Cora-ML, Pubmed, DBLP)
-  are public. Download them into `kaggle-tpoc-lpa/data/` (sources: Newman's network data, SNAP, LINQS, Shchur et al. 2018, Bojchevski & Günnemann 2018).
-- LFR graphs: generated by `lfr_sweep.generate_lfr(n, mu, seed)` (calibrated to the realized μ).
-- `python3 build_dataset_bundle.py` builds the `datasets/` bundle; `python3 verify_bundle.py` checks it.
-- To use the bundle: `export TPOC_DATA=/path/to/BTP/datasets`.
-
-## Quick start
+## Repository structure
 
 ```
-cd kaggle-tpoc-lpa
-python3 evaluate_phase1.py      # must print Karate 0.8372 / Q 0.4036, Football 0.9095 / Q 0.6032
-python3 test_stage3.py          # Stage 3 vs the paper's Table 2 example: ALL PASS
-python3 phase4_vs_paper.py real football
-python3 phase4_vs_paper.py lfr 1000 0.6 1
+kaggle-tpoc-lpa/
+  tpoc_lpa.py               core algorithm (TPOC-LPA + all SN-LPA modules)
+  datasets.py, load_snap.py dataset loaders
+  lfr_sweep.py              LFR generator with realized-μ calibration
+  eq_metric.py              extended modularity (EQ)
+  evaluate_phase1.py        reproduction check on Karate / Football
+  test_stage3.py            Stage 3 unit test against the worked example of the original paper
+  phase3_*.py … phase5_*.py ablation studies
+  phase5_overlap/           overlapping LFR benchmark (C++ generator included)
+  phase6_baselines/         comparison with Fastgreedy, LPA, Louvain, Walktrap, Infomap, SLPA
+  kernel_final/             Kaggle notebook with the comparison tables
+paper/                      LaTeX source of the paper (template.tex → build_paper.py → main.tex)
+datasets/MANIFEST.json      list of all graphs used
 ```
+
+## Installation
+
+Requires Python 3.12.
+
+```
+pip install networkx numpy scipy scikit-learn
+pip install python-igraph infomap        # only for the baseline comparison
+```
+
+To build the overlapping LFR generator:
+
+```
+cd kaggle-tpoc-lpa/phase5_overlap
+g++ -O3 -w -o lfrbench lfr_overlap_generator/benchm.cpp
+```
+
+## Usage
 
 ```python
 import networkx as nx
 from tpoc_lpa import tpoc_lpa
 
 G = nx.karate_club_graph()
-labels, overlap, NI, iters = tpoc_lpa(G)                       # the paper's algorithm
-labels, overlap, NI, iters = tpoc_lpa(G, sim="tri_overlap", guard=True, refine="granularity",
-                                      merge=True, merge_criterion="mapeq", moves="synwalk")
+
+# original TPOC-LPA
+labels, overlap, NI, iters = tpoc_lpa(G)
+
+# SN-LPA
+labels, overlap, NI, iters = tpoc_lpa(
+    G, sim="tri_overlap", guard=True, refine="granularity",
+    merge=True, merge_criterion="mapeq", moves="synwalk")
 ```
 
-`rng=None` breaks ties deterministically. To get the paper's random tie-breaking, pass `rng=random.Random(seed)`.
+`tpoc_lpa` returns the disjoint labels, the overlapping communities, the node importance scores and the number of iterations.
+Ties are broken deterministically. Pass `rng=random.Random(seed)` for random tie-breaking.
 
-Note: `nx.karate_club_graph()` has edge weights, so the Karate Q of 0.4036 is weighted modularity. Unweighted, it is 0.3715, the paper's value.
+Reproducing the experiments (run from `kaggle-tpoc-lpa/`):
 
-## Not included / known gaps
+```
+python3 evaluate_phase1.py                    # TPOC-LPA on Karate and Football
+python3 test_stage3.py                        # Stage 3 test
+python3 phase4_vs_paper.py real football      # one real network
+python3 phase4_vs_paper.py lfr 1000 0.6 1     # one LFR graph (n, mu, seed)
+python3 phase6_baselines/run_real.py          # baseline comparison
+```
 
-- Karate NMI 1.0 is not reachable (one node; 300 random-tie runs all give 0.8372).
-- The paper's exact Amazon/DBLP/Youtube subsamples could not be reconstructed, so our SNAP numbers use larger graphs.
-- Baselines with no public code (NSA, SimCMR, WLC, UMSTMO, GREESE, MDPA): only the paper's published numbers are quoted.
-- Reference PDFs are not committed (copyright). Citations are in `paper/main.tex`.
+## Data
+
+The datasets are not included because of their size. `datasets/MANIFEST.json` lists every file.
+- **Public networks:** Karate, Dolphin, Football, Les Misérables, Polbooks, Polblogs, email-Eu-core, Cora, Citeseer, the SNAP Amazon/DBLP/Youtube
+  communities, and Amazon/Coauthor/Cora-ML/Pubmed (Shchur et al. 2018; Bojchevski & Günnemann 2018). Place them in `kaggle-tpoc-lpa/data/`,
+  or set `TPOC_DATA` to another directory.
+- **LFR graphs:** generated with `lfr_sweep.generate_lfr(n, mu, seed)`.
+
+## Notes
+
+- Karate has edge weights in networkx, so the modularity printed by `evaluate_phase1.py` (0.4036) is weighted. The unweighted value is 0.3715.
+- The SNAP subsets used in the original paper are not published, so SNAP results here use the full ground-truth community subgraphs.
+- The baselines NSA, SimCMR, WLC, UMSTMO, GREESE and MDPA have no public implementation and are not re-run.
