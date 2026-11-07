@@ -23,6 +23,7 @@ kaggle.json
 *.bak
 *.bak[0-9]*
 *.bak_*
+*.pre_snlpa
 
 # ---- Large data (rebuild with build_dataset_bundle.py / the loaders; see README) ----
 # Working data, result caches, LFR pickles, SNAP / fresh graphs (~600 MB, some files > 100 MB)

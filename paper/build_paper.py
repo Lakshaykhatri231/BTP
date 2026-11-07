@@ -7,7 +7,7 @@ import sys; sys.path.insert(0, f"{H}/../kaggle-tpoc-lpa/phase6_baselines")
 import paper_numbers as PN
 
 ALGS = ["Fastgreedy", "LPA", "Louvain", "Walktrap", "Infomap*", "TPOC-LPA (repro)", "Ours"]
-HDR = {"Fastgreedy": "FG", "LPA": "LPA", "Louvain": "Louv.", "Walktrap": "Walk.", "Infomap*": "Info.$^{*}$", "TPOC-LPA (repro)": "TPOC$^{\\dagger}$", "Ours": "Ours"}
+HDR = {"Fastgreedy": "FG", "LPA": "LPA", "Louvain": "Louv.", "Walktrap": "Walk.", "Infomap*": "Info.$^{*}$", "TPOC-LPA (repro)": "TPOC$^{\\dagger}$", "Ours": "SN-LPA"}
 
 def f4(x): return "--" if x is None else f"{x:.4f}"
 def tex_table(star, caption, label, rows, cols, hdr, colspec=None, avg=True, rank=True, size="\\footnotesize", bold=True, pos="t"):
@@ -41,7 +41,7 @@ real_rows = [(clean(n), v) for n, v in S["real_NMI"].items()]
 T_REAL = tex_table(True, "NMI of different algorithms on real networks.", "tab:real", real_rows, ALGS, HDR, size="\\scriptsize")
 lfr_rows = [(re.sub(r" \(n=(\d+), mu=([\d.]+), 5 seeds\)", r" ($n{=}\1$, $\\mu{=}\2$)", n), v) for n, v in S["lfr_NMI"].items()]
 T_LFR = tex_table(True, "NMI of different algorithms on synthetic networks.", "tab:lfr", lfr_rows, ALGS, HDR, size="\\scriptsize")
-EQC = ["SLPA", "TPOC-LPA (repro)", "Ours"]; EQH = {"SLPA": "SLPA", "TPOC-LPA (repro)": "TPOC$^{\\dagger}$", "Ours": "Ours"}
+EQC = ["SLPA", "TPOC-LPA (repro)", "Ours"]; EQH = {"SLPA": "SLPA", "TPOC-LPA (repro)": "TPOC$^{\\dagger}$", "Ours": "SN-LPA"}
 eq_rows = [(re.sub(r" \(n=(\d+), m=(\d+)\)", r" ($n{=}\1$)", n).replace("ca-grqc", "CA-GrQc").replace("ca-hepth", "CA-HepTh").replace("lastfm", "LastFM").replace("pgp", "PGP")
             .replace("deezer", "Deezer").replace("facebook", "Facebook").replace("power", "Power").replace("jazz", "Jazz").replace("lesmis", "Lesmis").replace("karate", "Karate")
             .replace("dolphin", "Dolphin").replace("cora", "Cora"), v) for n, v in S["eq"].items()]
@@ -115,7 +115,7 @@ LAT = json.load(open(f"{R}/latency_lfr.json")); LREAL = json.load(open(f"{R}/lat
 NS = LAT["N"]
 PAPER_T16 = {400: 0.281, 800: 0.505, 1600: 0.965, 3200: 2.386, 6400: 5.974, 12800: 13.61, 25600: 24.326}   # Table 16 of Kong et al. (2026), their hardware
 LAT_ROWS = [("Fastgreedy", "FG"), ("LPA", "LPA"), ("Louvain", "Louvain"), ("Walktrap", "Walktrap"), ("Infomap*", "Infomap$^{*}$"), ("SLPA", "SLPA"),
-            ("TPOC-LPA (repro)", "TPOC$^{\\dagger}$"), ("Ours", "Ours")]
+            ("TPOC-LPA (repro)", "TPOC$^{\\dagger}$"), ("Ours", "SN-LPA")]
 def ftime(v): return f"{v:.3f}" if v < 1 else (f"{v:.2f}" if v < 100 else f"{v:.1f}")
 def slope(ts): return float(np.polyfit(np.log(NS), np.log(ts), 1)[0])
 tt = {a: [LAT["time"][a][str(n)]["median"] for n in NS] for a, _ in LAT_ROWS}

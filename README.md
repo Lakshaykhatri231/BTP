@@ -1,4 +1,7 @@
-# Improving TPOC-LPA: label-propagation community detection
+# SN-LPA: Size Normalized Label Propagation Algorithm
+
+SN-LPA is our improved version of TPOC-LPA for (overlapping) community detection. Its central change is a size-normalised
+Stage 2 score that targets the base paper's rich-get-richer defect.
 
 B.Tech project (NSUT). It reproduces and analyses the base paper:
 
@@ -35,7 +38,7 @@ leaves too many communities (Cora: 214 communities vs 7 classes). Eq. 12 is the 
 | 9 | `moves="synwalk"` | The same boundary moves, scored with the Synwalk objective | Toth, Helic & Geiger 2022 |
 | 11 | `overlap="near_tie"` | Alternative Stage 3 (relative COPRA-style belonging) | Gregory 2010 |
 
-Recommended setting: `sim="tri_overlap", guard=True, refine="granularity", merge=True, merge_criterion="mapeq", moves="synwalk"`.
+SN-LPA = the recommended setting: `sim="tri_overlap", guard=True, refine="granularity", merge=True, merge_criterion="mapeq", moves="synwalk"`.
 
 ## Headline results (NMI)
 

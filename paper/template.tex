@@ -16,7 +16,7 @@
 \def\UrlBreaks{\do\/\do\-\do\.\do\_}
 \urlstyle{same}
 \usetikzlibrary{shapes.geometric,shapes.misc,arrows.meta,positioning,fit,backgrounds,calc}
-\usepackage[colorlinks=true,citecolor=blue,urlcolor=blue,linkcolor=black,bookmarks=false,pdftitle={Resolution-Aware Refinement of Three-Stage Label Propagation},pdfauthor={Lakshay, Aman Tomar}]{hyperref}
+\usepackage[colorlinks=true,citecolor=blue,urlcolor=blue,linkcolor=black,bookmarks=false,pdftitle={SN-LPA: Size Normalized Label Propagation Algorithm},pdfauthor={Lakshay, Aman Tomar}]{hyperref}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em T\kern-.1667em\lower.7ex\hbox{E}\kern-.125em X}}
 \algrenewcommand\algorithmicrequire{\textbf{Input:}}
 \algrenewcommand\algorithmicensure{\textbf{Output:}}
@@ -39,7 +39,7 @@
 
 \begin{document}
 
-\title{Resolution-Aware Refinement of Three-Stage Label Propagation for Overlapping Community Detection}
+\title{SN-LPA: Size Normalized Label Propagation Algorithm}
 
 \author{%
 \begin{tabular}[t]{c}
@@ -66,7 +66,7 @@ Under the supervision of Dr.\ Vandana Bhatia\\[0.5ex]
 \maketitle
 
 \begin{abstract}
-Label propagation finds communities in near-linear time, but it is unstable and blind to resolution. TPOC-LPA (Kong et al., 2026) is a recent three-stage variant that seeds communities from node importance, evolves labels by an attractiveness score, and filters labels to allow overlap. We re-implement it and find that its Stage~2 score sums neighbour attractiveness with no size normalisation, so a growing community is rewarded for size alone: on a dense graph (email-Eu) it collapses to one community (NMI 0.00), and on sparse graphs it under-merges. We propose six modifications, all optional and off by default so that the default behaviour is the published algorithm: a triangle-based similarity, a best-iterate guard, a size-corrected gain, a label-free granularity rule that chooses between the two regimes, a merge pass that stops at the minimum of the map equation, and boundary-node moves scored by the Synwalk objective. We compare the resulting pipeline with Fastgreedy, LPA, Louvain and Walktrap, re-run on identical graphs, plus Infomap as an extra. It has the best mean rank on 11 real networks and the highest mean NMI on six LFR settings (0.9941 against 0.9905 for Infomap), but it is far behind Infomap on SNAP-Youtube. On overlapping LFR graphs it beats SLPA on four of six families and loses on the two largest, and on the extended modularity EQ it wins on 5 of 12 real networks against SLPA. We also report the ideas that failed and the limits we could not remove.
+Label propagation finds communities in near-linear time, but it is unstable and blind to resolution. TPOC-LPA (Kong et al., 2026) is a recent three-stage variant that seeds communities from node importance, evolves labels by an attractiveness score, and filters labels to allow overlap. We re-implement it and find that its Stage~2 score sums neighbour attractiveness with no size normalisation, so a growing community is rewarded for size alone: on a dense graph (email-Eu) it collapses to one community (NMI 0.00), and on sparse graphs it under-merges. We propose SN-LPA (Size Normalized Label Propagation Algorithm): six modifications, all optional and off by default so that the default behaviour is the published algorithm: a triangle-based similarity, a best-iterate guard, a size-corrected gain, a label-free granularity rule that chooses between the two regimes, a merge pass that stops at the minimum of the map equation, and boundary-node moves scored by the Synwalk objective. We compare SN-LPA with Fastgreedy, LPA, Louvain and Walktrap, re-run on identical graphs, plus Infomap as an extra. It has the best mean rank on 11 real networks and the highest mean NMI on six LFR settings (0.9941 against 0.9905 for Infomap), but it is far behind Infomap on SNAP-Youtube. On overlapping LFR graphs it beats SLPA on four of six families and loses on the two largest, and on the extended modularity EQ it wins on 5 of 12 real networks against SLPA. We also report the ideas that failed and the limits we could not remove.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -101,7 +101,7 @@ From this reading and from our experiments we identify the following gaps.
 \subsection{Contributions}\label{sec:contrib}
 \begin{enumerate}
 \item \textbf{Diagnosis.} We re-implement TPOC-LPA and show that its Stage~2 rule is the $\gamma{=}0$ end of a size-corrected family, which explains both the collapse on dense graphs and the under-merging on sparse ones (Sec.~\ref{sec:problem}).
-\item \textbf{A pipeline of six optional modifications (M1--M6),} with the published behaviour as the default: triangle similarity, best-iterate guard, size-corrected gain, a label-free granularity rule that chooses between the two regimes, a merge pass stopped by the map equation, and boundary moves scored by the Synwalk objective with a regularised acceptance gate. The ideas come from existing work; the specific combination, the rule and the gate are ours (Sec.~\ref{sec:arch}). We give the algorithm in pseudocode (Algorithms~\ref{alg:base}--\ref{alg:moves}).
+\item \textbf{SN-LPA, a pipeline of six optional modifications (M1--M6),} with the published behaviour as the default: triangle similarity, best-iterate guard, size-corrected gain, a label-free granularity rule that chooses between the two regimes, a merge pass stopped by the map equation, and boundary moves scored by the Synwalk objective with a regularised acceptance gate. The ideas come from existing work; the specific combination, the rule and the gate are ours (Sec.~\ref{sec:arch}). We give the algorithm in pseudocode (Algorithms~\ref{alg:base}--\ref{alg:moves}).
 \item \textbf{A like-for-like comparison.} We re-run the baselines of~\cite{kong2026} that have public code, plus Infomap, on identical graphs with identical metric code, and report wins and losses, including the results that do not favour us (Sec.~\ref{sec:results}).
 \item \textbf{Negative results and limits.} We report the ideas that failed and the gaps we could not close (Sec.~\ref{sec:discussion}).
 \end{enumerate}
@@ -375,7 +375,7 @@ where $s_i=\sum_jA(i,j)$, $S_c=\sum_{k\in c}s_k$ and $W=\sum_is_i$. The subtract
 \end{enumerate}
 
 \subsection{Proposed Methodology}\label{sec:arch}
-Fig.~\ref{fig:ours} shows the architecture of the proposed pipeline. Stage~1 and Stage~3 of Algorithm~\ref{alg:base} are unchanged; Stage~2 is modified and two new steps follow it. The six modifications M1--M6 address problems 4, 5, 1--2, 3, 6 and 7 of Sec.~\ref{sec:problem}, respectively. Every option defaults to off, so the default code path is Algorithm~\ref{alg:base}. In the code they are labelled CHANGE 1, 2, 3, 4, 6 and 9. The pseudocode is given in Algorithms~\ref{alg:ours}--\ref{alg:moves}, in the same style as Algorithm~\ref{alg:base}.
+Fig.~\ref{fig:ours} shows the architecture of the proposed pipeline, SN-LPA (Size Normalized Label Propagation Algorithm); its central change is the size-normalised Stage~2 gain (M3). Stage~1 and Stage~3 of Algorithm~\ref{alg:base} are unchanged; Stage~2 is modified and two new steps follow it. The six modifications M1--M6 address problems 4, 5, 1--2, 3, 6 and 7 of Sec.~\ref{sec:problem}, respectively. Every option defaults to off, so the default code path is Algorithm~\ref{alg:base}. In the code they are labelled CHANGE 1, 2, 3, 4, 6 and 9. The pseudocode is given in Algorithms~\ref{alg:ours}--\ref{alg:moves}, in the same style as Algorithm~\ref{alg:base}.
 
 \noindent Here \textsc{Evolve}$(L_1,\gamma)$ denotes Stage~2 started from the Stage~1 partition $L_1$, with the gain of Eq.~\eqref{eq:gain}; $\gamma=0$ gives Eq.~\eqref{eq:stage2}.
 
