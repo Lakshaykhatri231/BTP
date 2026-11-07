@@ -1,0 +1,1 @@
+pgp {'TPOC-LPA (repro) b0.8': 0.703, 'Ours b0.8': 0.7421, 'SLPA': 0.7851}

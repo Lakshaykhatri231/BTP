@@ -1,0 +1,1 @@
+facebook {'TPOC-LPA (repro) b0.8': 0.7926, 'Ours b0.8': 0.809, 'SLPA': 0.8015}

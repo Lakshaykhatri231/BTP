@@ -1,0 +1,70 @@
+[{"stream_name":"stderr","time":10.384967287,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":10.385061058,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":10.385068636,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":10.385081032,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":11.288746674,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":11.288790521,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":11.288797256,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":11.288802677,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":17.810234151,"data":"using data dir: /kaggle/input/datasets/khatrilakshay2004/tpoc-lpa-benchmark-networks\n"}
+,{"stream_name":"stdout","time":18.020326146,"data":"Karate: 11/34 nodes sit in an exact NI tie\n"}
+,{"stream_name":"stdout","time":18.020361069,"data":"Dolphin: 4/62 nodes sit in an exact NI tie\n"}
+,{"stream_name":"stdout","time":18.020369154,"data":"Football: 2/115 nodes sit in an exact NI tie\n"}
+,{"stream_name":"stdout","time":18.020374525,"data":"Lesmis: 35/77 nodes sit in an exact NI tie\n"}
+,{"stream_name":"stdout","time":18.020381948,"data":"\n"}
+,{"stream_name":"stdout","time":18.020387484,"data":"--- Karate (34n/78e), 15 runs each ---\n"}
+,{"stream_name":"stdout","time":18.245804792,"data":"  paper (random ties)    Q = 0.4036 +/- 0.0000   NMI = 0.8372 +/- 0.0000   distinct partitions: 1/15\n"}
+,{"stream_name":"stdout","time":18.245849358,"data":"  ours (deterministic)   Q = 0.4036 +/- 0.0000   NMI = 0.8372 +/- 0.0000   distinct partitions: 1/15\n"}
+,{"stream_name":"stdout","time":18.24585852,"data":"\n"}
+,{"stream_name":"stdout","time":18.245863609,"data":"--- Dolphin (62n/159e), 15 runs each ---\n"}
+,{"stream_name":"stdout","time":18.245868935,"data":"  paper (random ties)    Q = 0.5113 +/- 0.0000   distinct partitions: 1/15\n"}
+,{"stream_name":"stdout","time":18.317610609,"data":"  ours (deterministic)   Q = 0.5113 +/- 0.0000   distinct partitions: 1/15\n"}
+,{"stream_name":"stdout","time":18.317654377,"data":"\n"}
+,{"stream_name":"stdout","time":18.317662316,"data":"--- Football (115n/613e), 15 runs each ---\n"}
+,{"stream_name":"stdout","time":18.796607725,"data":"  paper (random ties)    Q = 0.6032 +/- 0.0000   NMI = 0.9095 +/- 0.0000   distinct partitions: 1/15\n"}
+,{"stream_name":"stdout","time":19.105229734,"data":"  ours (deterministic)   Q = 0.6032 +/- 0.0000   NMI = 0.9095 +/- 0.0000   distinct partitions: 1/15\n"}
+,{"stream_name":"stdout","time":19.105287534,"data":"\n"}
+,{"stream_name":"stdout","time":19.105311687,"data":"--- Lesmis (77n/254e), 15 runs each ---\n"}
+,{"stream_name":"stdout","time":19.105318286,"data":"  paper (random ties)    Q = 0.5244 +/- 0.0000   distinct partitions: 1/15\n"}
+,{"stream_name":"stdout","time":19.106385331,"data":"  ours (deterministic)   Q = 0.5244 +/- 0.0000   distinct partitions: 1/15\n"}
+,{"stream_name":"stdout","time":19.106450489,"data":"\n"}
+,{"stream_name":"stdout","time":19.189150754,"data":"=== Football === structural baseline NMI = 0.9095, comms=11, truth=12\n"}
+,{"stream_name":"stdout","time":19.189192701,"data":"  budget=10    queried=10   changes=5    NMI=0.9403 (+0.0309)  overlap_nodes=18\n"}
+,{"stream_name":"stdout","time":19.189223319,"data":"  budget=25    queried=24   changes=8    NMI=0.9689 (+0.0594)  overlap_nodes=18\n"}
+,{"stream_name":"stdout","time":19.189229738,"data":"  budget=50    queried=48   changes=8    NMI=0.9689 (+0.0594)  overlap_nodes=18\n"}
+,{"stream_name":"stdout","time":19.189234577,"data":"  budget=1000  queried=115  changes=9    NMI=0.9808 (+0.0714)  overlap_nodes=21\n"}
+,{"stream_name":"stdout","time":19.189238528,"data":"\n"}
+,{"stream_name":"stdout","time":19.189242207,"data":"=== Karate === structural baseline NMI = 0.8372, comms=2, truth=2\n"}
+,{"stream_name":"stdout","time":19.189246397,"data":"  budget=5     queried=5    changes=1    NMI=1.0000 (+0.1628)  overlap_nodes=3\n"}
+,{"stream_name":"stdout","time":19.189250531,"data":"  budget=10    queried=9    changes=1    NMI=1.0000 (+0.1628)  overlap_nodes=3\n"}
+,{"stream_name":"stdout","time":19.189254685,"data":"  budget=34    queried=13   changes=1    NMI=1.0000 (+0.1628)  overlap_nodes=3\n"}
+,{"stream_name":"stdout","time":19.189259346,"data":"\n"}
+,{"stream_name":"stdout","time":19.309350418,"data":"=== Football === structural baseline NMI = 0.9095\n"}
+,{"stream_name":"stdout","time":19.309390503,"data":"reliability p |     hard override |   soft CALIBRATED |       soft w=0.95\n"}
+,{"stream_name":"stdout","time":19.309396039,"data":"----------------------------------------------------------------------------\n"}
+,{"stream_name":"stdout","time":19.309422464,"data":"          1.0 |  0.9689 (+0.0594) |  0.9264 (+0.0169) |  0.9264 (+0.0169)\n"}
+,{"stream_name":"stdout","time":19.459235741,"data":"          0.9 |  0.8889 (-0.0205) |  0.8548 (-0.0547) |  0.8548 (-0.0547)\n"}
+,{"stream_name":"stdout","time":19.459275915,"data":"          0.8 |  0.8460 (-0.0635) |  0.8210 (-0.0885) |  0.8170 (-0.0925)\n"}
+,{"stream_name":"stdout","time":19.583224833,"data":"          0.7 |  0.7861 (-0.1233) |  0.8211 (-0.0884) |  0.7688 (-0.1406)\n"}
+,{"stream_name":"stdout","time":19.583265555,"data":"          0.5 |  0.7062 (-0.2033) |  0.9034 (-0.0060) |  0.6967 (-0.2127)\n"}
+,{"stream_name":"stdout","time":19.721795771,"data":"          0.3 |  0.6371 (-0.2724) |  0.9066 (-0.0029) |  0.6269 (-0.2825)\n"}
+,{"stream_name":"stdout","time":19.721847068,"data":"\n"}
+,{"stream_name":"stdout","time":19.721852409,"data":"=== Karate === structural baseline NMI = 0.8372\n"}
+,{"stream_name":"stdout","time":19.721856943,"data":"reliability p |     hard override |   soft CALIBRATED |       soft w=0.95\n"}
+,{"stream_name":"stdout","time":19.721861652,"data":"----------------------------------------------------------------------------\n"}
+,{"stream_name":"stdout","time":19.721866605,"data":"          1.0 |  1.0000 (+0.1628) |  1.0000 (+0.1628) |  1.0000 (+0.1628)\n"}
+,{"stream_name":"stdout","time":19.721870916,"data":"          0.9 |  0.8378 (+0.0006) |  0.8378 (+0.0006) |  0.8378 (+0.0006)\n"}
+,{"stream_name":"stdout","time":19.824703429,"data":"          0.8 |  0.6809 (-0.1563) |  0.7842 (-0.0529) |  0.6809 (-0.1563)\n"}
+,{"stream_name":"stdout","time":19.824744769,"data":"          0.7 |  0.5362 (-0.3010) |  0.8180 (-0.0192) |  0.5362 (-0.3010)\n"}
+,{"stream_name":"stdout","time":19.824751104,"data":"          0.5 |  0.2672 (-0.5699) |  0.8372 (+0.0000) |  0.2672 (-0.5699)\n"}
+,{"stream_name":"stdout","time":19.824756344,"data":"          0.3 |  0.1821 (-0.6550) |  0.8372 (+0.0000) |  0.1821 (-0.6550)\n"}
+,{"stream_name":"stdout","time":19.824761843,"data":"\n"}
+,{"stream_name":"stderr","time":23.515576319,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":23.515620818,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":23.729954176,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":23.729987519,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":24.5229859,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":24.913312566,"data":"[NbConvertApp] Writing 40303 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":27.998929541,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":29.152517717,"data":"[NbConvertApp] Writing 393453 bytes to __results__.html\n"}
+]

@@ -1,0 +1,15 @@
+{
+  "id": "khatrilakshay2004/tpoc-lpa-phase-1-reproduction",
+  "title": "TPOC-LPA Phase 1 Reproduction",
+  "code_file": "tpoc_lpa_phase1.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_internet": false,
+  "keywords": [],
+  "dataset_sources": ["khatrilakshay2004/tpoc-lpa-benchmark-networks", "khatrilakshay2004/snap-ground-truth-communities"],
+  "kernel_sources": [],
+  "competition_sources": [],
+  "model_sources": []
+}

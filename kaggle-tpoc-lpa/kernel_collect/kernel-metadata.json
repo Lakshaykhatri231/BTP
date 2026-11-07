@@ -1,0 +1,19 @@
+{
+  "id": "khatrilakshay2004/tpoc-lpa-phase-2-evidence",
+  "title": "TPOC LPA Phase 2 Evidence",
+  "code_file": "collect.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": false,
+  "keywords": [],
+  "dataset_sources": ["khatrilakshay2004/tpoc-lpa-benchmark-networks"],
+  "kernel_sources": [],
+  "competition_sources": [],
+  "model_sources": [
+    "qwen-lm/qwen2.5/transformers/7b-instruct/1",
+    "qwen-lm/qwen2.5/transformers/3b-instruct/1",
+    "qwen-lm/qwen-3/transformers/8b/1"
+  ]
+}

@@ -1,0 +1,1 @@
+ca-grqc {'TPOC-LPA (repro) b0.8': 0.6966, 'Ours b0.8': 0.7274, 'SLPA': 0.7866}

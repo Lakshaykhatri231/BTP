@@ -1,0 +1,5 @@
+N2 1 {'Fastgreedy': 0.4673, 'LPA': 0.303, 'Louvain': 0.9102, 'Walktrap': 0.965, 'Infomap*': 0.977, 'TPOC-LPA (repro)': 0.9291, 'Ours': 0.988}
+N2 2 {'Fastgreedy': 0.4964, 'LPA': 0.6017, 'Louvain': 0.898, 'Walktrap': 0.9437, 'Infomap*': 0.9637, 'TPOC-LPA (repro)': 0.9022, 'Ours': 0.9753}
+N2 3 {'Fastgreedy': 0.4736, 'LPA': 0.3129, 'Louvain': 0.9257, 'Walktrap': 0.9357, 'Infomap*': 0.954, 'TPOC-LPA (repro)': 0.919, 'Ours': 0.9677}
+N2 4 {'Fastgreedy': 0.4534, 'LPA': 0.612, 'Louvain': 0.9301, 'Walktrap': 0.9587, 'Infomap*': 0.9579, 'TPOC-LPA (repro)': 0.9502, 'Ours': 0.986}
+N2 5 {'Fastgreedy': 0.484, 'LPA': 0.293, 'Louvain': 0.9282, 'Walktrap': 0.9769, 'Infomap*': 0.966, 'TPOC-LPA (repro)': 0.9581, 'Ours': 0.9903}

@@ -1,0 +1,5 @@
+N1 1 {'Fastgreedy': 0.9261, 'LPA': 1.0, 'Louvain': 0.9971, 'Walktrap': 1.0, 'Infomap*': 1.0, 'TPOC-LPA (repro)': 1.0, 'Ours': 1.0}
+N1 2 {'Fastgreedy': 0.7306, 'LPA': 0.9942, 'Louvain': 0.9837, 'Walktrap': 0.9937, 'Infomap*': 0.9949, 'TPOC-LPA (repro)': 1.0, 'Ours': 1.0}
+N1 3 {'Fastgreedy': 0.9428, 'LPA': 1.0, 'Louvain': 0.9969, 'Walktrap': 1.0, 'Infomap*': 0.9974, 'TPOC-LPA (repro)': 1.0, 'Ours': 1.0}
+N1 4 {'Fastgreedy': 0.9297, 'LPA': 1.0, 'Louvain': 1.0, 'Walktrap': 1.0, 'Infomap*': 0.9978, 'TPOC-LPA (repro)': 1.0, 'Ours': 1.0}
+N1 5 {'Fastgreedy': 0.5199, 'LPA': 0.9457, 'Louvain': 0.9585, 'Walktrap': 0.9908, 'Infomap*': 0.9856, 'TPOC-LPA (repro)': 0.9711, 'Ours': 0.9976}

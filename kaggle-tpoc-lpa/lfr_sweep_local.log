@@ -1,0 +1,10 @@
+============================================================
+LFR mu-sweep (N-1000-0.1 and N-1000-0.6 from paper's Table 5/10)
+Now using realized-mu calibration (see module docstring)
+============================================================
+--- N-1000-0.1 (target realized mu=0.1, achieved=0.0919) ---
+  nodes=1000 edges=12516 truth_comms=36 pred_comms=36 iters=2
+  NMI = 1.0000 (target 1.0)   ARI = 1.0000   Q = 0.8761
+--- N-1000-0.6 (target realized mu=0.6, achieved=0.5986) ---
+  nodes=1000 edges=13648 truth_comms=36 pred_comms=35 iters=7
+  NMI = 0.9316 (target 0.9869)   ARI = 0.8132   Q = 0.3826

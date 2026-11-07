@@ -1,0 +1,17 @@
+{
+  "id": "khatrilakshay2004/btp-tpoc-lpa-phase-1-vs-final-comparison",
+  "title": "BTP TPOC-LPA Phase 1 vs Final Comparison",
+  "code_file": "final_comparison.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_internet": false,
+  "keywords": [],
+  "dataset_sources": [
+    "khatrilakshay2004/btp-final-comparison-data"
+  ],
+  "kernel_sources": [],
+  "competition_sources": [],
+  "model_sources": []
+}

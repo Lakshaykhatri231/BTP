@@ -1,0 +1,1154 @@
+{
+ "root": "BTP/datasets",
+ "graphs": {
+  "karate": {
+   "nodes": 34,
+   "edges": 78,
+   "classes": 2
+  },
+  "dolphin": {
+   "nodes": 62,
+   "edges": 159,
+   "classes": 4
+  },
+  "football": {
+   "nodes": 115,
+   "edges": 613,
+   "classes": 12
+  },
+  "polbooks": {
+   "nodes": 105,
+   "edges": 441,
+   "classes": 3
+  },
+  "polblogs": {
+   "nodes": 1222,
+   "edges": 16714,
+   "classes": 2
+  },
+  "email-Eu": {
+   "nodes": 986,
+   "edges": 16064,
+   "classes": 42
+  },
+  "cora": {
+   "nodes": 2485,
+   "edges": 5069,
+   "classes": 7
+  },
+  "citeseer": {
+   "nodes": 2110,
+   "edges": 3668,
+   "classes": 6
+  },
+  "amazon_photo": {
+   "nodes": 7487,
+   "edges": 119043,
+   "classes": 8
+  },
+  "amazon_computers": {
+   "nodes": 13381,
+   "edges": 245778,
+   "classes": 10
+  },
+  "coauthor_cs": {
+   "nodes": 18333,
+   "edges": 81894,
+   "classes": 15
+  },
+  "coauthor_physics": {
+   "nodes": 34493,
+   "edges": 247962,
+   "classes": 5
+  },
+  "cora_ml": {
+   "nodes": 2810,
+   "edges": 7981,
+   "classes": 7
+  },
+  "pubmed": {
+   "nodes": 19717,
+   "edges": 44324,
+   "classes": 3
+  },
+  "dblp_authors": {
+   "nodes": 16191,
+   "edges": 51913,
+   "classes": 4
+  },
+  "snap_amazon": {
+   "nodes": 16716,
+   "edges": 48739,
+   "classes": 1399
+  },
+  "snap_dblp": {
+   "nodes": 93432,
+   "edges": 335520,
+   "classes": 4923
+  },
+  "snap_youtube": {
+   "nodes": 39841,
+   "edges": 224235,
+   "classes": 4447
+  }
+ },
+ "lfr": {
+  "lfr_coarse1000_mu0.2_s1": {
+   "nodes": 1000,
+   "edges": 13629,
+   "communities": 6
+  },
+  "lfr_coarse1000_mu0.2_s2": {
+   "nodes": 1000,
+   "edges": 13275,
+   "communities": 7
+  },
+  "lfr_coarse1000_mu0.2_s3": {
+   "nodes": 1000,
+   "edges": 13414,
+   "communities": 6
+  },
+  "lfr_coarse1000_mu0.2_s4": {
+   "nodes": 1000,
+   "edges": 13626,
+   "communities": 7
+  },
+  "lfr_coarse1000_mu0.4_s1": {
+   "nodes": 1000,
+   "edges": 13785,
+   "communities": 6
+  },
+  "lfr_coarse1000_mu0.4_s2": {
+   "nodes": 1000,
+   "edges": 13440,
+   "communities": 7
+  },
+  "lfr_coarse1000_mu0.4_s3": {
+   "nodes": 1000,
+   "edges": 13601,
+   "communities": 6
+  },
+  "lfr_coarse1000_mu0.4_s4": {
+   "nodes": 1000,
+   "edges": 13813,
+   "communities": 7
+  },
+  "lfr_coarse1000_mu0.6_s1": {
+   "nodes": 1000,
+   "edges": 13906,
+   "communities": 6
+  },
+  "lfr_coarse1000_mu0.6_s2": {
+   "nodes": 1000,
+   "edges": 13575,
+   "communities": 7
+  },
+  "lfr_coarse1000_mu0.6_s3": {
+   "nodes": 1000,
+   "edges": 13716,
+   "communities": 6
+  },
+  "lfr_coarse1000_mu0.6_s4": {
+   "nodes": 1000,
+   "edges": 13964,
+   "communities": 7
+  },
+  "lfr_n10000_mu0.1_s1": {
+   "nodes": 10000,
+   "edges": 124187,
+   "communities": 383
+  },
+  "lfr_n10000_mu0.1_s2": {
+   "nodes": 10000,
+   "edges": 124561,
+   "communities": 369
+  },
+  "lfr_n10000_mu0.1_s3": {
+   "nodes": 10000,
+   "edges": 124151,
+   "communities": 374
+  },
+  "lfr_n10000_mu0.5_s1": {
+   "nodes": 10000,
+   "edges": 134475,
+   "communities": 383
+  },
+  "lfr_n10000_mu0.5_s2": {
+   "nodes": 10000,
+   "edges": 134200,
+   "communities": 369
+  },
+  "lfr_n10000_mu0.5_s3": {
+   "nodes": 10000,
+   "edges": 133985,
+   "communities": 374
+  },
+  "lfr_n10000_mu0.6_s1": {
+   "nodes": 10000,
+   "edges": 136313,
+   "communities": 383
+  },
+  "lfr_n10000_mu0.6_s2": {
+   "nodes": 10000,
+   "edges": 136123,
+   "communities": 369
+  },
+  "lfr_n10000_mu0.6_s3": {
+   "nodes": 10000,
+   "edges": 135611,
+   "communities": 374
+  },
+  "lfr_n10000_mu0.7_s1": {
+   "nodes": 10000,
+   "edges": 137804,
+   "communities": 383
+  },
+  "lfr_n10000_mu0.7_s2": {
+   "nodes": 10000,
+   "edges": 138051,
+   "communities": 369
+  },
+  "lfr_n10000_mu0.7_s3": {
+   "nodes": 10000,
+   "edges": 137180,
+   "communities": 374
+  },
+  "lfr_n1000_mu0.1_s1": {
+   "nodes": 1000,
+   "edges": 12406,
+   "communities": 40
+  },
+  "lfr_n1000_mu0.1_s2": {
+   "nodes": 1000,
+   "edges": 12600,
+   "communities": 40
+  },
+  "lfr_n1000_mu0.1_s3": {
+   "nodes": 1000,
+   "edges": 12568,
+   "communities": 31
+  },
+  "lfr_n1000_mu0.1_s4": {
+   "nodes": 1000,
+   "edges": 12713,
+   "communities": 33
+  },
+  "lfr_n1000_mu0.1_s5": {
+   "nodes": 1000,
+   "edges": 13652,
+   "communities": 37
+  },
+  "lfr_n1000_mu0.1_s6": {
+   "nodes": 1000,
+   "edges": 12648,
+   "communities": 35
+  },
+  "lfr_n1000_mu0.1_s7": {
+   "nodes": 1000,
+   "edges": 12298,
+   "communities": 35
+  },
+  "lfr_n1000_mu0.1_s8": {
+   "nodes": 1000,
+   "edges": 12462,
+   "communities": 37
+  },
+  "lfr_n1000_mu0.3_s1": {
+   "nodes": 1000,
+   "edges": 13080,
+   "communities": 40
+  },
+  "lfr_n1000_mu0.3_s2": {
+   "nodes": 1000,
+   "edges": 12600,
+   "communities": 40
+  },
+  "lfr_n1000_mu0.3_s3": {
+   "nodes": 1000,
+   "edges": 13002,
+   "communities": 31
+  },
+  "lfr_n1000_mu0.3_s4": {
+   "nodes": 1000,
+   "edges": 13161,
+   "communities": 33
+  },
+  "lfr_n1000_mu0.3_s5": {
+   "nodes": 1000,
+   "edges": 13652,
+   "communities": 37
+  },
+  "lfr_n1000_mu0.5_s1": {
+   "nodes": 1000,
+   "edges": 13589,
+   "communities": 40
+  },
+  "lfr_n1000_mu0.5_s11": {
+   "nodes": 1000,
+   "edges": 13293,
+   "communities": 38
+  },
+  "lfr_n1000_mu0.5_s12": {
+   "nodes": 1000,
+   "edges": 13595,
+   "communities": 35
+  },
+  "lfr_n1000_mu0.5_s13": {
+   "nodes": 1000,
+   "edges": 13255,
+   "communities": 39
+  },
+  "lfr_n1000_mu0.5_s14": {
+   "nodes": 1000,
+   "edges": 13315,
+   "communities": 37
+  },
+  "lfr_n1000_mu0.5_s15": {
+   "nodes": 1000,
+   "edges": 13410,
+   "communities": 34
+  },
+  "lfr_n1000_mu0.5_s16": {
+   "nodes": 1000,
+   "edges": 13200,
+   "communities": 36
+  },
+  "lfr_n1000_mu0.5_s17": {
+   "nodes": 1000,
+   "edges": 13457,
+   "communities": 40
+  },
+  "lfr_n1000_mu0.5_s18": {
+   "nodes": 1000,
+   "edges": 13312,
+   "communities": 37
+  },
+  "lfr_n1000_mu0.5_s19": {
+   "nodes": 1000,
+   "edges": 13226,
+   "communities": 35
+  },
+  "lfr_n1000_mu0.5_s2": {
+   "nodes": 1000,
+   "edges": 13107,
+   "communities": 40
+  },
+  "lfr_n1000_mu0.5_s20": {
+   "nodes": 1000,
+   "edges": 13232,
+   "communities": 36
+  },
+  "lfr_n1000_mu0.5_s3": {
+   "nodes": 1000,
+   "edges": 13423,
+   "communities": 31
+  },
+  "lfr_n1000_mu0.5_s4": {
+   "nodes": 1000,
+   "edges": 13504,
+   "communities": 33
+  },
+  "lfr_n1000_mu0.5_s5": {
+   "nodes": 1000,
+   "edges": 13652,
+   "communities": 37
+  },
+  "lfr_n1000_mu0.6_s1": {
+   "nodes": 1000,
+   "edges": 13709,
+   "communities": 40
+  },
+  "lfr_n1000_mu0.6_s11": {
+   "nodes": 1000,
+   "edges": 13335,
+   "communities": 38
+  },
+  "lfr_n1000_mu0.6_s12": {
+   "nodes": 1000,
+   "edges": 13717,
+   "communities": 35
+  },
+  "lfr_n1000_mu0.6_s13": {
+   "nodes": 1000,
+   "edges": 13393,
+   "communities": 39
+  },
+  "lfr_n1000_mu0.6_s14": {
+   "nodes": 1000,
+   "edges": 13445,
+   "communities": 37
+  },
+  "lfr_n1000_mu0.6_s15": {
+   "nodes": 1000,
+   "edges": 13587,
+   "communities": 34
+  },
+  "lfr_n1000_mu0.6_s16": {
+   "nodes": 1000,
+   "edges": 13376,
+   "communities": 36
+  },
+  "lfr_n1000_mu0.6_s17": {
+   "nodes": 1000,
+   "edges": 13663,
+   "communities": 40
+  },
+  "lfr_n1000_mu0.6_s18": {
+   "nodes": 1000,
+   "edges": 13423,
+   "communities": 37
+  },
+  "lfr_n1000_mu0.6_s19": {
+   "nodes": 1000,
+   "edges": 13500,
+   "communities": 35
+  },
+  "lfr_n1000_mu0.6_s2": {
+   "nodes": 1000,
+   "edges": 13245,
+   "communities": 40
+  },
+  "lfr_n1000_mu0.6_s20": {
+   "nodes": 1000,
+   "edges": 13328,
+   "communities": 36
+  },
+  "lfr_n1000_mu0.6_s3": {
+   "nodes": 1000,
+   "edges": 13519,
+   "communities": 31
+  },
+  "lfr_n1000_mu0.6_s4": {
+   "nodes": 1000,
+   "edges": 13673,
+   "communities": 33
+  },
+  "lfr_n1000_mu0.6_s5": {
+   "nodes": 1000,
+   "edges": 13643,
+   "communities": 37
+  },
+  "lfr_n1000_mu0.7_s1": {
+   "nodes": 1000,
+   "edges": 13906,
+   "communities": 40
+  },
+  "lfr_n1000_mu0.7_s11": {
+   "nodes": 1000,
+   "edges": 13520,
+   "communities": 38
+  },
+  "lfr_n1000_mu0.7_s12": {
+   "nodes": 1000,
+   "edges": 14026,
+   "communities": 35
+  },
+  "lfr_n1000_mu0.7_s13": {
+   "nodes": 1000,
+   "edges": 13566,
+   "communities": 39
+  },
+  "lfr_n1000_mu0.7_s14": {
+   "nodes": 1000,
+   "edges": 13552,
+   "communities": 37
+  },
+  "lfr_n1000_mu0.7_s15": {
+   "nodes": 1000,
+   "edges": 13768,
+   "communities": 34
+  },
+  "lfr_n1000_mu0.7_s16": {
+   "nodes": 1000,
+   "edges": 13582,
+   "communities": 36
+  },
+  "lfr_n1000_mu0.7_s17": {
+   "nodes": 1000,
+   "edges": 13905,
+   "communities": 40
+  },
+  "lfr_n1000_mu0.7_s18": {
+   "nodes": 1000,
+   "edges": 13707,
+   "communities": 37
+  },
+  "lfr_n1000_mu0.7_s19": {
+   "nodes": 1000,
+   "edges": 13538,
+   "communities": 35
+  },
+  "lfr_n1000_mu0.7_s2": {
+   "nodes": 1000,
+   "edges": 13399,
+   "communities": 40
+  },
+  "lfr_n1000_mu0.7_s20": {
+   "nodes": 1000,
+   "edges": 13601,
+   "communities": 36
+  },
+  "lfr_n1000_mu0.7_s3": {
+   "nodes": 1000,
+   "edges": 13686,
+   "communities": 31
+  },
+  "lfr_n1000_mu0.7_s4": {
+   "nodes": 1000,
+   "edges": 13784,
+   "communities": 33
+  },
+  "lfr_n1000_mu0.7_s5": {
+   "nodes": 1000,
+   "edges": 13857,
+   "communities": 37
+  },
+  "lfr_n5000_mu0.5_s1": {
+   "nodes": 5000,
+   "edges": 67699,
+   "communities": 176
+  },
+  "lfr_n5000_mu0.5_s2": {
+   "nodes": 5000,
+   "edges": 67238,
+   "communities": 188
+  },
+  "lfr_n5000_mu0.5_s3": {
+   "nodes": 5000,
+   "edges": 67161,
+   "communities": 186
+  },
+  "lfr_n5000_mu0.6_s1": {
+   "nodes": 5000,
+   "edges": 68556,
+   "communities": 176
+  },
+  "lfr_n5000_mu0.6_s2": {
+   "nodes": 5000,
+   "edges": 68079,
+   "communities": 188
+  },
+  "lfr_n5000_mu0.6_s3": {
+   "nodes": 5000,
+   "edges": 68064,
+   "communities": 186
+  },
+  "lfr_n5000_mu0.7_s1": {
+   "nodes": 5000,
+   "edges": 69173,
+   "communities": 176
+  },
+  "lfr_n5000_mu0.7_s2": {
+   "nodes": 5000,
+   "edges": 68839,
+   "communities": 188
+  },
+  "lfr_n5000_mu0.7_s3": {
+   "nodes": 5000,
+   "edges": 68775,
+   "communities": 186
+  },
+  "lfr_small150_mu0.2_s1": {
+   "nodes": 150,
+   "edges": 738,
+   "communities": 3
+  },
+  "lfr_small150_mu0.2_s2": {
+   "nodes": 150,
+   "edges": 709,
+   "communities": 3
+  },
+  "lfr_small150_mu0.2_s3": {
+   "nodes": 150,
+   "edges": 703,
+   "communities": 2
+  },
+  "lfr_small150_mu0.2_s4": {
+   "nodes": 150,
+   "edges": 704,
+   "communities": 2
+  },
+  "lfr_small150_mu0.2_s5": {
+   "nodes": 150,
+   "edges": 723,
+   "communities": 3
+  },
+  "lfr_small150_mu0.2_s6": {
+   "nodes": 150,
+   "edges": 719,
+   "communities": 4
+  },
+  "lfr_small150_mu0.4_s1": {
+   "nodes": 150,
+   "edges": 759,
+   "communities": 3
+  },
+  "lfr_small150_mu0.4_s2": {
+   "nodes": 150,
+   "edges": 715,
+   "communities": 3
+  },
+  "lfr_small150_mu0.4_s3": {
+   "nodes": 150,
+   "edges": 715,
+   "communities": 2
+  },
+  "lfr_small150_mu0.4_s4": {
+   "nodes": 150,
+   "edges": 721,
+   "communities": 2
+  },
+  "lfr_small150_mu0.4_s5": {
+   "nodes": 150,
+   "edges": 715,
+   "communities": 3
+  },
+  "lfr_small150_mu0.4_s6": {
+   "nodes": 150,
+   "edges": 731,
+   "communities": 4
+  }
+ },
+ "files": {
+  "heldout_real/amazon_electronics_computers.npz": {
+   "bytes": 31921488,
+   "sha256_16": "736ba1d9fd85eac2"
+  },
+  "heldout_real/amazon_electronics_photo.npz": {
+   "bytes": 17113960,
+   "sha256_16": "bdb1feb8e6ff42ee"
+  },
+  "heldout_real/cora_ml.npz": {
+   "bytes": 85344046,
+   "sha256_16": "bff04cbfaf903581"
+  },
+  "heldout_real/dblp.npz": {
+   "bytes": 22005905,
+   "sha256_16": "46da600a15c0680d"
+  },
+  "heldout_real/ms_academic_cs.npz": {
+   "bytes": 12835626,
+   "sha256_16": "933c745734e78908"
+  },
+  "heldout_real/ms_academic_phy.npz": {
+   "bytes": 16374005,
+   "sha256_16": "e4d68468eba5fb8f"
+  },
+  "heldout_real/pubmed.npz": {
+   "bytes": 13237330,
+   "sha256_16": "7e671409fd689d45"
+  },
+  "dolphins/dolphins.gml": {
+   "bytes": 9518,
+   "sha256_16": "58ce901a69d090fb"
+  },
+  "dolphins/dolphins.txt": {
+   "bytes": 781,
+   "sha256_16": "b472b71ffaef9698"
+  },
+  "dolphins/dolphins_truth.json": {
+   "bytes": 810,
+   "sha256_16": "129e382dbd556b05"
+  },
+  "karate/karate.gml": {
+   "bytes": 6091,
+   "sha256_16": "713e1ab3c10c8bc7"
+  },
+  "football/football.gml": {
+   "bytes": 33379,
+   "sha256_16": "48bc58e19bf674cc"
+  },
+  "football/football.txt": {
+   "bytes": 777,
+   "sha256_16": "5b98e293ed499ac6"
+  },
+  "citeseer/citeseer/README": {
+   "bytes": 1390,
+   "sha256_16": "379ea236e1071ba8"
+  },
+  "citeseer/citeseer/citeseer.cites": {
+   "bytes": 137062,
+   "sha256_16": "cd9730630eaaa745"
+  },
+  "citeseer/citeseer/citeseer.content": {
+   "bytes": 24589190,
+   "sha256_16": "de4a3ca98626d771"
+  },
+  "cora/cora/README": {
+   "bytes": 1560,
+   "sha256_16": "ecfcfcdc830c6fe4"
+  },
+  "cora/cora/cora.cites": {
+   "bytes": 69928,
+   "sha256_16": "ec1a372391b7f0f6"
+  },
+  "cora/cora/cora.content": {
+   "bytes": 7823427,
+   "sha256_16": "b8ebed0fd45e5399"
+  },
+  "lfr/lfr_coarse1000_mu0.2_s1.npz": {
+   "bytes": 27922,
+   "sha256_16": "bb4c6de393c5da09"
+  },
+  "lfr/lfr_coarse1000_mu0.2_s2.npz": {
+   "bytes": 27387,
+   "sha256_16": "5db91ce82aaf07e1"
+  },
+  "lfr/lfr_coarse1000_mu0.2_s3.npz": {
+   "bytes": 27581,
+   "sha256_16": "8ce8d72854d655f1"
+  },
+  "lfr/lfr_coarse1000_mu0.2_s4.npz": {
+   "bytes": 27930,
+   "sha256_16": "874e516d2f26c323"
+  },
+  "lfr/lfr_coarse1000_mu0.4_s1.npz": {
+   "bytes": 28163,
+   "sha256_16": "fd82e04002aedb20"
+  },
+  "lfr/lfr_coarse1000_mu0.4_s2.npz": {
+   "bytes": 27659,
+   "sha256_16": "40b21e9a1b031461"
+  },
+  "lfr/lfr_coarse1000_mu0.4_s3.npz": {
+   "bytes": 27841,
+   "sha256_16": "fa1188f22bcf2951"
+  },
+  "lfr/lfr_coarse1000_mu0.4_s4.npz": {
+   "bytes": 28282,
+   "sha256_16": "890a56d91d497c32"
+  },
+  "lfr/lfr_coarse1000_mu0.6_s1.npz": {
+   "bytes": 28347,
+   "sha256_16": "2b08cb6d9d8cc9f2"
+  },
+  "lfr/lfr_coarse1000_mu0.6_s2.npz": {
+   "bytes": 27840,
+   "sha256_16": "55165987ccb32c7b"
+  },
+  "lfr/lfr_coarse1000_mu0.6_s3.npz": {
+   "bytes": 28052,
+   "sha256_16": "b6dd12eccfbd32ff"
+  },
+  "lfr/lfr_coarse1000_mu0.6_s4.npz": {
+   "bytes": 28522,
+   "sha256_16": "59860b7817a3c8ae"
+  },
+  "lfr/lfr_n10000_mu0.1_s1.npz": {
+   "bytes": 344069,
+   "sha256_16": "04a449fef17d378c"
+  },
+  "lfr/lfr_n10000_mu0.1_s2.npz": {
+   "bytes": 346116,
+   "sha256_16": "6174d52ed4e05b05"
+  },
+  "lfr/lfr_n10000_mu0.1_s3.npz": {
+   "bytes": 344083,
+   "sha256_16": "9dd6972423789ec7"
+  },
+  "lfr/lfr_n10000_mu0.5_s1.npz": {
+   "bytes": 370664,
+   "sha256_16": "7b43dc7b3a202940"
+  },
+  "lfr/lfr_n10000_mu0.5_s2.npz": {
+   "bytes": 369654,
+   "sha256_16": "bc2d6a50bdd600d6"
+  },
+  "lfr/lfr_n10000_mu0.5_s3.npz": {
+   "bytes": 369260,
+   "sha256_16": "e76c67448ca9b0b3"
+  },
+  "lfr/lfr_n10000_mu0.6_s1.npz": {
+   "bytes": 375358,
+   "sha256_16": "97a2a2b85d0f1a76"
+  },
+  "lfr/lfr_n10000_mu0.6_s2.npz": {
+   "bytes": 374823,
+   "sha256_16": "600c66f00c16bab2"
+  },
+  "lfr/lfr_n10000_mu0.6_s3.npz": {
+   "bytes": 373956,
+   "sha256_16": "a02934519d491856"
+  },
+  "lfr/lfr_n10000_mu0.7_s1.npz": {
+   "bytes": 378848,
+   "sha256_16": "7eec7db40caa32d5"
+  },
+  "lfr/lfr_n10000_mu0.7_s2.npz": {
+   "bytes": 379828,
+   "sha256_16": "6d1ad8c92a6d5278"
+  },
+  "lfr/lfr_n10000_mu0.7_s3.npz": {
+   "bytes": 377837,
+   "sha256_16": "712d3ba4d266da33"
+  },
+  "lfr/lfr_n1000_mu0.1_s1.npz": {
+   "bytes": 26450,
+   "sha256_16": "9b6e908e0d0d5148"
+  },
+  "lfr/lfr_n1000_mu0.1_s2.npz": {
+   "bytes": 26576,
+   "sha256_16": "ed06943689ac7644"
+  },
+  "lfr/lfr_n1000_mu0.1_s3.npz": {
+   "bytes": 26645,
+   "sha256_16": "44e4e2ba29e7beda"
+  },
+  "lfr/lfr_n1000_mu0.1_s4.npz": {
+   "bytes": 26814,
+   "sha256_16": "9246517b1f0025a3"
+  },
+  "lfr/lfr_n1000_mu0.1_s5.npz": {
+   "bytes": 28322,
+   "sha256_16": "21608be3d398da06"
+  },
+  "lfr/lfr_n1000_mu0.1_s6.npz": {
+   "bytes": 26828,
+   "sha256_16": "4f257a5c89e1401d"
+  },
+  "lfr/lfr_n1000_mu0.1_s7.npz": {
+   "bytes": 26233,
+   "sha256_16": "b437e9f35b02cade"
+  },
+  "lfr/lfr_n1000_mu0.1_s8.npz": {
+   "bytes": 26493,
+   "sha256_16": "186aa893a4b5b66e"
+  },
+  "lfr/lfr_n1000_mu0.3_s1.npz": {
+   "bytes": 27336,
+   "sha256_16": "74461158e44b48c4"
+  },
+  "lfr/lfr_n1000_mu0.3_s2.npz": {
+   "bytes": 26576,
+   "sha256_16": "ed06943689ac7644"
+  },
+  "lfr/lfr_n1000_mu0.3_s3.npz": {
+   "bytes": 27283,
+   "sha256_16": "84332cf6ec50aca3"
+  },
+  "lfr/lfr_n1000_mu0.3_s4.npz": {
+   "bytes": 27502,
+   "sha256_16": "d4370ffc3901edc3"
+  },
+  "lfr/lfr_n1000_mu0.3_s5.npz": {
+   "bytes": 28322,
+   "sha256_16": "21608be3d398da06"
+  },
+  "lfr/lfr_n1000_mu0.5_s1.npz": {
+   "bytes": 28239,
+   "sha256_16": "0b6ae133afa9ee8a"
+  },
+  "lfr/lfr_n1000_mu0.5_s11.npz": {
+   "bytes": 27748,
+   "sha256_16": "369751b401ccb906"
+  },
+  "lfr/lfr_n1000_mu0.5_s12.npz": {
+   "bytes": 28246,
+   "sha256_16": "0b24af58dff26d2d"
+  },
+  "lfr/lfr_n1000_mu0.5_s13.npz": {
+   "bytes": 27681,
+   "sha256_16": "c8734e554eb1b0cb"
+  },
+  "lfr/lfr_n1000_mu0.5_s14.npz": {
+   "bytes": 27834,
+   "sha256_16": "0edf07e74ba23175"
+  },
+  "lfr/lfr_n1000_mu0.5_s15.npz": {
+   "bytes": 27853,
+   "sha256_16": "16abd04741084607"
+  },
+  "lfr/lfr_n1000_mu0.5_s16.npz": {
+   "bytes": 27579,
+   "sha256_16": "51b64800e9db02e8"
+  },
+  "lfr/lfr_n1000_mu0.5_s17.npz": {
+   "bytes": 28039,
+   "sha256_16": "2ddb6024be9e7778"
+  },
+  "lfr/lfr_n1000_mu0.5_s18.npz": {
+   "bytes": 27674,
+   "sha256_16": "ba83b4a2f1228011"
+  },
+  "lfr/lfr_n1000_mu0.5_s19.npz": {
+   "bytes": 27646,
+   "sha256_16": "2ab6d914d5f2e13d"
+  },
+  "lfr/lfr_n1000_mu0.5_s2.npz": {
+   "bytes": 27444,
+   "sha256_16": "fa2cdf5221679b3e"
+  },
+  "lfr/lfr_n1000_mu0.5_s20.npz": {
+   "bytes": 27618,
+   "sha256_16": "8aeb9c4a7d363c64"
+  },
+  "lfr/lfr_n1000_mu0.5_s3.npz": {
+   "bytes": 27902,
+   "sha256_16": "0bfa686ebc370c8a"
+  },
+  "lfr/lfr_n1000_mu0.5_s4.npz": {
+   "bytes": 28068,
+   "sha256_16": "ea17a9026a15c69e"
+  },
+  "lfr/lfr_n1000_mu0.5_s5.npz": {
+   "bytes": 28322,
+   "sha256_16": "21608be3d398da06"
+  },
+  "lfr/lfr_n1000_mu0.6_s1.npz": {
+   "bytes": 28482,
+   "sha256_16": "14d0ac8b362ce1b2"
+  },
+  "lfr/lfr_n1000_mu0.6_s11.npz": {
+   "bytes": 27859,
+   "sha256_16": "d13cb6294c935163"
+  },
+  "lfr/lfr_n1000_mu0.6_s12.npz": {
+   "bytes": 28479,
+   "sha256_16": "9de8c763919303e5"
+  },
+  "lfr/lfr_n1000_mu0.6_s13.npz": {
+   "bytes": 27922,
+   "sha256_16": "b01aecfad4995caa"
+  },
+  "lfr/lfr_n1000_mu0.6_s14.npz": {
+   "bytes": 28020,
+   "sha256_16": "0c66a939a7befb1a"
+  },
+  "lfr/lfr_n1000_mu0.6_s15.npz": {
+   "bytes": 28311,
+   "sha256_16": "aa3036a3ddccba03"
+  },
+  "lfr/lfr_n1000_mu0.6_s16.npz": {
+   "bytes": 27958,
+   "sha256_16": "2b222c8a2d81554e"
+  },
+  "lfr/lfr_n1000_mu0.6_s17.npz": {
+   "bytes": 28397,
+   "sha256_16": "0788caf04e42c3f2"
+  },
+  "lfr/lfr_n1000_mu0.6_s18.npz": {
+   "bytes": 28004,
+   "sha256_16": "30da38c691ad5165"
+  },
+  "lfr/lfr_n1000_mu0.6_s19.npz": {
+   "bytes": 28086,
+   "sha256_16": "8e22fd2e0932397d"
+  },
+  "lfr/lfr_n1000_mu0.6_s2.npz": {
+   "bytes": 27673,
+   "sha256_16": "bcef9cef63930f93"
+  },
+  "lfr/lfr_n1000_mu0.6_s20.npz": {
+   "bytes": 27860,
+   "sha256_16": "2273123a30c0f548"
+  },
+  "lfr/lfr_n1000_mu0.6_s3.npz": {
+   "bytes": 28153,
+   "sha256_16": "fe95991a0e15f4bd"
+  },
+  "lfr/lfr_n1000_mu0.6_s4.npz": {
+   "bytes": 28366,
+   "sha256_16": "57ab4224f598142b"
+  },
+  "lfr/lfr_n1000_mu0.6_s5.npz": {
+   "bytes": 28377,
+   "sha256_16": "46f59a7062229cda"
+  },
+  "lfr/lfr_n1000_mu0.7_s1.npz": {
+   "bytes": 28810,
+   "sha256_16": "fc91a13846bd8137"
+  },
+  "lfr/lfr_n1000_mu0.7_s11.npz": {
+   "bytes": 28208,
+   "sha256_16": "892c8ea6db8abb6b"
+  },
+  "lfr/lfr_n1000_mu0.7_s12.npz": {
+   "bytes": 28967,
+   "sha256_16": "8a9d4011384c5bf8"
+  },
+  "lfr/lfr_n1000_mu0.7_s13.npz": {
+   "bytes": 28253,
+   "sha256_16": "1c54ac681b19d541"
+  },
+  "lfr/lfr_n1000_mu0.7_s14.npz": {
+   "bytes": 28226,
+   "sha256_16": "b2d0f9c64aafdc38"
+  },
+  "lfr/lfr_n1000_mu0.7_s15.npz": {
+   "bytes": 28541,
+   "sha256_16": "8e9cfb770dc28544"
+  },
+  "lfr/lfr_n1000_mu0.7_s16.npz": {
+   "bytes": 28336,
+   "sha256_16": "5a2afa3a057c022e"
+  },
+  "lfr/lfr_n1000_mu0.7_s17.npz": {
+   "bytes": 28807,
+   "sha256_16": "8e393add18d4779b"
+  },
+  "lfr/lfr_n1000_mu0.7_s18.npz": {
+   "bytes": 28551,
+   "sha256_16": "f03707faec380b1e"
+  },
+  "lfr/lfr_n1000_mu0.7_s19.npz": {
+   "bytes": 28278,
+   "sha256_16": "63b700cf2372936f"
+  },
+  "lfr/lfr_n1000_mu0.7_s2.npz": {
+   "bytes": 27963,
+   "sha256_16": "ed84f4ec1832274a"
+  },
+  "lfr/lfr_n1000_mu0.7_s20.npz": {
+   "bytes": 28368,
+   "sha256_16": "1eea3ccf7ae23878"
+  },
+  "lfr/lfr_n1000_mu0.7_s3.npz": {
+   "bytes": 28424,
+   "sha256_16": "998c7d5ef0ce2724"
+  },
+  "lfr/lfr_n1000_mu0.7_s4.npz": {
+   "bytes": 28582,
+   "sha256_16": "67ba2269031b7203"
+  },
+  "lfr/lfr_n1000_mu0.7_s5.npz": {
+   "bytes": 28737,
+   "sha256_16": "26569ce92e89cffe"
+  },
+  "lfr/lfr_n5000_mu0.5_s1.npz": {
+   "bytes": 173883,
+   "sha256_16": "03ae92aecc0f7508"
+  },
+  "lfr/lfr_n5000_mu0.5_s2.npz": {
+   "bytes": 172884,
+   "sha256_16": "e3490f47ebe98065"
+  },
+  "lfr/lfr_n5000_mu0.5_s3.npz": {
+   "bytes": 172655,
+   "sha256_16": "d9ef649d2155f8e6"
+  },
+  "lfr/lfr_n5000_mu0.6_s1.npz": {
+   "bytes": 175667,
+   "sha256_16": "4777e25469dc101e"
+  },
+  "lfr/lfr_n5000_mu0.6_s2.npz": {
+   "bytes": 174786,
+   "sha256_16": "98fa9c9640c2c014"
+  },
+  "lfr/lfr_n5000_mu0.6_s3.npz": {
+   "bytes": 174477,
+   "sha256_16": "98573802704b0db4"
+  },
+  "lfr/lfr_n5000_mu0.7_s1.npz": {
+   "bytes": 177143,
+   "sha256_16": "3d774a9cb0fc9831"
+  },
+  "lfr/lfr_n5000_mu0.7_s2.npz": {
+   "bytes": 176595,
+   "sha256_16": "f35a776a38359fc2"
+  },
+  "lfr/lfr_n5000_mu0.7_s3.npz": {
+   "bytes": 176394,
+   "sha256_16": "8feba0a32eb142d5"
+  },
+  "lfr/lfr_small150_mu0.2_s1.npz": {
+   "bytes": 1877,
+   "sha256_16": "f589c671b1871aa2"
+  },
+  "lfr/lfr_small150_mu0.2_s2.npz": {
+   "bytes": 1812,
+   "sha256_16": "e7e24109c6959190"
+  },
+  "lfr/lfr_small150_mu0.2_s3.npz": {
+   "bytes": 1798,
+   "sha256_16": "4f46743144bd7a0f"
+  },
+  "lfr/lfr_small150_mu0.2_s4.npz": {
+   "bytes": 1787,
+   "sha256_16": "f129bc81766b7615"
+  },
+  "lfr/lfr_small150_mu0.2_s5.npz": {
+   "bytes": 1860,
+   "sha256_16": "f349aa0aba8f474e"
+  },
+  "lfr/lfr_small150_mu0.2_s6.npz": {
+   "bytes": 1875,
+   "sha256_16": "aeb176fada0d35d2"
+  },
+  "lfr/lfr_small150_mu0.4_s1.npz": {
+   "bytes": 1902,
+   "sha256_16": "21efce7da11f5a37"
+  },
+  "lfr/lfr_small150_mu0.4_s2.npz": {
+   "bytes": 1810,
+   "sha256_16": "a3a1cff6dedae885"
+  },
+  "lfr/lfr_small150_mu0.4_s3.npz": {
+   "bytes": 1809,
+   "sha256_16": "d6142484a884f40f"
+  },
+  "lfr/lfr_small150_mu0.4_s4.npz": {
+   "bytes": 1810,
+   "sha256_16": "6b4933bb17d3a372"
+  },
+  "lfr/lfr_small150_mu0.4_s5.npz": {
+   "bytes": 1811,
+   "sha256_16": "a7ab90ad780e324d"
+  },
+  "lfr/lfr_small150_mu0.4_s6.npz": {
+   "bytes": 1909,
+   "sha256_16": "c69560e66463997b"
+  },
+  "snap/com-amazon.top5000.cmty.txt.gz": {
+   "bytes": 146988,
+   "sha256_16": "aac89803da5cadb3"
+  },
+  "snap/com-amazon.ungraph.txt.gz": {
+   "bytes": 4501435,
+   "sha256_16": "bb4b9fcf549c9174"
+  },
+  "snap/com-dblp.top5000.cmty.txt.gz": {
+   "bytes": 320139,
+   "sha256_16": "6b23675b3c0ef35c"
+  },
+  "snap/com-dblp.ungraph.txt.gz": {
+   "bytes": 4138463,
+   "sha256_16": "9eb0bd30312ddd04"
+  },
+  "snap/com-youtube.top5000.cmty.txt.gz": {
+   "bytes": 195662,
+   "sha256_16": "fefdc0959f21dca7"
+  },
+  "snap/com-youtube.ungraph.txt.gz": {
+   "bytes": 10590328,
+   "sha256_16": "dff1b97ba7d2fa9c"
+  },
+  "polblogs/polblogs.gml": {
+   "bytes": 977839,
+   "sha256_16": "bd83e3dd2397a57d"
+  },
+  "polblogs/polblogs.txt": {
+   "bytes": 763,
+   "sha256_16": "9e77bf937cda1b0a"
+  },
+  "polblogs/polblogs_lcc.json": {
+   "bytes": 192339,
+   "sha256_16": "7f25bf93b61f858a"
+  },
+  "polbooks/polbooks.gml": {
+   "bytes": 26314,
+   "sha256_16": "29e2439036fa4e13"
+  },
+  "polbooks/polbooks.txt": {
+   "bytes": 638,
+   "sha256_16": "8baf61f8ec2823b3"
+  },
+  "email/edges.txt.gz": {
+   "bytes": 79754,
+   "sha256_16": "4b47acdb80197b08"
+  },
+  "email/labels.txt.gz": {
+   "bytes": 2663,
+   "sha256_16": "e5abe5b4581a4800"
+  }
+ }
+}

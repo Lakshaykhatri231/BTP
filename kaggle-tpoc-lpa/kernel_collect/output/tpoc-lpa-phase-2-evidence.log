@@ -1,0 +1,162 @@
+[{"stream_name":"stderr","time":7.919003762,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.919087309,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.919093539,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.919096769,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":8.565230365,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":8.565282133,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":8.56528622,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":8.56528892,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":11.124000262,"data":"[    0.5s] football: 115 nodes | polbooks: 105 nodes | polblogs: 1222 nodes\n"}
+,{"stream_name":"stdout","time":16.431321495,"data":"[    5.8s] GPUs visible: 2 ['Tesla T4', 'Tesla T4']\n"}
+,{"stream_name":"stdout","time":40.0725946,"data":"[   29.4s] models found: {'qwen3-8b': ['transformers', '8b', '1'], 'qwen2.5-3b-instruct': ['transformers', '3b-instruct', '1'], 'qwen2.5-7b-instruct': ['transformers', '7b-instruct', '1']}\n"}
+,{"stream_name":"stdout","time":40.111668673,"data":"[   29.5s] === model qwen2.5-3b-instruct ===\n"}
+,{"stream_name":"stdout","time":62.651519029,"data":"[   52.0s]   placement: ['0', '1']\n"}
+,{"stream_name":"stdout","time":62.652702965,"data":"[   52.0s]   loaded in 23s\n"}
+,{"stream_name":"stdout","time":62.675921869,"data":"[   52.0s] [football] 115 boundary nodes of 115; prompt variants (members shown): [6, 12]\n"}
+,{"stream_name":"stdout","time":64.110910373,"data":"[   53.5s] [football] node 0/115  (1.43s/node)\n"}
+,{"stream_name":"stdout","time":70.13164769,"data":"[   59.5s] [football] node 20/115  (0.37s/node)\n"}
+,{"stream_name":"stdout","time":76.160246896,"data":"[   65.5s] [football] node 40/115  (0.34s/node)\n"}
+,{"stream_name":"stdout","time":82.444964371,"data":"[   71.8s] [football] node 60/115  (0.33s/node)\n"}
+,{"stream_name":"stdout","time":88.575673865,"data":"[   77.9s] [football] node 80/115  (0.32s/node)\n"}
+,{"stream_name":"stdout","time":94.634033218,"data":"[   84.0s] [football] node 100/115  (0.32s/node)\n"}
+,{"stream_name":"stdout","time":98.860722765,"data":"[   88.2s]   saved collect_qwen2.5-3b-instruct.json with datasets ['football']\n"}
+,{"stream_name":"stdout","time":98.861994682,"data":"[   88.2s] [polbooks] 46 boundary nodes of 105; prompt variants (members shown): [6, 12]\n"}
+,{"stream_name":"stdout","time":99.106137941,"data":"[   88.5s] [polbooks] node 0/46  (0.24s/node)\n"}
+,{"stream_name":"stdout","time":105.903970047,"data":"[   95.2s] [polbooks] node 20/46  (0.35s/node)\n"}
+,{"stream_name":"stdout","time":111.290948513,"data":"[  100.6s] [polbooks] node 40/46  (0.31s/node)\n"}
+,{"stream_name":"stdout","time":112.60292467,"data":"[  101.9s]   saved collect_qwen2.5-3b-instruct.json with datasets ['football', 'polbooks']\n"}
+,{"stream_name":"stdout","time":115.70359415,"data":"[  105.0s] [polblogs] 527 boundary nodes of 1222; prompt variants (members shown): [12]\n"}
+,{"stream_name":"stdout","time":115.974662157,"data":"[  105.3s] [polblogs] node 0/527  (0.27s/node)\n"}
+,{"stream_name":"stdout","time":119.715581532,"data":"[  109.1s] [polblogs] node 20/527  (0.20s/node)\n"}
+,{"stream_name":"stdout","time":123.458246093,"data":"[  112.8s] [polblogs] node 40/527  (0.19s/node)\n"}
+,{"stream_name":"stdout","time":127.253606257,"data":"[  116.6s] [polblogs] node 60/527  (0.19s/node)\n"}
+,{"stream_name":"stdout","time":131.01006205,"data":"[  120.4s] [polblogs] node 80/527  (0.19s/node)\n"}
+,{"stream_name":"stdout","time":134.721422157,"data":"[  124.1s] [polblogs] node 100/527  (0.19s/node)\n"}
+,{"stream_name":"stdout","time":138.484095435,"data":"[  127.8s] [polblogs] node 120/527  (0.19s/node)\n"}
+,{"stream_name":"stdout","time":142.248990405,"data":"[  131.6s] [polblogs] node 140/527  (0.19s/node)\n"}
+,{"stream_name":"stdout","time":146.062169967,"data":"[  135.4s] [polblogs] node 160/527  (0.19s/node)\n"}
+,{"stream_name":"stdout","time":149.776605815,"data":"[  139.1s] [polblogs] node 180/527  (0.19s/node)\n"}
+,{"stream_name":"stdout","time":153.712521624,"data":"[  143.1s] [polblogs] node 200/527  (0.19s/node)\n"}
+,{"stream_name":"stdout","time":157.588353056,"data":"[  146.9s] [polblogs] node 220/527  (0.19s/node)\n"}
+,{"stream_name":"stdout","time":161.443772076,"data":"[  150.8s] [polblogs] node 240/527  (0.19s/node)\n"}
+,{"stream_name":"stdout","time":165.507300091,"data":"[  154.9s] [polblogs] node 260/527  (0.19s/node)\n"}
+,{"stream_name":"stdout","time":169.559668025,"data":"[  158.9s] [polblogs] node 280/527  (0.19s/node)\n"}
+,{"stream_name":"stdout","time":173.557070563,"data":"[  162.9s] [polblogs] node 300/527  (0.19s/node)\n"}
+,{"stream_name":"stdout","time":177.608177948,"data":"[  167.0s] [polblogs] node 320/527  (0.19s/node)\n"}
+,{"stream_name":"stdout","time":181.579004697,"data":"[  170.9s] [polblogs] node 340/527  (0.19s/node)\n"}
+,{"stream_name":"stdout","time":185.708094748,"data":"[  175.1s] [polblogs] node 360/527  (0.19s/node)\n"}
+,{"stream_name":"stdout","time":189.673890244,"data":"[  179.0s] [polblogs] node 380/527  (0.19s/node)\n"}
+,{"stream_name":"stdout","time":193.637980541,"data":"[  183.0s] [polblogs] node 400/527  (0.19s/node)\n"}
+,{"stream_name":"stdout","time":197.630248199,"data":"[  187.0s] [polblogs] node 420/527  (0.20s/node)\n"}
+,{"stream_name":"stdout","time":201.551480029,"data":"[  190.9s] [polblogs] node 440/527  (0.20s/node)\n"}
+,{"stream_name":"stdout","time":205.525374036,"data":"[  194.9s] [polblogs] node 460/527  (0.20s/node)\n"}
+,{"stream_name":"stdout","time":209.487248825,"data":"[  198.8s] [polblogs] node 480/527  (0.20s/node)\n"}
+,{"stream_name":"stdout","time":213.411670788,"data":"[  202.8s] [polblogs] node 500/527  (0.20s/node)\n"}
+,{"stream_name":"stdout","time":217.331401713,"data":"[  206.7s] [polblogs] node 520/527  (0.20s/node)\n"}
+,{"stream_name":"stdout","time":218.496145273,"data":"[  207.8s]   saved collect_qwen2.5-3b-instruct.json with datasets ['football', 'polblogs', 'polbooks']\n"}
+,{"stream_name":"stdout","time":218.778822307,"data":"[  207.8s]   model qwen2.5-3b-instruct done in 178s\n"}
+,{"stream_name":"stdout","time":218.794968224,"data":"[  208.1s]   GPU memory free after cleanup: 24.8 GB of 31.3 GB\n"}
+,{"stream_name":"stdout","time":218.79586571,"data":"[  208.1s] === model qwen2.5-7b-instruct ===\n"}
+,{"stream_name":"stdout","time":261.321721322,"data":"[  250.7s]   placement: ['0', '1']\n"}
+,{"stream_name":"stdout","time":261.322641316,"data":"[  250.7s]   loaded in 43s\n"}
+,{"stream_name":"stdout","time":261.344009587,"data":"[  250.7s] [football] 115 boundary nodes of 115; prompt variants (members shown): [6, 12]\n"}
+,{"stream_name":"stdout","time":262.221083365,"data":"[  251.6s] [football] node 0/115  (0.86s/node)\n"}
+,{"stream_name":"stdout","time":277.158513019,"data":"[  266.5s] [football] node 20/115  (0.79s/node)\n"}
+,{"stream_name":"stdout","time":293.081711794,"data":"[  282.4s] [football] node 40/115  (0.79s/node)\n"}
+,{"stream_name":"stdout","time":310.102311438,"data":"[  299.4s] [football] node 60/115  (0.81s/node)\n"}
+,{"stream_name":"stdout","time":327.167989865,"data":"[  316.5s] [football] node 80/115  (0.82s/node)\n"}
+,{"stream_name":"stdout","time":343.652706707,"data":"[  333.0s] [football] node 100/115  (0.82s/node)\n"}
+,{"stream_name":"stdout","time":355.095258859,"data":"[  344.4s]   saved collect_qwen2.5-7b-instruct.json with datasets ['football']\n"}
+,{"stream_name":"stdout","time":355.096409853,"data":"[  344.4s] [polbooks] 46 boundary nodes of 105; prompt variants (members shown): [6, 12]\n"}
+,{"stream_name":"stdout","time":355.740438749,"data":"[  345.1s] [polbooks] node 0/46  (0.64s/node)\n"}
+,{"stream_name":"stdout","time":373.442231902,"data":"[  362.8s] [polbooks] node 20/46  (0.92s/node)\n"}
+,{"stream_name":"stdout","time":387.839836794,"data":"[  377.2s] [polbooks] node 40/46  (0.82s/node)\n"}
+,{"stream_name":"stdout","time":391.148234553,"data":"[  380.5s]   saved collect_qwen2.5-7b-instruct.json with datasets ['football', 'polbooks']\n"}
+,{"stream_name":"stdout","time":394.232859148,"data":"[  383.6s] [polblogs] 527 boundary nodes of 1222; prompt variants (members shown): [12]\n"}
+,{"stream_name":"stdout","time":394.796518178,"data":"[  384.1s] [polblogs] node 0/527  (0.56s/node)\n"}
+,{"stream_name":"stdout","time":404.470760925,"data":"[  393.8s] [polblogs] node 20/527  (0.51s/node)\n"}
+,{"stream_name":"stdout","time":414.18673794,"data":"[  403.5s] [polblogs] node 40/527  (0.50s/node)\n"}
+,{"stream_name":"stdout","time":423.931148574,"data":"[  413.3s] [polblogs] node 60/527  (0.49s/node)\n"}
+,{"stream_name":"stdout","time":433.564630727,"data":"[  422.9s] [polblogs] node 80/527  (0.49s/node)\n"}
+,{"stream_name":"stdout","time":442.847604909,"data":"[  432.2s] [polblogs] node 100/527  (0.49s/node)\n"}
+,{"stream_name":"stdout","time":452.25214567,"data":"[  441.6s] [polblogs] node 120/527  (0.48s/node)\n"}
+,{"stream_name":"stdout","time":461.683822084,"data":"[  451.0s] [polblogs] node 140/527  (0.48s/node)\n"}
+,{"stream_name":"stdout","time":471.131192236,"data":"[  460.5s] [polblogs] node 160/527  (0.48s/node)\n"}
+,{"stream_name":"stdout","time":480.293320014,"data":"[  469.6s] [polblogs] node 180/527  (0.48s/node)\n"}
+,{"stream_name":"stdout","time":489.922039413,"data":"[  479.3s] [polblogs] node 200/527  (0.48s/node)\n"}
+,{"stream_name":"stdout","time":499.478203869,"data":"[  488.8s] [polblogs] node 220/527  (0.48s/node)\n"}
+,{"stream_name":"stdout","time":508.856428915,"data":"[  498.2s] [polblogs] node 240/527  (0.48s/node)\n"}
+,{"stream_name":"stdout","time":518.766384627,"data":"[  508.1s] [polblogs] node 260/527  (0.48s/node)\n"}
+,{"stream_name":"stdout","time":528.532663348,"data":"[  517.9s] [polblogs] node 280/527  (0.48s/node)\n"}
+,{"stream_name":"stdout","time":538.239574392,"data":"[  527.6s] [polblogs] node 300/527  (0.48s/node)\n"}
+,{"stream_name":"stdout","time":547.916106016,"data":"[  537.3s] [polblogs] node 320/527  (0.48s/node)\n"}
+,{"stream_name":"stdout","time":557.372741828,"data":"[  546.7s] [polblogs] node 340/527  (0.48s/node)\n"}
+,{"stream_name":"stdout","time":567.318750195,"data":"[  556.7s] [polblogs] node 360/527  (0.48s/node)\n"}
+,{"stream_name":"stdout","time":576.836987701,"data":"[  566.2s] [polblogs] node 380/527  (0.48s/node)\n"}
+,{"stream_name":"stdout","time":586.530925111,"data":"[  575.9s] [polblogs] node 400/527  (0.48s/node)\n"}
+,{"stream_name":"stdout","time":596.330374752,"data":"[  585.7s] [polblogs] node 420/527  (0.48s/node)\n"}
+,{"stream_name":"stdout","time":605.924253386,"data":"[  595.3s] [polblogs] node 440/527  (0.48s/node)\n"}
+,{"stream_name":"stdout","time":615.81293706,"data":"[  605.2s] [polblogs] node 460/527  (0.48s/node)\n"}
+,{"stream_name":"stdout","time":625.678024871,"data":"[  615.0s] [polblogs] node 480/527  (0.48s/node)\n"}
+,{"stream_name":"stdout","time":635.507899013,"data":"[  624.8s] [polblogs] node 500/527  (0.48s/node)\n"}
+,{"stream_name":"stdout","time":645.188934993,"data":"[  634.5s] [polblogs] node 520/527  (0.48s/node)\n"}
+,{"stream_name":"stdout","time":648.019097082,"data":"[  637.4s]   saved collect_qwen2.5-7b-instruct.json with datasets ['football', 'polblogs', 'polbooks']\n"}
+,{"stream_name":"stdout","time":648.297912542,"data":"[  637.4s]   model qwen2.5-7b-instruct done in 429s\n"}
+,{"stream_name":"stdout","time":648.417255515,"data":"[  637.8s]   GPU memory free after cleanup: 24.8 GB of 31.3 GB\n"}
+,{"stream_name":"stdout","time":648.417930279,"data":"[  637.8s] === model qwen3-8b ===\n"}
+,{"stream_name":"stdout","time":690.150323481,"data":"[  679.5s]   placement: ['0', '1']\n"}
+,{"stream_name":"stdout","time":690.151343383,"data":"[  679.5s]   loaded in 42s\n"}
+,{"stream_name":"stdout","time":690.181100027,"data":"[  679.5s] [football] 115 boundary nodes of 115; prompt variants (members shown): [6, 12]\n"}
+,{"stream_name":"stdout","time":691.202453646,"data":"[  680.5s] [football] node 0/115  (1.03s/node)\n"}
+,{"stream_name":"stdout","time":709.660244428,"data":"[  699.0s] [football] node 20/115  (0.97s/node)\n"}
+,{"stream_name":"stdout","time":729.333707426,"data":"[  718.7s] [football] node 40/115  (0.98s/node)\n"}
+,{"stream_name":"stdout","time":749.193942396,"data":"[  738.5s] [football] node 60/115  (0.98s/node)\n"}
+,{"stream_name":"stdout","time":767.920225671,"data":"[  757.3s] [football] node 80/115  (0.97s/node)\n"}
+,{"stream_name":"stdout","time":786.344214475,"data":"[  775.7s] [football] node 100/115  (0.96s/node)\n"}
+,{"stream_name":"stdout","time":799.287574397,"data":"[  788.6s]   saved collect_qwen3-8b.json with datasets ['football']\n"}
+,{"stream_name":"stdout","time":799.290515784,"data":"[  788.6s] [polbooks] 46 boundary nodes of 105; prompt variants (members shown): [6, 12]\n"}
+,{"stream_name":"stdout","time":800.045053158,"data":"[  789.4s] [polbooks] node 0/46  (0.75s/node)\n"}
+,{"stream_name":"stdout","time":820.89517859,"data":"[  810.2s] [polbooks] node 20/46  (1.08s/node)\n"}
+,{"stream_name":"stdout","time":837.580899699,"data":"[  826.9s] [polbooks] node 40/46  (0.96s/node)\n"}
+,{"stream_name":"stdout","time":841.471366527,"data":"[  830.8s]   saved collect_qwen3-8b.json with datasets ['football', 'polbooks']\n"}
+,{"stream_name":"stdout","time":844.322561752,"data":"[  833.7s] [polblogs] 527 boundary nodes of 1222; prompt variants (members shown): [12]\n"}
+,{"stream_name":"stdout","time":844.941928068,"data":"[  834.3s] [polblogs] node 0/527  (0.62s/node)\n"}
+,{"stream_name":"stdout","time":855.748969103,"data":"[  845.1s] [polblogs] node 20/527  (0.57s/node)\n"}
+,{"stream_name":"stdout","time":866.608658671,"data":"[  856.0s] [polblogs] node 40/527  (0.56s/node)\n"}
+,{"stream_name":"stdout","time":877.551624957,"data":"[  866.9s] [polblogs] node 60/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":888.559555895,"data":"[  877.9s] [polblogs] node 80/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":899.526485244,"data":"[  888.9s] [polblogs] node 100/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":910.395638793,"data":"[  899.7s] [polblogs] node 120/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":921.335818787,"data":"[  910.7s] [polblogs] node 140/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":932.254817061,"data":"[  921.6s] [polblogs] node 160/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":943.191206846,"data":"[  932.5s] [polblogs] node 180/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":954.155789801,"data":"[  943.5s] [polblogs] node 200/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":965.028733726,"data":"[  954.4s] [polblogs] node 220/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":976.016597239,"data":"[  965.4s] [polblogs] node 240/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":987.050558316,"data":"[  976.4s] [polblogs] node 260/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":998.049432152,"data":"[  987.4s] [polblogs] node 280/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":1009.011938399,"data":"[  998.4s] [polblogs] node 300/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":1019.953657135,"data":"[ 1009.3s] [polblogs] node 320/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":1030.894966837,"data":"[ 1020.2s] [polblogs] node 340/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":1042.21347431,"data":"[ 1031.6s] [polblogs] node 360/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":1053.212297072,"data":"[ 1042.5s] [polblogs] node 380/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":1064.170732032,"data":"[ 1053.5s] [polblogs] node 400/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":1075.152987419,"data":"[ 1064.5s] [polblogs] node 420/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":1086.16027013,"data":"[ 1075.5s] [polblogs] node 440/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":1097.136078639,"data":"[ 1086.5s] [polblogs] node 460/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":1108.154976452,"data":"[ 1097.5s] [polblogs] node 480/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":1119.035423833,"data":"[ 1108.4s] [polblogs] node 500/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":1130.009706267,"data":"[ 1119.4s] [polblogs] node 520/527  (0.55s/node)\n"}
+,{"stream_name":"stdout","time":1133.336937797,"data":"[ 1122.7s]   saved collect_qwen3-8b.json with datasets ['football', 'polblogs', 'polbooks']\n"}
+,{"stream_name":"stdout","time":1133.627528519,"data":"[ 1122.7s]   model qwen3-8b done in 485s\n"}
+,{"stream_name":"stdout","time":1133.783080451,"data":"[ 1123.1s]   GPU memory free after cleanup: 24.8 GB of 31.3 GB\n"}
+,{"stream_name":"stdout","time":1133.783958003,"data":"[ 1123.1s] DONE. models collected: ['qwen2.5-3b-instruct', 'qwen2.5-7b-instruct', 'qwen3-8b']\n"}
+,{"stream_name":"stderr","time":1140.071920529,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":1140.071981243,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":1140.26962242,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":1140.269651294,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":1141.000984666,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":1141.373421398,"data":"[NbConvertApp] Writing 331705 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":1143.888652006,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":1144.922661674,"data":"[NbConvertApp] Writing 741885 bytes to __results__.html\n"}
+]

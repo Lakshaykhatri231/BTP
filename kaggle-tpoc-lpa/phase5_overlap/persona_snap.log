@@ -1,0 +1,6 @@
+amazon best WAS       ONMI_max 0.5353 LFK 0.8733 F1 0.9046 flag 0.008
+amazon best near-tie  ONMI_max 0.5355 LFK 0.8745 F1 0.9050 flag 0.007
+amazon persona only   ONMI_max 0.5234 LFK 0.8558 F1 0.8925 flag 0.004
+amazon persona+WAS    ONMI_max 0.5268 LFK 0.8579 F1 0.8943 flag 0.015
+amazon persona+tie    ONMI_max 0.5268 LFK 0.8592 F1 0.8945 flag 0.013
+  personas 16831 (836s)

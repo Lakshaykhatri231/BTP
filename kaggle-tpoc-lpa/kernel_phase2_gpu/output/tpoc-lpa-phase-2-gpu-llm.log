@@ -1,0 +1,65 @@
+[{"stream_name":"stderr","time":6.607685776,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":6.607766282,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":6.607774586,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":6.607779072,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":7.216427073,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.216465514,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.216469201,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.21647196,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":11.461190161,"data":"data dir: /kaggle/input/datasets/khatrilakshay2004/tpoc-lpa-benchmark-networks\n"}
+,{"stream_name":"stdout","time":32.826981832,"data":"candidate model dirs (largest first):\n"}
+,{"stream_name":"stdout","time":32.827039147,"data":"    /kaggle/input/models/qwen-lm/qwen2.5/transformers/7b-instruct/1\n"}
+,{"stream_name":"stdout","time":32.827046306,"data":"    /kaggle/input/models/qwen-lm/qwen2.5/transformers/3b-instruct/1\n"}
+,{"stream_name":"stdout","time":32.828093524,"data":"[    0.3s] GPUs visible: 2 ['Tesla T4', 'Tesla T4']\n"}
+,{"stream_name":"stdout","time":32.847459529,"data":"bitsandbytes unavailable -\u003e falling back to fp16: ModuleNotFoundError\n"}
+,{"stream_name":"stdout","time":32.847485105,"data":"[    0.3s] loading /kaggle/input/models/qwen-lm/qwen2.5/transformers/7b-instruct/1 ...\n"}
+,{"stream_name":"stdout","time":63.567440753,"data":"[   31.1s] LOADED: /kaggle/input/models/qwen-lm/qwen2.5/transformers/7b-instruct/1 | fp16 | placement: ['0', '1']\n"}
+,{"stream_name":"stdout","time":63.705766695,"data":"Football structural baseline NMI = 0.9095\n"}
+,{"stream_name":"stdout","time":63.705812224,"data":"boundary nodes Stage 4 would consider: 115\n"}
+,{"stream_name":"stdout","time":63.705819929,"data":"[   31.2s] reliability eval: node 0/60  running acc=0/1  ~0.0s/node\n"}
+,{"stream_name":"stderr","time":63.7237537,"data":"The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.\n"}
+,{"stream_name":"stderr","time":63.723774318,"data":"\n"}
+,{"stream_name":"stderr","time":63.723778938,"data":"The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.\n"}
+,{"stream_name":"stdout","time":69.2180638,"data":"[   36.7s] reliability eval: node 5/60  running acc=4/5  ~1.1s/node\n"}
+,{"stream_name":"stdout","time":73.402735234,"data":"[   40.9s] reliability eval: node 10/60  running acc=9/10  ~1.0s/node\n"}
+,{"stream_name":"stdout","time":77.463718505,"data":"[   44.9s] reliability eval: node 15/60  running acc=13/15  ~0.9s/node\n"}
+,{"stream_name":"stdout","time":81.542622047,"data":"[   49.0s] reliability eval: node 20/60  running acc=18/20  ~0.9s/node\n"}
+,{"stream_name":"stdout","time":85.794234123,"data":"[   53.3s] reliability eval: node 25/60  running acc=23/25  ~0.9s/node\n"}
+,{"stream_name":"stdout","time":90.08813021,"data":"[   57.6s] reliability eval: node 30/60  running acc=27/30  ~0.9s/node\n"}
+,{"stream_name":"stdout","time":94.258370908,"data":"[   61.7s] reliability eval: node 35/60  running acc=31/35  ~0.9s/node\n"}
+,{"stream_name":"stdout","time":98.609175044,"data":"[   66.1s] reliability eval: node 40/60  running acc=36/40  ~0.9s/node\n"}
+,{"stream_name":"stdout","time":103.631761264,"data":"[   71.1s] reliability eval: node 45/60  running acc=38/45  ~0.9s/node\n"}
+,{"stream_name":"stdout","time":108.596109279,"data":"[   76.1s] reliability eval: node 50/60  running acc=43/50  ~0.9s/node\n"}
+,{"stream_name":"stdout","time":112.977133498,"data":"[   80.5s] reliability eval: node 55/60  running acc=46/55  ~0.9s/node\n"}
+,{"stream_name":"stdout","time":117.404207031,"data":"\n"}
+,{"stream_name":"stdout","time":117.404277436,"data":"  MEASURED reliability (vs ground truth) p = 0.817  (49/60)\n"}
+,{"stream_name":"stdout","time":117.404284982,"data":"  SELF-CONSISTENCY estimate (no ground truth) = 0.922\n"}
+,{"stream_name":"stdout","time":117.404295763,"data":"  Alper's hardcoded assumption               = 0.950\n"}
+,{"stream_name":"stdout","time":117.404301606,"data":"  (54s for 60 nodes x 4 generations)\n"}
+,{"stream_name":"stdout","time":117.604743514,"data":"                        mode |               NMI | note\n"}
+,{"stream_name":"stdout","time":117.604783859,"data":"----------------------------------------------------------------------\n"}
+,{"stream_name":"stdout","time":117.604791576,"data":"         structural baseline | 0.9095 (+0.0000) | no LLM\n"}
+,{"stream_name":"stdout","time":129.144089262,"data":" hard override (Alper-style) | 0.7815 (-0.1279) | queried=57, changes=17, overlap=38\n"}
+,{"stream_name":"stdout","time":129.144139287,"data":"    calibrated fusion (ours) | 0.7815 (-0.1279) | queried=57, changes=17, overlap=38\n"}
+,{"stream_name":"stdout","time":129.144147629,"data":"    fusion w/ hardcoded 0.95 | 0.7815 (-0.1279) | queried=57, changes=17, overlap=38\n"}
+,{"stream_name":"stdout","time":129.144153612,"data":"\n"}
+,{"stream_name":"stdout","time":129.144160053,"data":"wrote /kaggle/working/llm_log.json\n"}
+,{"stream_name":"stdout","time":129.144165321,"data":"\n"}
+,{"stream_name":"stdout","time":129.14417015,"data":"sample model responses:\n"}
+,{"stream_name":"stdout","time":129.144175487,"data":"   {'node': 'LouisianaLafayette', 'raw': 'C', 'picked': ['Houston']}\n"}
+,{"stream_name":"stdout","time":129.144180844,"data":"   {'node': 'NotreDame', 'raw': 'A', 'picked': ['NotreDame']}\n"}
+,{"stream_name":"stdout","time":129.144188208,"data":"   {'node': 'LouisianaTech', 'raw': 'A', 'picked': ['Vanderbilt']}\n"}
+,{"stream_name":"stdout","time":129.144197212,"data":"   {'node': 'CentralFlorida', 'raw': 'A', 'picked': ['CentralMichigan']}\n"}
+,{"stream_name":"stdout","time":129.144201482,"data":"   {'node': 'Navy', 'raw': 'A', 'picked': ['NotreDame']}\n"}
+,{"stream_name":"stdout","time":129.144205256,"data":"   {'node': 'NewMexicoState', 'raw': 'A', 'picked': ['NewMexicoState']}\n"}
+,{"stream_name":"stdout","time":129.144209143,"data":"   {'node': 'ArkansasState', 'raw': 'A', 'picked': ['NewMexicoState']}\n"}
+,{"stream_name":"stdout","time":129.14421281,"data":"   {'node': 'Idaho', 'raw': 'A', 'picked': ['NewMexicoState']}\n"}
+,{"stream_name":"stderr","time":135.094067016,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":135.094104562,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":135.250247739,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":135.250278129,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":135.887831044,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":136.220275777,"data":"[NbConvertApp] Writing 57364 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":138.73927365,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":139.713524407,"data":"[NbConvertApp] Writing 422640 bytes to __results__.html\n"}
+]

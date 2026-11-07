@@ -1,0 +1,71 @@
+N=400 nodes=400 edges=1005
+   Fastgreedy         median    0.001s  (min 0.001, max 0.002)
+   LPA                median    0.001s  (min 0.001, max 0.001)
+   Louvain            median    0.001s  (min 0.001, max 0.002)
+   Walktrap           median    0.005s  (min 0.005, max 0.006)
+   Infomap*           median    0.004s  (min 0.003, max 0.064)
+   SLPA               median    0.095s  (min 0.094, max 0.100)
+   TPOC-LPA (repro)   median    0.015s  (min 0.015, max 0.015)
+   Ours               median    0.026s  (min 0.025, max 0.026)
+   stages(Ours): {'t_node_importance': 0.001, 't_stage1': 0.002, 't_stage2': 0.013, 't_refine': 0.005, 't_merge': 0.003, 't_stage3': 0.001, 't_total': 0.025}
+N=800 nodes=800 edges=1899
+   Fastgreedy         median    0.001s  (min 0.001, max 0.001)
+   LPA                median    0.001s  (min 0.001, max 0.001)
+   Louvain            median    0.001s  (min 0.001, max 0.001)
+   Walktrap           median    0.008s  (min 0.007, max 0.008)
+   Infomap*           median    0.006s  (min 0.006, max 0.007)
+   SLPA               median    0.184s  (min 0.184, max 0.214)
+   TPOC-LPA (repro)   median    0.025s  (min 0.025, max 0.025)
+   Ours               median    0.045s  (min 0.045, max 0.046)
+   stages(Ours): {'t_node_importance': 0.002, 't_stage1': 0.006, 't_stage2': 0.019, 't_refine': 0.008, 't_merge': 0.009, 't_stage3': 0.001, 't_total': 0.045}
+N=1600 nodes=1600 edges=3845
+   Fastgreedy         median    0.003s  (min 0.003, max 0.003)
+   LPA                median    0.003s  (min 0.002, max 0.003)
+   Louvain            median    0.003s  (min 0.003, max 0.003)
+   Walktrap           median    0.020s  (min 0.019, max 0.020)
+   Infomap*           median    0.012s  (min 0.012, max 0.012)
+   SLPA               median    0.370s  (min 0.369, max 0.374)
+   TPOC-LPA (repro)   median    0.064s  (min 0.064, max 0.066)
+   Ours               median    0.098s  (min 0.097, max 0.122)
+   stages(Ours): {'t_node_importance': 0.004, 't_stage1': 0.019, 't_stage2': 0.038, 't_refine': 0.017, 't_merge': 0.017, 't_stage3': 0.002, 't_total': 0.098}
+N=3200 nodes=3200 edges=7663
+   Fastgreedy         median    0.006s  (min 0.005, max 0.006)
+   LPA                median    0.006s  (min 0.005, max 0.006)
+   Louvain            median    0.007s  (min 0.007, max 0.007)
+   Walktrap           median    0.055s  (min 0.054, max 0.055)
+   Infomap*           median    0.024s  (min 0.024, max 0.025)
+   SLPA               median    0.741s  (min 0.737, max 0.762)
+   TPOC-LPA (repro)   median    0.152s  (min 0.152, max 0.154)
+   Ours               median    0.241s  (min 0.240, max 0.241)
+   stages(Ours): {'t_node_importance': 0.008, 't_stage1': 0.062, 't_stage2': 0.092, 't_refine': 0.039, 't_merge': 0.036, 't_stage3': 0.004, 't_total': 0.24}
+N=6400 nodes=6400 edges=15256
+   Fastgreedy         median    0.012s  (min 0.011, max 0.029)
+   LPA                median    0.013s  (min 0.012, max 0.014)
+   Louvain            median    0.015s  (min 0.014, max 0.015)
+   Walktrap           median    0.173s  (min 0.172, max 0.188)
+   Infomap*           median    0.050s  (min 0.048, max 0.062)
+   SLPA               median    1.559s  (min 1.512, max 1.572)
+   TPOC-LPA (repro)   median    0.446s  (min 0.445, max 0.450)
+   Ours               median    0.661s  (min 0.658, max 0.679)
+   stages(Ours): {'t_node_importance': 0.016, 't_stage1': 0.24, 't_stage2': 0.214, 't_refine': 0.089, 't_merge': 0.089, 't_stage3': 0.009, 't_total': 0.655}
+N=12800 nodes=12800 edges=30497
+   Fastgreedy         median    0.024s  (min 0.023, max 0.044)
+   LPA                median    0.032s  (min 0.029, max 0.035)
+   Louvain            median    0.031s  (min 0.030, max 0.032)
+   Walktrap           median    0.583s  (min 0.582, max 0.650)
+   Infomap*           median    0.131s  (min 0.104, max 0.132)
+   SLPA               median    3.144s  (min 3.134, max 3.200)
+   TPOC-LPA (repro)   median    1.239s  (min 1.229, max 1.250)
+   Ours               median    1.668s  (min 1.643, max 1.685)
+   stages(Ours): {'t_node_importance': 0.033, 't_stage1': 0.914, 't_stage2': 0.373, 't_refine': 0.177, 't_merge': 0.188, 't_stage3': 0.019, 't_total': 1.708}
+N=25600 nodes=25600 edges=60948
+   Fastgreedy         median    0.056s  (min 0.054, max 0.081)
+   LPA                median    0.080s  (min 0.076, max 0.083)
+   Louvain            median    0.077s  (min 0.075, max 0.084)
+   Walktrap           median    2.191s  (min 2.157, max 2.316)
+   Infomap*           median    0.270s  (min 0.206, max 0.273)
+   SLPA               median    7.087s  (min 6.993, max 7.136)
+   TPOC-LPA (repro)   median    4.721s  (min 4.702, max 4.758)
+   Ours               median    5.875s  (min 5.765, max 5.991)
+   stages(Ours): {'t_node_importance': 0.071, 't_stage1': 3.662, 't_stage2': 1.185, 't_refine': 0.545, 't_merge': 0.357, 't_stage3': 0.039, 't_total': 5.923}
+done

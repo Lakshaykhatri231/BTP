@@ -1,0 +1,1 @@
+ca-hepth {'TPOC-LPA (repro) b0.8': 0.5212, 'Ours b0.8': 0.5882, 'SLPA': 0.6703}

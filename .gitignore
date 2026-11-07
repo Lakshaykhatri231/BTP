@@ -1,0 +1,61 @@
+# ---- OS / editor ----
+.DS_Store
+._*
+.vscode/
+.idea/
+*.swp
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+
+# ---- Secrets (never commit the Kaggle API token) ----
+kaggle.json
+.kaggle/
+.env
+*.token
+
+# ---- Backups and old copies ----
+*.bak
+*.bak[0-9]*
+*.bak_*
+
+# ---- Large data (rebuild with build_dataset_bundle.py / the loaders; see README) ----
+# Working data, result caches, LFR pickles, SNAP / fresh graphs (~600 MB, some files > 100 MB)
+kaggle-tpoc-lpa/data/
+# Teacher bundle (~250 MB); keep only its manifest
+datasets/*
+!datasets/MANIFEST.json
+# Kaggle upload folders (copies of data/)
+kaggle-tpoc-lpa/dataset/
+kaggle-tpoc-lpa/dataset-snap/
+kaggle-tpoc-lpa/dataset_final/
+# Raw graph formats, in case they land elsewhere
+*.npz
+*.pkl
+*.gz
+*.zip
+
+# ---- Compiled binaries ----
+kaggle-tpoc-lpa/phase5_overlap/lfrbench
+*.o
+
+# ---- Reference papers (copyrighted PDFs; citations are in README) ----
+Label Propagation/
+
+# ---- LaTeX build files (paper/main.pdf itself is kept) ----
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.toc
+paper/*.synctex.gz
+paper/*.fdb_latexmk
+paper/*.fls
+
+# ---- Office / macOS document lock files ----
+~$*
+*.pages

@@ -1,0 +1,1 @@
+lastfm {'TPOC-LPA (repro) b0.8': 0.751, 'Ours b0.8': 0.7594, 'SLPA': 0.7562}

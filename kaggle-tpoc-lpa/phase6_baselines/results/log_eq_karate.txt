@@ -1,0 +1,1 @@
+karate {'TPOC-LPA (repro) b0.8': 0.3516, 'TPOC-LPA (repro) b1.0': 0.3715, 'Ours b0.8': 0.3516, 'Ours b1.0': 0.3715, 'SLPA': 0.3717}

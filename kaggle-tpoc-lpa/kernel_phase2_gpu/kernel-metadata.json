@@ -1,0 +1,20 @@
+{
+  "id": "khatrilakshay2004/tpoc-lpa-phase-2-gpu-llm",
+  "title": "TPOC LPA Phase 2 GPU LLM",
+  "code_file": "phase2_gpu.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": false,
+  "keywords": [],
+  "dataset_sources": [
+    "khatrilakshay2004/tpoc-lpa-benchmark-networks"
+  ],
+  "kernel_sources": [],
+  "competition_sources": [],
+  "model_sources": [
+    "qwen-lm/qwen2.5/transformers/7b-instruct/1",
+    "qwen-lm/qwen2.5/transformers/3b-instruct/1"
+  ]
+}

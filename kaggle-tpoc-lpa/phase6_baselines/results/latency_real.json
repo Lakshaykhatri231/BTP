@@ -1,0 +1,342 @@
+{
+ "karate": {
+  "n": 34,
+  "m": 78,
+  "time": {
+   "Fastgreedy": {
+    "median": 6.512505933642387e-05,
+    "runs": 3
+   },
+   "LPA": {
+    "median": 4.7250185161828995e-05,
+    "runs": 3
+   },
+   "Louvain": {
+    "median": 7.024966180324554e-05,
+    "runs": 3
+   },
+   "Walktrap": {
+    "median": 8.691707625985146e-05,
+    "runs": 3
+   },
+   "Infomap*": {
+    "median": 0.0007463754154741764,
+    "runs": 3
+   },
+   "TPOC-LPA (repro)": {
+    "median": 0.0006967908702790737,
+    "runs": 3
+   },
+   "Ours": {
+    "median": 0.001353084109723568,
+    "runs": 3
+   }
+  }
+ },
+ "dolphin": {
+  "n": 62,
+  "m": 159,
+  "time": {
+   "Fastgreedy": {
+    "median": 0.0001027919352054596,
+    "runs": 3
+   },
+   "LPA": {
+    "median": 9.687477722764015e-05,
+    "runs": 3
+   },
+   "Louvain": {
+    "median": 0.00011749984696507454,
+    "runs": 3
+   },
+   "Walktrap": {
+    "median": 0.00019512511789798737,
+    "runs": 3
+   },
+   "Infomap*": {
+    "median": 0.0009670830331742764,
+    "runs": 3
+   },
+   "TPOC-LPA (repro)": {
+    "median": 0.0015209168195724487,
+    "runs": 3
+   },
+   "Ours": {
+    "median": 0.002926332876086235,
+    "runs": 3
+   }
+  }
+ },
+ "football": {
+  "n": 115,
+  "m": 613,
+  "time": {
+   "Fastgreedy": {
+    "median": 0.0003198329359292984,
+    "runs": 3
+   },
+   "LPA": {
+    "median": 0.0005285842344164848,
+    "runs": 3
+   },
+   "Louvain": {
+    "median": 0.00032166577875614166,
+    "runs": 3
+   },
+   "Walktrap": {
+    "median": 0.0010759169235825539,
+    "runs": 3
+   },
+   "Infomap*": {
+    "median": 0.0017925421707332134,
+    "runs": 3
+   },
+   "TPOC-LPA (repro)": {
+    "median": 0.008053333032876253,
+    "runs": 3
+   },
+   "Ours": {
+    "median": 0.010546957608312368,
+    "runs": 3
+   }
+  }
+ },
+ "polblogs": {
+  "n": 1222,
+  "m": 16714,
+  "time": {
+   "Fastgreedy": {
+    "median": 0.026335459202528,
+    "runs": 3
+   },
+   "LPA": {
+    "median": 0.005247249733656645,
+    "runs": 3
+   },
+   "Louvain": {
+    "median": 0.008922125212848186,
+    "runs": 3
+   },
+   "Walktrap": {
+    "median": 0.10817158315330744,
+    "runs": 3
+   },
+   "Infomap*": {
+    "median": 0.027902666945010424,
+    "runs": 3
+   },
+   "TPOC-LPA (repro)": {
+    "median": 1.4143105410039425,
+    "runs": 3
+   },
+   "Ours": {
+    "median": 1.3261671247892082,
+    "runs": 3
+   }
+  }
+ },
+ "email-Eu": {
+  "n": 986,
+  "m": 16064,
+  "time": {
+   "Fastgreedy": {
+    "median": 0.021750458050519228,
+    "runs": 3
+   },
+   "LPA": {
+    "median": 0.00503504229709506,
+    "runs": 3
+   },
+   "Louvain": {
+    "median": 0.007928666193038225,
+    "runs": 3
+   },
+   "Walktrap": {
+    "median": 0.07545729074627161,
+    "runs": 3
+   },
+   "Infomap*": {
+    "median": 0.025015417020767927,
+    "runs": 3
+   },
+   "TPOC-LPA (repro)": {
+    "median": 0.9068613750860095,
+    "runs": 3
+   },
+   "Ours": {
+    "median": 0.951643334235996,
+    "runs": 3
+   }
+  }
+ },
+ "cora": {
+  "n": 2485,
+  "m": 5069,
+  "time": {
+   "Fastgreedy": {
+    "median": 0.008466500323265791,
+    "runs": 3
+   },
+   "LPA": {
+    "median": 0.006261082831770182,
+    "runs": 3
+   },
+   "Louvain": {
+    "median": 0.005930792074650526,
+    "runs": 3
+   },
+   "Walktrap": {
+    "median": 0.0840373751707375,
+    "runs": 3
+   },
+   "Infomap*": {
+    "median": 0.02782033383846283,
+    "runs": 3
+   },
+   "TPOC-LPA (repro)": {
+    "median": 0.16979679185897112,
+    "runs": 3
+   },
+   "Ours": {
+    "median": 0.24219629215076566,
+    "runs": 3
+   }
+  }
+ },
+ "citeseer": {
+  "n": 2110,
+  "m": 3668,
+  "time": {
+   "Fastgreedy": {
+    "median": 0.004747583996504545,
+    "runs": 3
+   },
+   "LPA": {
+    "median": 0.004741457756608725,
+    "runs": 3
+   },
+   "Louvain": {
+    "median": 0.00403508311137557,
+    "runs": 3
+   },
+   "Walktrap": {
+    "median": 0.03283937508240342,
+    "runs": 3
+   },
+   "Infomap*": {
+    "median": 0.022142458241432905,
+    "runs": 3
+   },
+   "TPOC-LPA (repro)": {
+    "median": 0.10930612497031689,
+    "runs": 3
+   },
+   "Ours": {
+    "median": 0.15955170802772045,
+    "runs": 3
+   }
+  }
+ },
+ "amazon": {
+  "n": 16716,
+  "m": 48739,
+  "time": {
+   "Fastgreedy": {
+    "median": 0.08319062506780028,
+    "runs": 3
+   },
+   "LPA": {
+    "median": 0.038564667105674744,
+    "runs": 3
+   },
+   "Louvain": {
+    "median": 0.038261666893959045,
+    "runs": 3
+   },
+   "Walktrap": {
+    "median": 0.8211367912590504,
+    "runs": 3
+   },
+   "Infomap*": {
+    "median": 0.15189658384770155,
+    "runs": 3
+   },
+   "TPOC-LPA (repro)": {
+    "median": 2.5613251249305904,
+    "runs": 3
+   },
+   "Ours": {
+    "median": 3.048357500229031,
+    "runs": 3
+   }
+  }
+ },
+ "youtube": {
+  "n": 39841,
+  "m": 224235,
+  "time": {
+   "Fastgreedy": {
+    "median": 7.054675041697919,
+    "runs": 3
+   },
+   "LPA": {
+    "median": 0.18786287540569901,
+    "runs": 3
+   },
+   "Louvain": {
+    "median": 0.187026291154325,
+    "runs": 3
+   },
+   "Walktrap": {
+    "median": 243.0263906251639,
+    "runs": 1
+   },
+   "Infomap*": {
+    "median": 0.832960500381887,
+    "runs": 3
+   },
+   "TPOC-LPA (repro)": {
+    "median": 70.6247022091411,
+    "runs": 1
+   },
+   "Ours": {
+    "median": 65.92413262510672,
+    "runs": 1
+   }
+  }
+ },
+ "dblp": {
+  "n": 93432,
+  "m": 335520,
+  "time": {
+   "Fastgreedy": {
+    "median": 12.065146666951478,
+    "runs": 3
+   },
+   "LPA": {
+    "median": 0.7362385410815477,
+    "runs": 3
+   },
+   "Louvain": {
+    "median": 0.4249569997191429,
+    "runs": 3
+   },
+   "Walktrap": {
+    "median": 75.71524595795199,
+    "runs": 1
+   },
+   "Infomap*": {
+    "median": 2.1096187913790345,
+    "runs": 3
+   },
+   "TPOC-LPA (repro)": {
+    "median": 77.1524268751964,
+    "runs": 1
+   },
+   "Ours": {
+    "median": 82.68537250021473,
+    "runs": 1
+   }
+  }
+ }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "khatrilakshay2004/tpoc-lpa-phase-2-llm-augmented",
+  "title": "TPOC LPA Phase 2 LLM Augmented",
+  "code_file": "phase2.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_internet": false,
+  "keywords": [],
+  "dataset_sources": ["khatrilakshay2004/tpoc-lpa-benchmark-networks"],
+  "kernel_sources": [],
+  "competition_sources": [],
+  "model_sources": []
+}

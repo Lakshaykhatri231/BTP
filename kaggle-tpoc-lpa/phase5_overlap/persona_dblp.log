@@ -1,0 +1,10 @@
+[     1s] dblp: snap_label (loads graph + runs best pipeline on G) ...
+[     3s] dblp: done, n=93432 m=335520
+[     4s] persona graph built: 103601 personas, 335520 edges (2s)
+[     4s] running tpoc_lpa best config on persona graph ...
+[    87s] persona cover done
+dblp best WAS       ONMI_max 0.2668 LFK 0.5107 F1 0.6114 flag 0.146
+dblp best near-tie  ONMI_max 0.3020 LFK 0.5254 F1 0.6190 flag 0.084
+dblp persona only   ONMI_max 0.2947 LFK 0.5129 F1 0.6056 flag 0.085
+dblp persona+WAS    ONMI_max 0.2521 LFK 0.5028 F1 0.5972 flag 0.193
+dblp persona+tie    ONMI_max 0.2864 LFK 0.5166 F1 0.6066 flag 0.132

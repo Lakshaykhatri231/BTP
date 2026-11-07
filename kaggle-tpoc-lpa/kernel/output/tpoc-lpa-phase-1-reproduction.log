@@ -1,0 +1,145 @@
+[{"stream_name":"stderr","time":10.003956645,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":10.004045078,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":10.004050192,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":10.004053843,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":10.845563926,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":10.845614604,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":10.845620827,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":10.845625722,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":17.470149647,"data":"CTS validation (expected 1.071 / 0.972 / 1.313):\n"}
+,{"stream_name":"stdout","time":17.47022306,"data":"  computed: 1.071 / 0.972 / 1.312\n"}
+,{"stream_name":"stdout","time":17.470231146,"data":"\n"}
+,{"stream_name":"stdout","time":17.470236901,"data":"Attractiveness validation (expected 0.8096 / 1.0497 / 0.8096 / 0.6238):\n"}
+,{"stream_name":"stdout","time":17.470242849999998,"data":"  computed: 0.8096, 1.0497, 0.8096, 0.6238\n"}
+,{"stream_name":"stdout","time":17.47024907,"data":"\n"}
+,{"stream_name":"stdout","time":17.470254562,"data":"All formula validations PASSED.\n"}
+,{"stream_name":"stdout","time":17.664998203,"data":"============================================================\n"}
+,{"stream_name":"stdout","time":17.665051681,"data":"TPOC-LPA Phase 1 reproduction\n"}
+,{"stream_name":"stdout","time":17.665058856,"data":"Published targets -\u003e Karate: NMI 1.0000, Q 0.3715 (Table 8/9)\n"}
+,{"stream_name":"stdout","time":17.665065298000002,"data":"                     Football: NMI 0.9146, Q 0.6032 (Table 8/9)\n"}
+,{"stream_name":"stdout","time":17.665071202,"data":"============================================================\n"}
+,{"stream_name":"stdout","time":17.66507706,"data":"--- Karate (34n/78e, 2 truth comms) ---\n"}
+,{"stream_name":"stdout","time":17.665082745,"data":"  nodes=34 edges=78 iters=2 alpha=1.0 beta=0.8\n"}
+,{"stream_name":"stdout","time":17.665088804,"data":"  predicted communities: 2  (ground truth: 2)\n"}
+,{"stream_name":"stdout","time":17.665094508,"data":"  NMI = 0.8372   ARI = 0.8823   Q = 0.4036\n"}
+,{"stream_name":"stdout","time":17.6650999,"data":"  overlapping nodes flagged by Stage 3: 3/34\n"}
+,{"stream_name":"stdout","time":17.665105174,"data":"--- Football (115n/613e, 12 truth comms) ---\n"}
+,{"stream_name":"stdout","time":17.665110202,"data":"  nodes=115 edges=613 iters=3 alpha=1.0 beta=0.8\n"}
+,{"stream_name":"stdout","time":17.665115641,"data":"  predicted communities: 11  (ground truth: 12)\n"}
+,{"stream_name":"stdout","time":17.66512085,"data":"  NMI = 0.9095   ARI = 0.8465   Q = 0.6032\n"}
+,{"stream_name":"stdout","time":17.665125705,"data":"  overlapping nodes flagged by Stage 3: 15/115\n"}
+,{"stream_name":"stdout","time":17.734451515,"data":"Alpha sweep on Karate (paper's own robustness range: 0.9-1.2):\n"}
+,{"stream_name":"stdout","time":17.734521948,"data":"  alpha=0.80  n_comm=2  NMI=0.8372  Q=0.4036\n"}
+,{"stream_name":"stdout","time":17.734532366,"data":"  alpha=0.90  n_comm=2  NMI=0.8372  Q=0.4036\n"}
+,{"stream_name":"stdout","time":17.734538108,"data":"  alpha=1.00  n_comm=2  NMI=0.8372  Q=0.4036\n"}
+,{"stream_name":"stdout","time":17.734567192,"data":"  alpha=1.05  n_comm=2  NMI=0.8372  Q=0.4036\n"}
+,{"stream_name":"stdout","time":17.734572603,"data":"  alpha=1.10  n_comm=2  NMI=0.8372  Q=0.4036\n"}
+,{"stream_name":"stdout","time":17.734577156,"data":"  alpha=1.15  n_comm=2  NMI=0.8372  Q=0.4036\n"}
+,{"stream_name":"stdout","time":17.734581694,"data":"  alpha=1.20  n_comm=2  NMI=0.8372  Q=0.4036\n"}
+,{"stream_name":"stdout","time":17.734586713,"data":"  alpha=1.30  n_comm=2  NMI=0.8372  Q=0.4036\n"}
+,{"stream_name":"stdout","time":29.249550726,"data":"--- amazon (induced from SNAP top-5000 communities; paper reports 6428n/16223e/893 comms on its own subset) ---\n"}
+,{"stream_name":"stdout","time":29.249611122,"data":"  nodes=16716 edges=48739 iters=8 alpha=1.0 beta=0.8\n"}
+,{"stream_name":"stdout","time":29.249619765,"data":"  predicted communities: 1711  (ground truth: 1399)\n"}
+,{"stream_name":"stdout","time":29.249624219,"data":"  NMI = 0.9586   ARI = 0.6208   Q = 0.9419\n"}
+,{"stream_name":"stdout","time":29.249628137,"data":"  overlapping nodes flagged by Stage 3: 661/16716\n"}
+,{"stream_name":"stdout","time":465.756368663,"data":"--- dblp (induced from SNAP top-5000 communities; paper reports 23654n/75618e/2974 comms on its own subset) ---\n"}
+,{"stream_name":"stdout","time":465.756432844,"data":"  nodes=93432 edges=335520 iters=8 alpha=1.0 beta=0.8\n"}
+,{"stream_name":"stdout","time":465.756440536,"data":"  predicted communities: 13961  (ground truth: 4923)\n"}
+,{"stream_name":"stdout","time":465.756447252,"data":"  NMI = 0.7626   ARI = 0.0135   Q = 0.7207\n"}
+,{"stream_name":"stdout","time":465.756453528,"data":"  overlapping nodes flagged by Stage 3: 23117/93432\n"}
+,{"stream_name":"stdout","time":743.654762874,"data":"--- youtube (induced from SNAP top-5000 communities; paper reports 10364n/18717e/2798 comms on its own subset) ---\n"}
+,{"stream_name":"stdout","time":743.654807254,"data":"  nodes=39841 edges=224235 iters=8 alpha=1.0 beta=0.8\n"}
+,{"stream_name":"stdout","time":743.65481482,"data":"  predicted communities: 1389  (ground truth: 4447)\n"}
+,{"stream_name":"stdout","time":743.654822887,"data":"  NMI = 0.5195   ARI = 0.0338   Q = 0.5875\n"}
+,{"stream_name":"stdout","time":743.654829,"data":"  overlapping nodes flagged by Stage 3: 2912/39841\n"}
+,{"stream_name":"stdout","time":743.86457629,"data":"============================================================\n"}
+,{"stream_name":"stdout","time":743.864618739,"data":"LFR mu-sweep (N-1000-0.1 and N-1000-0.6 from paper's Table 5/10)\n"}
+,{"stream_name":"stdout","time":743.864626558,"data":"Using realized-mu calibration (see markdown above for root cause)\n"}
+,{"stream_name":"stdout","time":743.864632776,"data":"============================================================\n"}
+,{"stream_name":"stdout","time":744.44147311,"data":"  [calibration check] target realized mu=0.1, achieved=0.0919]\n"}
+,{"stream_name":"stdout","time":745.394666754,"data":"--- LFR N-1000-mu0.1 (target NMI 1.0, realized_mu=0.0919) ---\n"}
+,{"stream_name":"stdout","time":745.394704263,"data":"  nodes=1000 edges=12516 iters=2 alpha=1.0 beta=0.8\n"}
+,{"stream_name":"stdout","time":745.394711952,"data":"  predicted communities: 36  (ground truth: 36)\n"}
+,{"stream_name":"stdout","time":745.394718008,"data":"  NMI = 1.0000   ARI = 1.0000   Q = 0.8761\n"}
+,{"stream_name":"stdout","time":745.394723998,"data":"  overlapping nodes flagged by Stage 3: 1/1000\n"}
+,{"stream_name":"stdout","time":746.18752572,"data":"  [calibration check] target realized mu=0.6, achieved=0.5986]\n"}
+,{"stream_name":"stdout","time":748.315415833,"data":"--- LFR N-1000-mu0.6 (target NMI 0.9869, realized_mu=0.5986) ---\n"}
+,{"stream_name":"stdout","time":748.315478256,"data":"  nodes=1000 edges=13648 iters=7 alpha=1.0 beta=0.8\n"}
+,{"stream_name":"stdout","time":748.315484749,"data":"  predicted communities: 35  (ground truth: 36)\n"}
+,{"stream_name":"stdout","time":748.315489334,"data":"  NMI = 0.9316   ARI = 0.8132   Q = 0.3826\n"}
+,{"stream_name":"stdout","time":748.315532689,"data":"  overlapping nodes flagged by Stage 3: 937/1000\n"}
+,{"stream_name":"stdout","time":748.531124312,"data":"Multi-seed check at calibrated realized mu~0.6:\n"}
+,{"stream_name":"stdout","time":751.328879818,"data":"  seed=1: realized_mu=0.5983  n_comm_true=40 n_comm_pred=42  NMI=0.9291  ARI=0.7891\n"}
+,{"stream_name":"stdout","time":754.193833499,"data":"  seed=2: realized_mu=0.6028  n_comm_true=40 n_comm_pred=41  NMI=0.9022  ARI=0.7458\n"}
+,{"stream_name":"stdout","time":756.588763292,"data":"  seed=3: realized_mu=0.5944  n_comm_true=31 n_comm_pred=30  NMI=0.9190  ARI=0.8678\n"}
+,{"stream_name":"stdout","time":759.397301102,"data":"  seed=7: realized_mu=0.6026  n_comm_true=35 n_comm_pred=32  NMI=0.8917  ARI=0.7264\n"}
+,{"stream_name":"stdout","time":762.362857019,"data":"  seed=42: realized_mu=0.5986  n_comm_true=36 n_comm_pred=35  NMI=0.9316  ARI=0.8132\n"}
+,{"stream_name":"stdout","time":765.202945297,"data":"  seed=99: realized_mu=0.5924  n_comm_true=34 n_comm_pred=39  NMI=0.9644  ARI=0.9171\n"}
+,{"stream_name":"stdout","time":767.355450045,"data":"  seed=123: realized_mu=0.5994  n_comm_true=39 n_comm_pred=37  NMI=0.9376  ARI=0.8191\n"}
+,{"stream_name":"stdout","time":767.577160287,"data":"============================================================\n"}
+,{"stream_name":"stdout","time":767.577201992,"data":"LFR at n=10000 (N5: mu=0.1, N6: mu=0.6)\n"}
+,{"stream_name":"stdout","time":767.577209187,"data":"============================================================\n"}
+,{"stream_name":"stdout","time":783.721669756,"data":"N-10000-mu0.1 (target NMI 1.0, realized_mu=0.0922):\n"}
+,{"stream_name":"stdout","time":783.721716545,"data":"  nodes=10000 edges=124991 iters=2 n_comm_true=365 n_comm_pred=365\n"}
+,{"stream_name":"stdout","time":783.721725005,"data":"  NMI=1.0000  ARI=1.0000  Q=0.9092  (took 16.1s)\n"}
+,{"stream_name":"stdout","time":828.502569129,"data":"N-10000-mu0.6 (target NMI 0.9935, realized_mu=0.5959):\n"}
+,{"stream_name":"stdout","time":828.502613076,"data":"  nodes=10000 edges=136506 iters=9 n_comm_true=365 n_comm_pred=393\n"}
+,{"stream_name":"stdout","time":828.502620672,"data":"  NMI=0.9888  ARI=0.9671  Q=0.4176  (took 45.0s)\n"}
+,{"stream_name":"stdout","time":828.580285445,"data":"--- Dolphin (reconstructed 4-group ground truth, target NMI 0.9053, Q 0.5265) ---\n"}
+,{"stream_name":"stdout","time":828.580325655,"data":"  nodes=62 edges=159 iters=3 alpha=1.0 beta=1.0\n"}
+,{"stream_name":"stdout","time":828.580333003,"data":"  predicted communities: 4  (ground truth: 4)\n"}
+,{"stream_name":"stdout","time":828.580340015,"data":"  NMI = 0.9053   ARI = 0.9090   Q = 0.5113\n"}
+,{"stream_name":"stdout","time":828.58034591,"data":"  overlapping nodes flagged by Stage 3: 3/62\n"}
+,{"stream_name":"stdout","time":828.71643908,"data":"============================================================\n"}
+,{"stream_name":"stdout","time":828.716612547,"data":"Stage 3 EQ sanity check (beta sweep)\n"}
+,{"stream_name":"stdout","time":828.71662824,"data":"============================================================\n"}
+,{"stream_name":"stdout","time":828.716632933,"data":"--- Karate (target EQ 0.3715) ---\n"}
+,{"stream_name":"stdout","time":828.716637157,"data":"  beta=0.8: EQ=0.3516  overlap_nodes=3/34\n"}
+,{"stream_name":"stdout","time":828.716641643,"data":"  beta=0.9: EQ=0.3624  overlap_nodes=2/34\n"}
+,{"stream_name":"stdout","time":828.716665565,"data":"  beta=1.0: EQ=0.3715  overlap_nodes=0/34\n"}
+,{"stream_name":"stdout","time":828.716668891,"data":"  beta=1.1: EQ=0.3715  overlap_nodes=0/34\n"}
+,{"stream_name":"stdout","time":828.71667183,"data":"  beta=1.2: EQ=0.3715  overlap_nodes=0/34\n"}
+,{"stream_name":"stdout","time":828.71667491,"data":"--- Dolphin (target EQ 0.5265) ---\n"}
+,{"stream_name":"stdout","time":828.716677835,"data":"  beta=0.8: EQ=0.4778  overlap_nodes=9/62\n"}
+,{"stream_name":"stdout","time":828.716680731,"data":"  beta=0.9: EQ=0.4977  overlap_nodes=5/62\n"}
+,{"stream_name":"stdout","time":828.716683694,"data":"  beta=1.0: EQ=0.5024  overlap_nodes=3/62\n"}
+,{"stream_name":"stdout","time":828.716686718,"data":"  beta=1.1: EQ=0.5024  overlap_nodes=3/62\n"}
+,{"stream_name":"stdout","time":828.716689903,"data":"  beta=1.2: EQ=0.5113  overlap_nodes=0/62\n"}
+,{"stream_name":"stdout","time":828.716692808,"data":"--- Lesmis (target EQ 0.7249) ---\n"}
+,{"stream_name":"stdout","time":828.716695754,"data":"  beta=0.8: EQ=0.4788  overlap_nodes=9/77\n"}
+,{"stream_name":"stdout","time":828.735237909,"data":"  beta=0.9: EQ=0.4899  overlap_nodes=8/77\n"}
+,{"stream_name":"stdout","time":828.735274899,"data":"  beta=1.0: EQ=0.5069  overlap_nodes=5/77\n"}
+,{"stream_name":"stdout","time":828.735280931,"data":"  beta=1.1: EQ=0.5076  overlap_nodes=4/77\n"}
+,{"stream_name":"stdout","time":828.735285912,"data":"  beta=1.2: EQ=0.5081  overlap_nodes=2/77\n"}
+,{"stream_name":"stdout","time":828.797703735,"data":"Test 1: paper's own worked example (Table 2, beta=0.8)\n"}
+,{"stream_name":"stdout","time":828.79776611,"data":"  node 1: threshold=0.4000 (paper says 0.4) -\u003e ['C1']  expected ['C1']  PASS\n"}
+,{"stream_name":"stdout","time":828.797773471,"data":"  node 2: threshold=0.4000 (paper says 0.4) -\u003e ['C1', 'C3']  expected ['C1', 'C3']  PASS\n"}
+,{"stream_name":"stdout","time":828.797778681,"data":"  node 5: threshold=0.4000 (paper says 0.4) -\u003e ['C3']  expected ['C3']  PASS\n"}
+,{"stream_name":"stdout","time":828.797783969,"data":"  node 6: threshold=0.4000 (paper says 0.4) -\u003e ['C1']  expected ['C1']  PASS\n"}
+,{"stream_name":"stdout","time":828.797789075,"data":"  =\u003e ALL PASS\n"}
+,{"stream_name":"stdout","time":828.797794231,"data":"\n"}
+,{"stream_name":"stdout","time":828.797798717,"data":"Test 2: planted overlap (two dense groups + bridge node(s) in both)\n"}
+,{"stream_name":"stdout","time":828.797803655,"data":"  --- 1 bridge node(s): planted = [24], n=25 m=145 ---\n"}
+,{"stream_name":"stdout","time":828.797808509,"data":"    beta=0.8: disjoint_comms=2 flagged=[24] -\u003e caught [24]/[24], false_pos=[]\n"}
+,{"stream_name":"stdout","time":828.797813475,"data":"    beta=1.0: disjoint_comms=2 flagged=[] -\u003e caught []/[24], false_pos=[]\n"}
+,{"stream_name":"stdout","time":828.797818393,"data":"    beta=1.2: disjoint_comms=2 flagged=[] -\u003e caught []/[24], false_pos=[]\n"}
+,{"stream_name":"stdout","time":828.797823239,"data":"  --- 2 bridge node(s): planted = [24, 25], n=26 m=157 ---\n"}
+,{"stream_name":"stdout","time":828.797827929,"data":"    beta=0.8: disjoint_comms=2 flagged=[24, 25] -\u003e caught [24, 25]/[24, 25], false_pos=[]\n"}
+,{"stream_name":"stdout","time":828.797833079,"data":"    beta=1.0: disjoint_comms=2 flagged=[] -\u003e caught []/[24, 25], false_pos=[]\n"}
+,{"stream_name":"stdout","time":828.797837826,"data":"    beta=1.2: disjoint_comms=2 flagged=[] -\u003e caught []/[24, 25], false_pos=[]\n"}
+,{"stream_name":"stdout","time":828.797842572,"data":"\n"}
+,{"stream_name":"stdout","time":828.797846767,"data":"Test 3: beta constraint -- overlap possible iff beta \u003c= k/2\n"}
+,{"stream_name":"stdout","time":828.797879294,"data":"  k=2 communities: requires beta \u003c= 1.0 -\u003e usable beta: [0.8, 0.9, 1.0]\n"}
+,{"stream_name":"stdout","time":828.797885195,"data":"  k=3 communities: requires beta \u003c= 1.5 -\u003e usable beta: [0.8, 0.9, 1.0, 1.1, 1.2]\n"}
+,{"stream_name":"stdout","time":828.797890246,"data":"  k=4 communities: requires beta \u003c= 2.0 -\u003e usable beta: [0.8, 0.9, 1.0, 1.1, 1.2]\n"}
+,{"stream_name":"stdout","time":828.797900437,"data":"  =\u003e beta \u003c 1.0 is required in practice to detect overlap at ordinary (k=2) boundaries.\n"}
+,{"stream_name":"stdout","time":828.797905843,"data":"\n"}
+,{"stream_name":"stderr","time":833.053922754,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":833.053963999,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":833.293404903,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":833.293444769,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":834.130975819,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":834.584105179,"data":"[NbConvertApp] Writing 61629 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":838.086639889,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":839.394521944,"data":"[NbConvertApp] Writing 434958 bytes to __results__.html\n"}
+]

@@ -1,0 +1,588 @@
+{
+  "measured_p": 0.8166666666666667,
+  "selfcons_p": 0.9222222222222223,
+  "per_node": [
+    {
+      "node": "BrighamYoung",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "FloridaState",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "Iowa",
+      "correct": true,
+      "agreement": 0.6666666666666666
+    },
+    {
+      "node": "KansasState",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "NewMexico",
+      "correct": false,
+      "agreement": 1.0
+    },
+    {
+      "node": "TexasTech",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "PennState",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "SouthernCalifornia",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "ArizonaState",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "SanDiegoState",
+      "correct": true,
+      "agreement": 0.6666666666666666
+    },
+    {
+      "node": "Baylor",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "NorthTexas",
+      "correct": false,
+      "agreement": 0.6666666666666666
+    },
+    {
+      "node": "NorthernIllinois",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "Northwestern",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "WesternMichigan",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "Wisconsin",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "Wyoming",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "Auburn",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "Akron",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "VirginiaTech",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "Alabama",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "UCLA",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "Arizona",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "Utah",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "ArkansasState",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "NorthCarolinaState",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "BallState",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "Florida",
+      "correct": true,
+      "agreement": 0.6666666666666666
+    },
+    {
+      "node": "BoiseState",
+      "correct": false,
+      "agreement": 0.6666666666666666
+    },
+    {
+      "node": "BostonCollege",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "WestVirginia",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "BowlingGreenState",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "Michigan",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "Virginia",
+      "correct": false,
+      "agreement": 1.0
+    },
+    {
+      "node": "Buffalo",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "Syracuse",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "CentralFlorida",
+      "correct": true,
+      "agreement": 0.6666666666666666
+    },
+    {
+      "node": "GeorgiaTech",
+      "correct": true,
+      "agreement": 0.6666666666666666
+    },
+    {
+      "node": "CentralMichigan",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "Purdue",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "Colorado",
+      "correct": false,
+      "agreement": 1.0
+    },
+    {
+      "node": "ColoradoState",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "Connecticut",
+      "correct": false,
+      "agreement": 0.6666666666666666
+    },
+    {
+      "node": "EasternMichigan",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "EastCarolina",
+      "correct": false,
+      "agreement": 0.6666666666666666
+    },
+    {
+      "node": "Duke",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "FresnoState",
+      "correct": true,
+      "agreement": 0.6666666666666666
+    },
+    {
+      "node": "OhioState",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "Houston",
+      "correct": true,
+      "agreement": 0.6666666666666666
+    },
+    {
+      "node": "Rice",
+      "correct": true,
+      "agreement": 0.6666666666666666
+    },
+    {
+      "node": "Idaho",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "Washington",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "Kansas",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "SouthernMethodist",
+      "correct": false,
+      "agreement": 1.0
+    },
+    {
+      "node": "Kent",
+      "correct": false,
+      "agreement": 1.0
+    },
+    {
+      "node": "Pittsburgh",
+      "correct": true,
+      "agreement": 0.6666666666666666
+    },
+    {
+      "node": "Kentucky",
+      "correct": true,
+      "agreement": 1.0
+    },
+    {
+      "node": "Louisville",
+      "correct": true,
+      "agreement": 0.6666666666666666
+    },
+    {
+      "node": "LouisianaTech",
+      "correct": false,
+      "agreement": 1.0
+    },
+    {
+      "node": "LouisianaMonroe",
+      "correct": false,
+      "agreement": 1.0
+    }
+  ],
+  "sample_responses": [
+    {
+      "node": "LouisianaLafayette",
+      "raw": "C",
+      "picked": [
+        "Houston"
+      ]
+    },
+    {
+      "node": "NotreDame",
+      "raw": "A",
+      "picked": [
+        "NotreDame"
+      ]
+    },
+    {
+      "node": "LouisianaTech",
+      "raw": "A",
+      "picked": [
+        "Vanderbilt"
+      ]
+    },
+    {
+      "node": "CentralFlorida",
+      "raw": "A",
+      "picked": [
+        "CentralMichigan"
+      ]
+    },
+    {
+      "node": "Navy",
+      "raw": "A",
+      "picked": [
+        "NotreDame"
+      ]
+    },
+    {
+      "node": "NewMexicoState",
+      "raw": "A",
+      "picked": [
+        "NewMexicoState"
+      ]
+    },
+    {
+      "node": "ArkansasState",
+      "raw": "A",
+      "picked": [
+        "NewMexicoState"
+      ]
+    },
+    {
+      "node": "Idaho",
+      "raw": "A",
+      "picked": [
+        "NewMexicoState"
+      ]
+    },
+    {
+      "node": "NorthTexas",
+      "raw": "B",
+      "picked": [
+        "TexasTech"
+      ]
+    },
+    {
+      "node": "UtahState",
+      "raw": "B",
+      "picked": [
+        "BrighamYoung"
+      ]
+    },
+    {
+      "node": "BoiseState",
+      "raw": "B",
+      "picked": [
+        "BrighamYoung"
+      ]
+    },
+    {
+      "node": "MiddleTennesseeState",
+      "raw": "A",
+      "picked": [
+        "Vanderbilt"
+      ]
+    },
+    {
+      "node": "Connecticut",
+      "raw": "C",
+      "picked": [
+        "Houston"
+      ]
+    },
+    {
+      "node": "AlabamaBirmingham",
+      "raw": "A",
+      "picked": [
+        "Houston"
+      ]
+    },
+    {
+      "node": "LouisianaMonroe",
+      "raw": "C",
+      "picked": [
+        "Houston"
+      ]
+    },
+    {
+      "node": "EastCarolina",
+      "raw": "B",
+      "picked": [
+        "NotreDame"
+      ]
+    },
+    {
+      "node": "NevadaLasVegas",
+      "raw": "B",
+      "picked": [
+        "Nevada"
+      ]
+    },
+    {
+      "node": "SanDiegoState",
+      "raw": "A",
+      "picked": [
+        "BrighamYoung"
+      ]
+    },
+    {
+      "node": "BrighamYoung",
+      "raw": "A",
+      "picked": [
+        "BrighamYoung"
+      ]
+    },
+    {
+      "node": "Cincinnati",
+      "raw": "A",
+      "picked": [
+        "Houston"
+      ]
+    },
+    {
+      "node": "Memphis",
+      "raw": "A",
+      "picked": [
+        "Houston"
+      ]
+    },
+    {
+      "node": "Utah",
+      "raw": "A",
+      "picked": [
+        "BrighamYoung"
+      ]
+    },
+    {
+      "node": "Pittsburgh",
+      "raw": "A",
+      "picked": [
+        "NotreDame"
+      ]
+    },
+    {
+      "node": "Syracuse",
+      "raw": "A",
+      "picked": [
+        "NotreDame"
+      ]
+    },
+    {
+      "node": "Houston",
+      "raw": "B",
+      "picked": [
+        "Nevada"
+      ]
+    },
+    {
+      "node": "Army",
+      "raw": "A",
+      "picked": [
+        "Houston"
+      ]
+    },
+    {
+      "node": "Tulane",
+      "raw": "A",
+      "picked": [
+        "Houston"
+      ]
+    },
+    {
+      "node": "Nevada",
+      "raw": "B",
+      "picked": [
+        "BrighamYoung"
+      ]
+    },
+    {
+      "node": "VirginiaTech",
+      "raw": "A",
+      "picked": [
+        "NotreDame"
+      ]
+    },
+    {
+      "node": "NewMexico",
+      "raw": "B",
+      "picked": [
+        "NewMexicoState"
+      ]
+    },
+    {
+      "node": "Iowa",
+      "raw": "A",
+      "picked": [
+        "Iowa"
+      ]
+    },
+    {
+      "node": "Wyoming",
+      "raw": "A",
+      "picked": [
+        "BrighamYoung"
+      ]
+    },
+    {
+      "node": "WesternMichigan",
+      "raw": "A",
+      "picked": [
+        "CentralMichigan"
+      ]
+    },
+    {
+      "node": "SouthernMississippi",
+      "raw": "A",
+      "picked": [
+        "Houston"
+      ]
+    },
+    {
+      "node": "AirForce",
+      "raw": "A",
+      "picked": [
+        "BrighamYoung"
+      ]
+    },
+    {
+      "node": "BowlingGreenState",
+      "raw": "A",
+      "picked": [
+        "CentralMichigan"
+      ]
+    },
+    {
+      "node": "SouthernCalifornia",
+      "raw": "A",
+      "picked": [
+        "SouthernCalifornia"
+      ]
+    },
+    {
+      "node": "SouthernMethodist",
+      "raw": "B",
+      "picked": [
+        "Houston"
+      ]
+    },
+    {
+      "node": "FloridaState",
+      "raw": "A",
+      "picked": [
+        "NorthCarolina"
+      ]
+    },
+    {
+      "node": "Wisconsin",
+      "raw": "A",
+      "picked": [
+        "Iowa"
+      ]
+    }
+  ]
+}
