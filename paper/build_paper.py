@@ -14,7 +14,7 @@ def tex_table(star, caption, label, rows, cols, hdr, colspec=None, avg=True, ran
     """rows: list of (name, dict). Bold best per row; Avg / mean-rank rows over complete rows."""
     env = "table*" if star else "table"
     colspec = colspec or ("l" + "r" * len(cols))
-    out = [f"\\begin{{{env}}}[{pos}]", "\\centering", f"\\caption{{{caption}}}", f"\\label{{{label}}}", size, f"\\begin{{tabular}}{{{colspec}}}", "\\toprule",
+    out = [f"\\begin{{{env}}}[{'!tp' if star else pos}]", "\\centering", f"\\caption{{{caption}}}", f"\\label{{{label}}}", ("\\footnotesize" if star else size), f"\\begin{{tabular*}}{{{'\\textwidth' if star else '\\columnwidth'}}}{{@{{\\extracolsep{{\\fill}}}}{colspec}}}", "\\toprule",
            "Network & " + " & ".join(hdr[c] for c in cols) + " \\\\", "\\midrule"]
     for name, v in rows:
         vals = [v.get(c) for c in cols]; best = max([x for x in vals if x is not None], default=None)
@@ -31,7 +31,7 @@ def tex_table(star, caption, label, rows, cols, hdr, colspec=None, avg=True, ran
     if full and rank:
         def rk(v, c): return 1 + sum(1 for d in cols if v[d] > v[c] + 1e-12)
         out.append("Mean rank & " + " & ".join(f"{sum(rk(v, c) for v in full) / len(full):.2f}" for c in cols) + " \\\\")
-    out += ["\\bottomrule", "\\end{tabular}", f"\\end{{{env}}}"]
+    out += ["\\bottomrule", "\\end{tabular*}", f"\\end{{{env}}}"]
     return "\n".join(out)
 
 def clean(n): return n.replace("*", "$^{*}$").replace("_", "\\_")
@@ -46,7 +46,7 @@ eq_rows = [(re.sub(r" \(n=(\d+), m=(\d+)\)", r" ($n{=}\1$)", n).replace("ca-grqc
             .replace("deezer", "Deezer").replace("facebook", "Facebook").replace("power", "Power").replace("jazz", "Jazz").replace("lesmis", "Lesmis").replace("karate", "Karate")
             .replace("dolphin", "Dolphin").replace("cora", "Cora"), v) for n, v in S["eq"].items()]
 T_EQ = tex_table(False, "EQ of different algorithms on real networks.", "tab:eq", eq_rows, EQC, EQH,
-                 size="\\scriptsize", pos="H")
+                 size="\\scriptsize", pos="!htbp")
 OV = {}
 fam = {"R1": "R1 ($n{=}10^3,\\mu{=}0.1$)", "R2": "R2 ($n{=}10^3,\\mu{=}0.3$)", "R3": "R3 ($n{=}5{\\cdot}10^3,\\mu{=}0.1$)", "R4": "R4 ($n{=}5{\\cdot}10^3,\\mu{=}0.3$)",
        "R5": "R5 ($n{=}10^4,\\mu{=}0.1$)", "R6": "R6 ($n{=}10^4,\\mu{=}0.3$)"}
@@ -60,8 +60,8 @@ for r in ("R1", "R2", "R3", "R4", "R5", "R6"):
     ov_rows.append((fam[r], row))
 cols = [f"{a}|{t}" for t in "LMO" for a in EQC]
 hdr = {c: EQH[c.split("|")[0]] for c in cols}
-body = ["\\begin{table*}[t]", "\\centering", "\\caption{Average LFK-NMI, $\\mathrm{NMI}_{\\max}$ and Omega values of different algorithms on overlapping networks, $om$ from 2 to 8.}", "\\label{tab:ov}", "\\scriptsize",
-        "\\begin{tabular}{lccc|ccc|ccc}", "\\toprule", " & \\multicolumn{3}{c|}{LFK-NMI} & \\multicolumn{3}{c|}{$\\mathrm{NMI}_{\\max}$} & \\multicolumn{3}{c}{Omega} \\\\",
+body = ["\\begin{table*}[!tp]", "\\centering", "\\caption{Average LFK-NMI, $\\mathrm{NMI}_{\\max}$ and Omega values of different algorithms on overlapping networks, $om$ from 2 to 8.}", "\\label{tab:ov}", "\\footnotesize",
+        "\\begin{tabular*}{\\textwidth}{@{\\extracolsep{\\fill}}lccc|ccc|ccc}", "\\toprule", " & \\multicolumn{3}{c|}{LFK-NMI} & \\multicolumn{3}{c|}{$\\mathrm{NMI}_{\\max}$} & \\multicolumn{3}{c}{Omega} \\\\",
         "Family & " + " & ".join(hdr[c] for c in cols) + " \\\\", "\\midrule"]
 for name, v in ov_rows:
     cells = []
@@ -74,7 +74,7 @@ cells = []
 for t in "LMO":
     for a in EQC: cells.append("%.4f" % (sum(v[f"{a}|{t}"] for _, v in ov_rows) / 6))
 body.append("Mean & " + " & ".join(cells) + " \\\\")
-body += ["\\bottomrule", "\\end{tabular}", "\\end{table*}"]
+body += ["\\bottomrule", "\\end{tabular*}", "\\end{table*}"]
 T_OV = "\n".join(body)
 
 pc = ["Fastgreedy", "LPA", "Louvain", "Walktrap", "NSA", "SimCMR", "TPOC-LPA"]
@@ -83,14 +83,14 @@ qrows = [("Karate", dict(zip(pc, PN.T8["karate"]))), ("Dolphin", dict(zip(pc, PN
 for i, nm in enumerate(["N1", "N2", "N3", "N4", "N5", "N6"]):
     qrows.append((nm, {a: PN.T10[a][i] for a in pc}))
 T_PAPER = tex_table(False, "NMI as published in~\\cite{kong2026} (not re-run).",
-                    "tab:paper", qrows, pc, PH, size="\\scriptsize\\setlength{\\tabcolsep}{2.4pt}", avg=False, rank=False, pos="H")
+                    "tab:paper", qrows, pc, PH, size="\\scriptsize\\setlength{\\tabcolsep}{2.4pt}", avg=False, rank=False, pos="!htbp")
 
 # Ablation: values from the development runs recorded in the project log (15 seeds for LFR; email-Eu single graph). Typed by hand.
 ABL = [("TPOC-LPA (re-implemented baseline)", 0.9311, 0.0513, 0.0000),
-       ("+ M1--M4 (motif, guard, size-corr., granularity)", 0.9637, 0.8534, 0.6381),
-       ("+ M6, map-equation move score", 0.9776, 0.8759, 0.6554),
-       ("+ M6, Synwalk move score", 0.9830, 0.8917, 0.6717)]
-abl = ["\\begin{table}[H]", "\\centering", "\\caption{Effect of the modifications on NMI.}", "\\label{tab:abl}",
+       ("+ motif, guard, size-norm.\\ gain, granularity", 0.9637, 0.8534, 0.6381),
+       ("+ boundary moves, map-equation score", 0.9776, 0.8759, 0.6554),
+       ("+ boundary moves, Synwalk score", 0.9830, 0.8917, 0.6717)]
+abl = ["\\begin{table}[!htbp]", "\\centering", "\\caption{Effect of the modifications on NMI.}", "\\label{tab:abl}",
        "\\scriptsize", "\\begin{tabular}{>{\\raggedright\\arraybackslash}p{38mm}rrr}", "\\toprule", "Configuration & $\\mu{=}0.6$ & $\\mu{=}0.7$ & email-Eu \\\\", "\\midrule"]
 abl += [f"{n} & {a:.4f} & {b:.4f} & {c:.4f} \\\\" for n, a, b, c in ABL] + ["\\bottomrule", "\\end{tabular}", "\\end{table}"]
 T_ABL = "\n".join(abl)
@@ -101,7 +101,7 @@ R = f"{H}/../kaggle-tpoc-lpa/phase6_baselines/results"
 meta = [("karate", "Karate", "two factions"), ("dolphin", "Dolphin", "four groups (reconstructed)"), ("football", "Football", "conferences"), ("polbooks", "Polbooks", "political leaning"),
         ("polblogs", "Polblogs", "political leaning"), ("email-Eu", "email-Eu", "departments"), ("cora", "Cora", "paper classes"), ("citeseer", "Citeseer", "paper classes"),
         ("amazon", "SNAP-Amazon", "first community"), ("youtube", "SNAP-Youtube", "first community"), ("dblp", "SNAP-DBLP", "first community")]
-rows = ["\\begin{table}[H]", "\\centering", "\\caption{Real networks used in the experiments.}", "\\label{tab:data}", "\\scriptsize",
+rows = ["\\begin{table}[!htb]", "\\centering", "\\caption{Real networks used in the experiments.}", "\\label{tab:data}", "\\scriptsize",
         "\\begin{tabular}{lrrr>{\\raggedright\\arraybackslash}p{23mm}}", "\\toprule", "Network & $n$ & $m$ & Classes & Truth \\\\", "\\midrule"]
 for g, nm, tr in meta:
     d = json.load(open(f"{R}/real_{g}.json"))
@@ -120,19 +120,19 @@ def ftime(v): return f"{v:.3f}" if v < 1 else (f"{v:.2f}" if v < 100 else f"{v:.
 def slope(ts): return float(np.polyfit(np.log(NS), np.log(ts), 1)[0])
 tt = {a: [LAT["time"][a][str(n)]["median"] for n in NS] for a, _ in LAT_ROWS}
 tt["paper"] = [PAPER_T16[n] for n in NS]
-rows = ["\\begin{table*}[t]", "\\centering", "\\caption{Execution time (s) of different algorithms for different $N$.}", "\\label{tab:lat}", "\\scriptsize",
-        "\\begin{tabular}{l" + "r" * len(NS) + "r}", "\\toprule", "Algorithm & " + " & ".join(f"{n:,}".replace(",", "{,}") for n in NS) + " & Slope \\\\", "\\midrule"]
+rows = ["\\begin{table*}[!tp]", "\\centering", "\\caption{Execution time (s) of different algorithms for different $N$.}", "\\label{tab:lat}", "\\footnotesize",
+        "\\begin{tabular*}{\\textwidth}{@{\\extracolsep{\\fill}}l" + "r" * len(NS) + "r}", "\\toprule", "Algorithm & " + " & ".join(f"{n:,}".replace(",", "{,}") for n in NS) + " & Slope \\\\", "\\midrule"]
 for a, lab in LAT_ROWS:
     best = [min(tt[x][i] for x, _ in LAT_ROWS) for i in range(len(NS))]
     cells = [("\\textbf{%s}" if tt[a][i] <= best[i] * 1.0000001 else "%s") % ftime(tt[a][i]) for i in range(len(NS))]
     rows.append(f"{lab} & " + " & ".join(cells) + f" & {slope(tt[a]):.2f} \\\\")
-rows += ["\\midrule", "TPOC-LPA~\\cite{kong2026} (published) & " + " & ".join(ftime(v) for v in tt["paper"]) + f" & {slope(tt['paper']):.2f} \\\\", "\\bottomrule", "\\end{tabular}", "\\end{table*}"]
+rows += ["\\midrule", "TPOC-LPA~\\cite{kong2026} (published) & " + " & ".join(ftime(v) for v in tt["paper"]) + f" & {slope(tt['paper']):.2f} \\\\", "\\bottomrule", "\\end{tabular*}", "\\end{table*}"]
 T_LAT = "\n".join(rows)
 
 # running-time figure (pgfplots, log-log)
 styles = {"Fastgreedy": "mark=square*,color=gray", "LPA": "mark=triangle*,color=green!50!black", "Louvain": "mark=diamond*,color=teal", "Walktrap": "mark=pentagon*,color=brown",
           "Infomap*": "mark=star,color=magenta", "SLPA": "mark=x,color=purple", "TPOC-LPA (repro)": "mark=o,color=blue", "Ours": "mark=*,color=red,very thick"}
-fig = ["\\begin{figure}[t]", "\\centering", "\\begin{tikzpicture}", "\\begin{loglogaxis}[width=0.98\\columnwidth,height=5.6cm,xlabel={Number of nodes $N$},ylabel={Time (s)},",
+fig = ["\\begin{figure}[!hb]", "\\centering", "\\begin{tikzpicture}", "\\begin{loglogaxis}[width=0.98\\columnwidth,height=5.6cm,xlabel={Number of nodes $N$},ylabel={Time (s)},",
        "legend style={font=\\tiny,at={(0.5,-0.2)},anchor=north,legend columns=3,cells={anchor=west},draw=none},tick label style={font=\\scriptsize},label style={font=\\small},grid=both,grid style={gray!25}]"]
 for a, lab in LAT_ROWS:
     coords = " ".join(f"({n},{tt[a][i]:.5f})" for i, n in enumerate(NS))
@@ -144,8 +144,8 @@ F_LAT = "\n".join(fig)
 
 # per-stage timing of our pipeline
 stg = LAT["stages"]
-rows = ["\\begin{table}[t]", "\\centering", "\\caption{Execution time (s) of each stage of the proposed pipeline.}", "\\label{tab:stage}", "\\scriptsize\\setlength{\\tabcolsep}{3pt}",
-        "\\begin{tabular}{rrrrrrrr}", "\\toprule", "$N$ & $NI$ & Stage 1 & Stage 2 & M4 & M5+M6 & Stage 3 & Total \\\\", "\\midrule"]
+rows = ["\\begin{table}[!htbp]", "\\centering", "\\caption{Execution time (s) of each stage of the proposed pipeline.}", "\\label{tab:stage}", "\\scriptsize\\setlength{\\tabcolsep}{3pt}",
+        "\\begin{tabular}{rrrrrrrr}", "\\toprule", "$N$ & $NI$ & Stage 1 & Stage 2 & Gran.\\ rule & Merge+moves & Stage 3 & Total \\\\", "\\midrule"]
 for n in NS:
     g = stg[str(n)]
     rows.append(f"{n:,} & ".replace(",", "{,}") + " & ".join(ftime(g[k]) for k in ["t_node_importance", "t_stage1", "t_stage2", "t_refine", "t_merge", "t_stage3", "t_total"]) + " \\\\")
@@ -157,7 +157,7 @@ LR = [("karate", "Karate"), ("dolphin", "Dolphin"), ("football", "Football"), ("
       ("amazon", "SNAP-Amazon"), ("youtube", "SNAP-Youtube"), ("dblp", "SNAP-DBLP")]
 LALG = ["Fastgreedy", "LPA", "Louvain", "Walktrap", "Infomap*", "TPOC-LPA (repro)", "Ours"]
 def ft2(v): return "$<$0.01" if v < 0.005 else (f"{v:.2f}" if v < 100 else f"{v:.0f}")
-rows = ["\\begin{table}[t]", "\\centering", "\\caption{Execution time (s) of different algorithms on real networks.}", "\\label{tab:latreal}", "\\scriptsize\\setlength{\\tabcolsep}{2.2pt}",
+rows = ["\\begin{table}[!htbp]", "\\centering", "\\caption{Execution time (s) of different algorithms on real networks.}", "\\label{tab:latreal}", "\\scriptsize\\setlength{\\tabcolsep}{2.2pt}",
         "\\begin{tabular}{l" + "r" * len(LALG) + "}", "\\toprule", "Network & " + " & ".join(HDR[a] for a in LALG) + " \\\\", "\\midrule"]
 for g, nm in LR:
     if g not in LREAL: continue
@@ -192,6 +192,7 @@ LAT_TEXT = (
 
 tpl = open(f"{H}/template.tex").read()
 LAT_TEXT = LAT_TEXT.replace("@@T_LAT@@", T_LAT).replace("@@F_LAT@@", F_LAT).replace("@@T_STAGE@@", T_STAGE).replace("@@T_LATREAL@@", T_LATREAL)
-for k, v in {"@@T_REAL@@": T_REAL, "@@T_LFR@@": T_LFR, "@@T_EQ@@": T_EQ, "@@T_OV@@": T_OV, "@@T_PAPER@@": T_PAPER, "@@T_ABL@@": T_ABL, "@@T_DATA@@": T_DATA, "@@LAT_SECTION@@": LAT_TEXT}.items():
+FIGS = {f"@@FIG_{n.upper()}@@": open(f"{H}/figures/fig_{n}.tex").read() for n in ("preamble", "stage1", "stage2", "stage3", "m1", "m2", "m3", "m4", "m6")}
+for k, v in {**FIGS, "@@T_REAL@@": T_REAL, "@@T_LFR@@": T_LFR, "@@T_EQ@@": T_EQ, "@@T_OV@@": T_OV, "@@T_PAPER@@": T_PAPER, "@@T_ABL@@": T_ABL, "@@T_DATA@@": T_DATA, "@@LAT_SECTION@@": LAT_TEXT}.items():
     tpl = tpl.replace(k, v)
 open(f"{H}/main.tex", "w").write(tpl); print("wrote main.tex", len(tpl))

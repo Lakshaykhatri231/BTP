@@ -1,12 +1,21 @@
 \documentclass[conference]{IEEEtran}
 \IEEEoverridecommandlockouts
 \usepackage{cite}
+% IEEEtran asks for Times, which XeTeX cannot load by name; use the TeX Gyre clones so bold and italic work
+\usepackage{fontspec}
+\setmainfont{texgyretermes}[Extension=.otf, UprightFont=*-regular, BoldFont=*-bold, ItalicFont=*-italic, BoldItalicFont=*-bolditalic]
+\setsansfont{texgyreheros}[Extension=.otf, UprightFont=*-regular, BoldFont=*-bold, ItalicFont=*-italic, BoldItalicFont=*-bolditalic]
+\setmonofont{texgyrecursor}[Extension=.otf, UprightFont=*-regular, BoldFont=*-bold, ItalicFont=*-italic, BoldItalicFont=*-bolditalic]
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{float}
+\usepackage{stfloats} % lets full-width figures sit at the bottom of the page where they are introduced
+% let figure pages hold up to three full-width figures, so the method figures stay together and do not drift into the results
+\raggedbottom
+\setcounter{dbltopnumber}{1}\renewcommand{\dbltopfraction}{0.95}\renewcommand{\dblfloatpagefraction}{0.85}\renewcommand{\textfraction}{0.05}\renewcommand{\topfraction}{0.9}\def\dblbotfraction{0.6}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{tikz}
@@ -15,7 +24,7 @@
 \usepackage{url}
 \def\UrlBreaks{\do\/\do\-\do\.\do\_}
 \urlstyle{same}
-\usetikzlibrary{shapes.geometric,shapes.misc,arrows.meta,positioning,fit,backgrounds,calc}
+\usetikzlibrary{shapes.geometric,shapes.misc,shapes.arrows,arrows.meta,positioning,fit,backgrounds,calc}
 \usepackage[colorlinks=true,citecolor=blue,urlcolor=blue,linkcolor=black,bookmarks=false,pdftitle={SN-LPA: Size Normalized Label Propagation Algorithm},pdfauthor={Lakshay, Aman Tomar}]{hyperref}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em T\kern-.1667em\lower.7ex\hbox{E}\kern-.125em X}}
 \algrenewcommand\algorithmicrequire{\textbf{Input:}}
@@ -36,7 +45,40 @@
   arr/.style={-{Stealth[length=1.8mm,width=1.5mm]}, thick},
   lab/.style={font=\scriptsize\itshape, inner sep=1pt}
 }
+\definecolor{pc0}{HTML}{2A78D6}
+\definecolor{pc1}{HTML}{EB6834}
+\definecolor{pc2}{HTML}{1BAF7A}
+\definecolor{pc3}{HTML}{EDA100}
+\definecolor{pc4}{HTML}{6250D6}
+\definecolor{pc5}{HTML}{E87BA4}
+\definecolor{pc6}{HTML}{008300}
+\definecolor{pc7}{HTML}{E34948}
+\definecolor{pc8}{HTML}{9C6B4E}
+\definecolor{pc9}{HTML}{A6A6A6}
+\definecolor{pc10}{HTML}{17BECF}
+\definecolor{edgec}{HTML}{7F93BD}
+\definecolor{arrowc}{HTML}{4A6FB5}
+\definecolor{badc}{HTML}{C0392B}
+\definecolor{goodc}{HTML}{1E7F4F}
+\tikzset{
+  gn/.style={circle, draw=black!85, line width=0.5pt, minimum size=5.2mm, inner sep=0pt, font=\sffamily\fontsize{7}{7}\selectfont},
+  gns/.style={circle, draw=black!85, line width=0.4pt, minimum size=3.2mm, inner sep=0pt},
+  ge/.style={draw=edgec, line width=0.55pt},
+  barrow/.style={single arrow, fill=arrowc, draw=none, minimum height=8mm, inner xsep=0pt, inner ysep=1.25mm, single arrow head extend=1.5mm, single arrow head indent=0pt},
+  ptitle/.style={font=\scriptsize, anchor=south, inner sep=1pt, align=center},
+  pstat/.style={font=\scriptsize, anchor=north, inner sep=1pt, align=center},
+  ring/.style={circle, draw=badc, line width=1.2pt, minimum size=7.2mm, inner sep=0pt},
+  elab/.style={font=\sffamily\fontsize{6.2}{6.6}\selectfont, align=center, fill=white, fill opacity=0.9, text opacity=1, inner sep=0.6pt},
+  note/.style={font=\scriptsize, align=center, inner sep=1.5pt},
+  ibox/.style={font=\scriptsize, align=left, inner sep=4pt, anchor=north west},
+}
 
+
+% IEEE style: bold abstract and index terms with italic headings
+\renewenvironment{abstract}{\par\noindent\footnotesize\fontseries{b}\selectfont\textit{Abstract}---\ignorespaces}{\par\vspace{0.5ex}}
+\renewenvironment{IEEEkeywords}{\par\noindent\footnotesize\textit{Index Terms}---\ignorespaces}{\par\vspace{1ex}}
+% bold only in the abstract: every other \textbf/\bfseries prints in the regular weight
+\AtBeginDocument{\renewcommand{\bfdefault}{m}}
 \begin{document}
 
 \title{SN-LPA: Size Normalized Label Propagation Algorithm}
@@ -66,7 +108,7 @@ Under the supervision of Dr.\ Vandana Bhatia\\[0.5ex]
 \maketitle
 
 \begin{abstract}
-Label propagation finds communities in near-linear time, but it is unstable and blind to resolution. TPOC-LPA (Kong et al., 2026) is a recent three-stage variant that seeds communities from node importance, evolves labels by an attractiveness score, and filters labels to allow overlap. We re-implement it and find that its Stage~2 score sums neighbour attractiveness with no size normalisation, so a growing community is rewarded for size alone: on a dense graph (email-Eu) it collapses to one community (NMI 0.00), and on sparse graphs it under-merges. We propose SN-LPA (Size Normalized Label Propagation Algorithm): six modifications, all optional and off by default so that the default behaviour is the published algorithm: a triangle-based similarity, a best-iterate guard, a size-corrected gain, a label-free granularity rule that chooses between the two regimes, a merge pass that stops at the minimum of the map equation, and boundary-node moves scored by the Synwalk objective. We compare SN-LPA with Fastgreedy, LPA, Louvain and Walktrap, re-run on identical graphs, plus Infomap as an extra. It has the best mean rank on 11 real networks and the highest mean NMI on six LFR settings (0.9941 against 0.9905 for Infomap), but it is far behind Infomap on SNAP-Youtube. On overlapping LFR graphs it beats SLPA on four of six families and loses on the two largest, and on the extended modularity EQ it wins on 5 of 12 real networks against SLPA. We also report the ideas that failed and the limits we could not remove.
+Label propagation finds communities in near-linear time, but it is unstable and blind to resolution. TPOC-LPA (Kong et al., 2026) is a recent three-stage variant that seeds communities from node importance, evolves labels by an attractiveness score, and filters labels to allow overlap. We re-implement it and find that its Stage~2 score sums neighbour attractiveness with no size normalisation, so a growing community is rewarded for size alone: on a dense graph (email-Eu) it collapses to one community (NMI 0.00), and on sparse graphs it under-merges. We propose SN-LPA (Size Normalized Label Propagation Algorithm): six modifications, all optional and off by default so that the default behaviour is the published algorithm: a motif (triangle) similarity, a best-iterate guard, a size-corrected gain, a label-free granularity rule that chooses between the two regimes, a merge pass that stops at the minimum of the map equation, and boundary-node moves scored by the Synwalk objective. We compare SN-LPA with Fastgreedy, LPA, Louvain and Walktrap, re-run on identical graphs, plus Infomap as an extra. It has the best mean rank on 11 real networks and the highest mean NMI on six LFR settings (0.9941 against 0.9905 for Infomap), but it is far behind Infomap on SNAP-Youtube. On overlapping LFR graphs it beats SLPA on four of six families and loses on the two largest, and on the extended modularity EQ it wins on 5 of 12 real networks against SLPA. We also report the ideas that failed and the limits we could not remove.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -101,7 +143,7 @@ From this reading and from our experiments we identify the following gaps.
 \subsection{Contributions}\label{sec:contrib}
 \begin{enumerate}
 \item \textbf{Diagnosis.} We re-implement TPOC-LPA and show that its Stage~2 rule is the $\gamma{=}0$ end of a size-corrected family, which explains both the collapse on dense graphs and the under-merging on sparse ones (Sec.~\ref{sec:problem}).
-\item \textbf{SN-LPA, a pipeline of six optional modifications (M1--M6),} with the published behaviour as the default: triangle similarity, best-iterate guard, size-corrected gain, a label-free granularity rule that chooses between the two regimes, a merge pass stopped by the map equation, and boundary moves scored by the Synwalk objective with a regularised acceptance gate. The ideas come from existing work; the specific combination, the rule and the gate are ours (Sec.~\ref{sec:arch}). We give the algorithm in pseudocode (Algorithms~\ref{alg:base}--\ref{alg:moves}).
+\item \textbf{SN-LPA, a pipeline of six optional modifications,} with the published behaviour as the default: motif (triangle) similarity, best-iterate guard, size-corrected gain, a label-free granularity rule that chooses between the two regimes, a merge pass stopped by the map equation, and boundary moves scored by the Synwalk objective with a regularised acceptance gate. The ideas come from existing work; the specific combination, the rule and the gate are ours (Sec.~\ref{sec:arch}). We give the algorithm in pseudocode (Algorithms~\ref{alg:base}--\ref{alg:moves}).
 \item \textbf{A like-for-like comparison.} We re-run the baselines of~\cite{kong2026} that have public code, plus Infomap, on identical graphs with identical metric code, and report wins and losses, including the results that do not favour us (Sec.~\ref{sec:results}).
 \item \textbf{Negative results and limits.} We report the ideas that failed and the gaps we could not close (Sec.~\ref{sec:discussion}).
 \end{enumerate}
@@ -121,11 +163,77 @@ Raghavan et al.~\cite{raghavan2007} introduced the majority-vote rule. Leung et 
 The clique percolation method of Palla et al.~\cite{palla2005} made overlap a central topic. In label propagation, COPRA~\cite{gregory2010} lets each node hold several labels with belonging coefficients, and SLPA~\cite{xie2011} stores the labels a node has received over $T$ rounds and keeps those whose relative frequency exceeds a threshold $r$; it is the best known overlapping label-propagation baseline and we use it. Ego-splitting~\cite{epasto2017} clusters a graph whose nodes are the ``personas'' of each node. TPOC-LPA~\cite{kong2026} filters labels by a weighted affiliation score (WAS) and keeps those above a threshold times the node's mean score.
 
 \subsection{Resolution Limit, Map Equation and Random-Walk Objectives}
-Fortunato and Barth\'elemy~\cite{fortunato2007} showed that modularity cannot resolve communities smaller than a scale that depends on the total number of links in the network. The map equation~\cite{rosvall2008} avoids this: Kawamoto and Rosvall~\cite{kawamoto2015} derive that its resolution limit is set by the number of links \emph{between} modules instead. On sparse networks the map equation tends to over-fit, which regularised versions address with a prior on unobserved links~\cite{smiljanic2020}. Synwalk~\cite{toth2022} fits a random-walk model to a partition and is reported to outperform Infomap on networks with high mixing. These three results are what our merge stop (M5) and boundary moves (M6) rest on.
+Fortunato and Barth\'elemy~\cite{fortunato2007} showed that modularity cannot resolve communities smaller than a scale that depends on the total number of links in the network. The map equation~\cite{rosvall2008} avoids this: Kawamoto and Rosvall~\cite{kawamoto2015} derive that its resolution limit is set by the number of links \emph{between} modules instead. On sparse networks the map equation tends to over-fit, which regularised versions address with a prior on unobserved links~\cite{smiljanic2020}. Synwalk~\cite{toth2022} fits a random-walk model to a partition and is reported to outperform Infomap on networks with high mixing. These three results are what our map-equation merge and Synwalk boundary moves rest on.
+
+\textbf{The map equation.} Two of our modifications, the map-equation merge and the Synwalk boundary moves, use the map equation~\cite{rosvall2008}, so we introduce it here. Imagine describing the path of a random walker on the graph with as few bits as possible. If the nodes are grouped into modules, each module gets its own short codebook for node names, and one extra code announces a move from one module to another. A partition that matches real communities keeps the walker inside a module most of the time, so the module codebooks are used often and the announcement code rarely, and the description is short. The expected description length per step is the \emph{codelength} $L$. For an undirected graph, with module exit rates $q_i=\mathrm{cut}_i/2m$, module visit rates $p_i=\mathrm{vol}_i/2m$, node visit rates $p_\alpha=k_\alpha/2m$, $q=\sum_iq_i$ and $f(x)=x\log_2x$,
+\begin{equation}
+L=f(q)-2\sum_if(q_i)+\sum_if(q_i+p_i)-\sum_\alpha f(p_\alpha).\label{eq:L}
+\end{equation}
+Lower is better. Merging two modules saves the announcements between them but lengthens the codebook of the merged module, so $L$ falls only if the two modules are linked strongly enough; this is why its resolution limit depends on the links between modules and not on the size of the whole graph~\cite{kawamoto2015}. Our implementation reproduces the codelength of the Infomap package (to $10^{-15}$ for this form, and to four decimals for the regularised form below). On sparse graphs $L$ can over-fit; the \emph{regularised} codelength $L_{\mathrm{reg}}$~\cite{smiljanic2020} is the map equation of $G$ plus a complete graph of small weight $\ln N/N$ on every pair of nodes, which stops it from trusting thin local patterns.
+
+\textbf{The Synwalk objective.} Synwalk~\cite{toth2022} scores a partition by a sum over modules of
+\begin{equation}
+j(\mathrm{vol},\mathrm{cut})=\frac{\mathrm{vol}-\mathrm{cut}}{2m}\ln\frac{1-\mathrm{cut}/\mathrm{vol}}{\mathrm{vol}/2m}+\frac{\mathrm{cut}}{2m}\ln\frac{\mathrm{cut}/\mathrm{vol}}{1-\mathrm{vol}/2m},\label{eq:synwalk}
+\end{equation}
+which is the KL divergence between a module's stay/leave probabilities and those of a walker placed at random, weighted by the module's visit rate.
+
+Algorithms~\ref{alg:merge} and~\ref{alg:moves} give the pseudocode of the two procedures that SN-LPA builds on these objectives: a greedy merge that stops at the minimum of $L$ (used by the map-equation merge, Sec.~\ref{sec:arch}) and single-node moves scored by Synwalk with a gate on $L_{\mathrm{reg}}$ (used by the boundary moves).
+
+\begin{algorithm}[!t]
+\footnotesize
+\caption{\textsc{MapEqMerge}$(G,L)$: map-equation merge}\label{alg:merge}
+\begin{algorithmic}[1]
+\Require graph $G$, partition $L$
+\Ensure partition at the lowest codelength along the merge sequence
+\State $H\gets$ max-heap of $(\Delta Q(a,b),a,b)$ over adjacent communities with $\Delta Q>0$
+\State $L_{best}\gets L(\text{input})$ by Eq.~\eqref{eq:L}; $k\gets0$; $k^{*}\gets0$; $seq\gets[\,]$
+\While{$H\neq\emptyset$}
+  \State pop $(g,a,b)$
+  \If{$a$ or $b$ no longer exists, or not adjacent} \textbf{continue} \EndIf
+  \If{$g\neq\Delta Q(a,b)$ (outdated)}
+    \State re-insert with the current value if positive; \textbf{continue}
+  \EndIf
+  \State merge $b$ into $a$; append $(a,b)$ to $seq$; $k\gets k+1$
+  \State update the terms of Eq.~\eqref{eq:L} for $a$, $b$ to get $L_{cur}$
+  \If{$L_{cur}<L_{best}-\varepsilon$}
+    \State $L_{best}\gets L_{cur}$; $k^{*}\gets k$
+  \EndIf
+  \State push $(\Delta Q(a,c),a,c)$ for neighbours $c$ of $a$ with $\Delta Q>0$
+\EndWhile
+\State \Return the input partition after the first $k^{*}$ merges of $seq$
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[!t]
+\footnotesize
+\caption{\textsc{SynwalkMoves}$(G,NI,L,S)$: Synwalk boundary moves}\label{alg:moves}
+\begin{algorithmic}[1]
+\Require graph $G$, importance $NI$, partition $L$, sweeps $S$
+\Ensure partition $L'$ (or $L$ if the gate rejects the pass)
+\State $L'\gets L$; compute $\mathrm{vol}$, $\mathrm{cut}$ of every module
+\For{$s=1$ \textbf{to} $S$}
+  \State $changed\gets0$
+  \For{all $i\in V$ in descending $NI(i)$}
+    \State $a\gets L'(i)$; count links $k_{ib}$ into each neighbouring module $b\ne a$
+    \State $\Delta J_b\gets j(a')+j(b')-j(a)-j(b)$ for each such $b$ \Comment{Eq.~\eqref{eq:move}}
+    \State $b^{*}\gets\argmax_b\Delta J_b$
+    \If{$\Delta J_{b^{*}}>0$}
+      \State move $i$ to $b^{*}$; update $\mathrm{vol}$, $\mathrm{cut}$; $changed\gets changed+1$
+    \EndIf
+  \EndFor
+  \If{$changed=0$} \textbf{break} \EndIf
+\EndFor
+\If{$L_{\mathrm{reg}}(L')<L_{\mathrm{reg}}(L)$}
+  \State \Return $L'$
+\Else
+  \State \Return $L$ \Comment{the gate rejects the pass}
+\EndIf
+\end{algorithmic}
+\end{algorithm}
 
 \subsection{TPOC-LPA and Where We Stand}
 Table~\ref{tab:related} summarises how the methods above relate to this work. TPOC-LPA~\cite{kong2026} combines node importance, a CTS-gated pre-selection and WAS filtering, but it has no size correction, no resolution control and no calibrated overlap rate. We keep all of its stages and replace or extend the middle of the pipeline.
-\begin{table}[H]
+\begin{table}[!t]
 \centering
 \caption{Related methods and their role in this work.}
 \label{tab:related}
@@ -135,18 +243,21 @@ Table~\ref{tab:related} summarises how the methods above relate to this work. TP
 Method & Key idea & Used here as \\
 \midrule
 LPA~\cite{raghavan2007} & Majority label vote & Baseline (run) \\
-LPAm / LPAm+~\cite{barber2009,liu2010} & Modularity gain; greedy merge & Size-corrected gain (M3); merge order (M5) \\
-Li et al.~\cite{li2020motif} & Triangle-weighted propagation & Motivation for M1 \\
+LPAm / LPAm+~\cite{barber2009,liu2010} & Modularity gain; greedy merge & Size-normalised gain; merge order \\
+Li et al.~\cite{li2020motif} & Triangle-weighted propagation & Motivation for the motif similarity \\
 Louvain, Fastgreedy~\cite{blondel2008,clauset2004} & Modularity optimisation & Baselines (run) \\
 Walktrap~\cite{pons2006} & Walk distances & Baseline (run) \\
-Infomap~\cite{rosvall2008,kawamoto2015,smiljanic2020} & Map equation; resolution limit; regularisation & Extra baseline; merge stop (M5); gate (M6) \\
-Synwalk~\cite{toth2022} & Walk-model objective $J$ & Move score (M6) \\
+Infomap~\cite{rosvall2008,kawamoto2015,smiljanic2020} & Map equation; resolution limit; regularisation & Extra baseline; merge stop; move gate \\
+Synwalk~\cite{toth2022} & Walk-model objective $J$ & Boundary-move score \\
 SLPA~\cite{xie2011} & Label memory, threshold $r$ & Overlap baseline (run) \\
 TPOC-LPA~\cite{kong2026} & NI seeds, CTS, WAS & Baseline (re-implemented) \\
 \bottomrule
 \end{tabular}
 \end{table}
+
 \textbf{Sourcing note.} The cited methods support the ideas we use; they do not show that the ideas work inside TPOC-LPA. That evidence is our experiments, including the ones that failed. We read several of the cited papers only in part (the abstracts and the sections defining the objectives we use), and we had no access to the full text of~\cite{li2020motif}.
+
+\textbf{Position of this work.} SN-LPA lies between label propagation and objective-based methods. Like LPAm and LPAm+~\cite{barber2009,liu2010} it subtracts a null-model term from the propagation score, but it keeps the node-importance weights and the three stages of TPOC-LPA, and it uses the size-normalised run only when the granularity rule accepts it. Like Infomap~\cite{rosvall2008} it uses the map equation, but only to decide where a merge sequence stops and to gate the boundary moves, not to search for the partition itself. Like Synwalk~\cite{toth2022} it scores moves with a random-walk objective, but only for single boundary nodes after Stage~2. None of these steps uses ground-truth labels, and each can be switched off, so the published algorithm remains the default.
 
 %=====================================================================
 \section{Methodology}\label{sec:method}
@@ -154,7 +265,7 @@ TPOC-LPA~\cite{kong2026} & NI seeds, CTS, WAS & Baseline (re-implemented) \\
 We use four groups of graphs. All graphs are treated as undirected and unweighted. (We found that the Karate graph shipped with networkx carries edge weights; we removed them, see Sec.~\ref{sec:discussion}.)
 
 \textbf{Real networks with ground truth.} Table~\ref{tab:data} lists them: Karate~\cite{zachary1977}, Dolphin (four groups reconstructed from the original study~\cite{lusseau2003}), Football~\cite{girvan2002} (conferences), Polbooks (political leaning), Polblogs~\cite{adamic2005}, email-Eu-core (departments, from~\cite{yin2017}), Cora and Citeseer~\cite{sen2008} (paper classes), and three SNAP graphs with ground-truth communities~\cite{yang2012}. The SNAP graphs are our own induced subgraphs, $2.6$--$3.9\times$ larger than the subsets used in~\cite{kong2026}, with the first listed community as the label of each node; absolute values are therefore not comparable to the paper, only across our columns. Karate to Citeseer use the largest connected component.
-\begin{table}[H]
+\begin{table}[!htb]
 \centering
 \caption{Real networks used in the experiments.}
 \label{tab:data}
@@ -179,7 +290,7 @@ SNAP-DBLP & 93{,}432 & 335{,}520 & 4{,}923 & first community \\
 \end{table}
 
 \textbf{LFR benchmarks (disjoint).} We use the generator of Lancichinetti et al.~\cite{lfr2008} with the six settings of~\cite{kong2026} (Table~\ref{tab:lfrparam}): average degree 20, power-law exponents $\tau_1=3$, $\tau_2=1.5$, mixing $\mu\in\{0.1,0.6\}$. The generator in networkx realises a mixing far above its nominal value (nominal 0.6 gives about 0.84), so we search the nominal value until the \emph{realised} mixing equals the target. For $n=1000$ the minimum community size is 15 instead of 10, since 10 is infeasible with degree 20 in this generator. Five graphs (seeds 1--5) are generated per setting.
-\begin{table}[H]
+\begin{table}[!htb]
 \centering
 \caption{LFR settings for disjoint communities.}
 \label{tab:lfrparam}
@@ -201,7 +312,7 @@ N5 / N6 & 10000 & 100 & 20--200 & 0.1 / 0.6 \\
 
 \subsection{Evaluation Metrics}\label{sec:metrics}
 We report two kinds of metrics. \emph{External} metrics compare a detected result $X$ with the ground truth $Y$ and measure agreement; \emph{internal} metrics (modularity, EQ) need no ground truth and measure how well the result fits the graph's own structure. The two can disagree: a partition with higher modularity can match the truth worse, as we show on Karate. Throughout, $N$ is the number of nodes and $m$ the number of edges; all scores are better when higher. Table~\ref{tab:metrics} gives an overview, and the rest of this subsection explains each metric and gives its definition.
-\begin{table}[H]
+\begin{table}[!htb]
 \centering
 \caption{Evaluation metrics.}
 \label{tab:metrics}
@@ -279,7 +390,7 @@ Evaluated directly this costs $O(\sum_c|c|^2)$. We use the equivalent form
 with $s_{uw}$ the number of communities shared by $u$ and $w$, and $S_c=\sum_{u\in c}k_u/O_u$. It costs $O(m)$, and we verified it against the direct sum.
 
 \subsection{Baseline: TPOC-LPA}\label{sec:base}
-Fig.~\ref{fig:base} shows the architecture and Algorithm~\ref{alg:base} the pseudocode, which follows Algorithm~1 of~\cite{kong2026}. 
+Algorithm~\ref{alg:base} gives the pseudocode, which follows Algorithm~1 of~\cite{kong2026}. 
 
 \textbf{Node importance.} For node $i$ with degree $d_i$ and $c_i$ edges among its neighbours, $f_i=d_i\,(1+c_i/\sum_kc_k)$ is min--max scaled to $e_i=0.5+0.5\,\frac{f_i-f_{\min}}{f_{\max}-f_{\min}}$, and
 \begin{equation}
@@ -350,77 +461,50 @@ and $i$ keeps, besides its own label, every $c$ with $\mathrm{WAS}(i,c)\ge\beta\
 \end{algorithmic}
 \end{algorithm}
 
-\begin{figure}[t]
-\centering
-\begin{tikzpicture}[node distance=4.2mm]
-\node[term] (s) {Start};
-\node[io, below=of s] (in) {Input graph $G=(V,E)$};
-\node[proc, below=of in, text width=55mm] (ni) {Node importance $NI(i)$ for all nodes\\(Eq.\,\ref{eq:ni}); rank nodes by $NI$};
-\node[proc, below=of ni, text width=55mm] (s1) {\textbf{Stage 1: pre-selection}\\ core = highest-$NI$ unlabelled node;\\ neighbours join while CTS gate $\ge\alpha$};
-\node[dec, below=of s1] (d1) {Unlabelled\\nodes left?};
-\node[proc, below=7mm of d1, text width=55mm] (s2) {\textbf{Stage 2: evolution}\\ $A(i,j)=NI(i)NI(j)/(2-\mathrm{Sim})^2$, Jaccard\\ node takes $\argmax_c\sum_{j\in c}A(i,j)$\\ \textit{(plain sum: no size term)}};
-\node[dec, below=of s2] (d2) {Labels\\changed?};
-\node[proc, below=7mm of d2, text width=55mm] (s3) {\textbf{Stage 3: label filtering}\\ $\mathrm{WAS}(i,c)$ (Eq.\,\ref{eq:was}); keep label $c$\\ if $\mathrm{WAS}\ge\beta\cdot$mean};
-\node[io, below=of s3] (out) {Output: overlapping communities};
-\node[term, below=of out] (e) {End};
-\draw[arr] (s)--(in); \draw[arr] (in)--(ni); \draw[arr] (ni)--(s1); \draw[arr] (s1)--(d1);
-\draw[arr] (d1)--(s2) node[lab, pos=.4, right]{no};
-\coordinate (p1) at ($(d1.east -| s1.east)+(7mm,0)$);
-\draw (d1.east) -- (p1) node[lab, pos=.5, above]{yes};
-\draw[arr] (p1) -- (p1 |- s1.east) -- (s1.east);
-\draw[arr] (s2)--(d2);
-\draw[arr] (d2)--(s3) node[lab, pos=.4, right]{no};
-\coordinate (p2) at ($(d2.east -| s2.east)+(7mm,0)$);
-\draw (d2.east) -- (p2) node[lab, pos=.5, above]{yes};
-\draw[arr] (p2) -- (p2 |- s2.east) -- (s2.east);
-\draw[arr] (s3)--(out); \draw[arr] (out)--(e);
-\end{tikzpicture}
-\caption{Architecture of the baseline TPOC-LPA~\cite{kong2026}. Oval = start/end, parallelogram = input/output, rectangle = process, diamond = decision.}
-\label{fig:base}
-\end{figure}
 
 \subsection{Problems with the Baseline}\label{sec:problem}
 Reading Algorithm~\ref{alg:base} against our experiments, we find the following problems.
 \begin{enumerate}
-\item \textbf{Unbounded size effect (collapse).} Eq.~\eqref{eq:stage2} adds up neighbour attractiveness. If community $c$ has $n_c$ nodes, a node adjacent to it tends to have more neighbours inside $c$ as $n_c$ grows, so $\sum_{j\in c}A(i,j)$ tends to grow with the size of $c$ alone. The larger community then attracts more nodes, which makes it larger: a rich-get-richer dynamic with nothing that bounds it. On email-Eu this runs away: Stage~1 gives 335 communities at NMI 0.5415 and Stage~2 ends with one community and NMI 0.0000. On LFR graphs with realised $\mu=0.7$ the average NMI is 0.05.
+\item \textbf{Unbounded size effect (collapse).} Eq.~\eqref{eq:stage2} adds up neighbour attractiveness. If community $c$ has $n_c$ nodes, a node adjacent to it tends to have more neighbours inside $c$ as $n_c$ grows, so $\sum_{j\in c}A(i,j)$ tends to grow with the size of $c$ alone. The larger community then attracts more nodes, which makes it larger: a rich-get-richer dynamic with nothing that bounds it. On email-Eu this runs away: Stage~1 gives 335 communities at NMI 0.5415 and Stage~2 ends with one community and NMI 0.0000. On LFR graphs with realised $\mu=0.7$ the average NMI is 0.05. Fig.~\ref{fig:m3} shows the mechanism on a small graph.
 \item \textbf{Under-merging on sparse graphs.} When degrees are low, a node has few neighbours in any community and the sum is small, so fragments from Stage~1 do not merge. On Cora the baseline ends with 214 communities for 7 classes.
 \item \textbf{The rule is only one end of a family.} Eq.~\eqref{eq:stage2} is the $\gamma=0$ end of
 \begin{equation}
 \mathrm{gain}(c)=\sum_{j\in N(i)\cap c}A(i,j)-\gamma\,\frac{s_i\,S_c}{W},\label{eq:gain}
 \end{equation}
 where $s_i=\sum_jA(i,j)$, $S_c=\sum_{k\in c}s_k$ and $W=\sum_is_i$. The subtracted term is the attraction expected in a random graph with the same strengths; it grows with $S_c$ and so bounds the effect in item~1. $\gamma=1$ is the LPAm gain~\cite{barber2009} with importance-weighted edges. No single $\gamma$ suits all graphs: a sweep of $\gamma$ from 0.1 to 0.75 found none that works in both regimes.
-\item \textbf{The similarity can under-score tight communities.} Two well-connected nodes of one community share many neighbours but have a large union, so Jaccard in Eq.~\eqref{eq:A} gives a low value for a strong link.
-\item \textbf{The last iterate is not always the best.} Stage~2 stops at a fixed point, which can be its worst round (the collapse in item~1).
+\item \textbf{The similarity can under-score tight communities.} Two well-connected nodes of one community share many neighbours but have a large union, so Jaccard in Eq.~\eqref{eq:A} gives a low value for a strong link (Fig.~\ref{fig:m1}).
+\item \textbf{The last iterate is not always the best.} Stage~2 stops at a fixed point, which can be its worst round (the collapse in item~1; Fig.~\ref{fig:m2}).
 \item \textbf{No control of the scale after Stage~2.} Nothing merges fragments at the right scale, and the only merge steps in related work use modularity, whose resolution limit can destroy a good partition (Sec.~\ref{sec:results}).
 \item \textbf{Boundary nodes are not repaired.} Label propagation is least reliable at community boundaries, and nothing re-examines those nodes afterwards. On LFR graphs most of the remaining error is boundary nodes; at $\mu=0.6$ about half of the misplaced nodes have more links into another true community than into their own, so some of this error cannot be removed by any local rule.
 \item \textbf{The overlap rate is fixed by $\beta$.} Stage~3 uses the same threshold on every graph (we return to this in Sec.~\ref{sec:discussion}).
 \end{enumerate}
 
 \subsection{Proposed Methodology}\label{sec:arch}
-Fig.~\ref{fig:ours} shows the architecture of the proposed pipeline, SN-LPA (Size Normalized Label Propagation Algorithm); its central change is the size-normalised Stage~2 gain (M3). Stage~1 and Stage~3 of Algorithm~\ref{alg:base} are unchanged; Stage~2 is modified and two new steps follow it. The six modifications M1--M6 address problems 4, 5, 1--2, 3, 6 and 7 of Sec.~\ref{sec:problem}, respectively. Every option defaults to off, so the default code path is Algorithm~\ref{alg:base}. In the code they are labelled CHANGE 1, 2, 3, 4, 6 and 9. The pseudocode is given in Algorithms~\ref{alg:ours}--\ref{alg:moves}, in the same style as Algorithm~\ref{alg:base}.
+The proposed pipeline, SN-LPA (Size Normalized Label Propagation Algorithm), keeps the three stages of TPOC-LPA; its central change is the size-normalised Stage~2 gain. Stage~1 and Stage~3 of Algorithm~\ref{alg:base} are unchanged; Stage~2 is modified and two new steps follow it. The six modifications (the motif similarity, the best-iterate guard, the size-normalised gain, the granularity rule, the map-equation merge and the Synwalk boundary moves) address problems 4, 5, 1--2, 3, 6 and 7 of Sec.~\ref{sec:problem}, respectively. Every option defaults to off, so the default code path is Algorithm~\ref{alg:base}. In the code they are labelled CHANGE 1, 2, 3, 4, 6 and 9. Algorithm~\ref{alg:ours} gives the pseudocode, in the same style as Algorithm~\ref{alg:base}; the merge and move procedures it calls are Algorithms~\ref{alg:merge} and~\ref{alg:moves} (Sec.~\ref{sec:related}). We first run the whole pipeline stage by stage on a small example (Figs.~\ref{fig:stage1}--\ref{fig:stage3}); after the description of each modification we then illustrate that modification on its own.
 
-\noindent Here \textsc{Evolve}$(L_1,\gamma)$ denotes Stage~2 started from the Stage~1 partition $L_1$, with the gain of Eq.~\eqref{eq:gain}; $\gamma=0$ gives Eq.~\eqref{eq:stage2}.
+
+Here \textsc{Evolve}$(L_1,\gamma)$ denotes Stage~2 started from the Stage~1 partition $L_1$, with the gain of Eq.~\eqref{eq:gain}; $\gamma=0$ gives Eq.~\eqref{eq:stage2}.
 
 \begin{algorithm}[!t]
 \footnotesize
-\caption{Proposed pipeline (M1--M6)}\label{alg:ours}
+\caption{Proposed pipeline (SN-LPA)}\label{alg:ours}
 \begin{algorithmic}[1]
 \Require $G=(V,E)$, $\alpha$, $\beta$, $\gamma{=}1$, $\rho{=}1.5$, $max\_iter$, sweeps $S{=}20$
 \Ensure Disjoint partition $L$, overlapping set $Communities$
 \algcomment{Step 1: pre-selection (unchanged)}
 \State $L_1\gets$ result of Step 1 of Algorithm~\ref{alg:base}
 \algcomment{Step 2$'$: community evolution (modified)}
-\State $\mathrm{Sim}(i,j)\gets c_{ij}/(1+c_{ij})$ for all edges \Comment{M1}
+\State $\mathrm{Sim}(i,j)\gets c_{ij}/(1+c_{ij})$ for all edges \Comment{motif}
 \State $L^{(0)}\gets\textsc{Evolve}(L_1,\gamma{=}0)$ \Comment{Eq.~\eqref{eq:stage2}}
-\State \hspace{\algorithmicindent}keep the round with the largest $Q$ \Comment{M2}
-\State $L^{(1)}\gets\textsc{Evolve}(L_1,\gamma{=}1)$ \Comment{M3, Eq.~\eqref{eq:gain}}
-\If{$|L^{(1)}|\le\rho\,|L^{(0)}|$} \Comment{M4, Eq.~\eqref{eq:gran}}
+\State \hspace{\algorithmicindent}keep the round with the largest $Q$ \Comment{guard}
+\State $L^{(1)}\gets\textsc{Evolve}(L_1,\gamma{=}1)$ \Comment{norm.\ gain, Eq.~\eqref{eq:gain}}
+\If{$|L^{(1)}|\le\rho\,|L^{(0)}|$} \Comment{granularity, Eq.~\eqref{eq:gran}}
   \State $L\gets L^{(1)}$
 \Else
   \State $L\gets L^{(0)}$
 \EndIf
-\State $L\gets\textsc{MapEqMerge}(G,L)$ \Comment{M5, Alg.~\ref{alg:merge}}
-\State $L\gets\textsc{SynwalkMoves}(G,NI,L,S)$ \Comment{M6, Alg.~\ref{alg:moves}}
+\State $L\gets\textsc{MapEqMerge}(G,L)$ \Comment{merge, Alg.~\ref{alg:merge}}
+\State $L\gets\textsc{SynwalkMoves}(G,NI,L,S)$ \Comment{moves, Alg.~\ref{alg:moves}}
 \algcomment{Step 3: community label filtering (unchanged)}
 \For{all $i\in V$} $Communities[i]\gets\{L(i)\}$ \EndFor
 \For{all $i\in V$ with $|CL|>1$}
@@ -431,147 +515,1973 @@ Fig.~\ref{fig:ours} shows the architecture of the proposed pipeline, SN-LPA (Siz
 \end{algorithmic}
 \end{algorithm}
 
-\begin{algorithm}[!t]
-\footnotesize
-\caption{\textsc{MapEqMerge}$(G,L)$ (M5)}\label{alg:merge}
-\begin{algorithmic}[1]
-\Require graph $G$, partition $L$
-\Ensure partition at the lowest codelength along the merge sequence
-\State $H\gets$ max-heap of $(\Delta Q(a,b),a,b)$ over adjacent communities with $\Delta Q>0$
-\State $L_{best}\gets L(\text{input})$ by Eq.~\eqref{eq:L}; $k\gets0$; $k^{*}\gets0$; $seq\gets[\,]$
-\While{$H\neq\emptyset$}
-  \State pop $(g,a,b)$
-  \If{$a$ or $b$ no longer exists, or not adjacent} \textbf{continue} \EndIf
-  \If{$g\neq\Delta Q(a,b)$ (outdated)}
-    \State re-insert with the current value if positive; \textbf{continue}
-  \EndIf
-  \State merge $b$ into $a$; append $(a,b)$ to $seq$; $k\gets k+1$
-  \State update the terms of Eq.~\eqref{eq:L} for $a$, $b$ to get $L_{cur}$
-  \If{$L_{cur}<L_{best}-\varepsilon$}
-    \State $L_{best}\gets L_{cur}$; $k^{*}\gets k$
-  \EndIf
-  \State push $(\Delta Q(a,c),a,c)$ for neighbours $c$ of $a$ with $\Delta Q>0$
-\EndWhile
-\State \Return the input partition after the first $k^{*}$ merges of $seq$
-\end{algorithmic}
-\end{algorithm}
+\textbf{Worked example.} Before describing the individual steps, Figs.~\ref{fig:stage1}--\ref{fig:stage3} run SN-LPA stage by stage on a 16-node graph with three planted communities (nodes 1--7, 8--12 and 13--16), in the style of Figs.~4--6 of~\cite{kong2026}. The example graphs in Figs.~\ref{fig:stage1}--\ref{fig:m6} are small planted-partition graphs. We found them by running the code on random graphs of this kind and keeping one on which the behaviour in question occurs, so they show how each step works, not how often it helps; that evidence is in Sec.~\ref{sec:results}. Every partition and number in these figures is the output of our implementation on the graph shown.
 
-\begin{algorithm}[!t]
-\footnotesize
-\caption{\textsc{SynwalkMoves}$(G,NI,L,S)$ (M6)}\label{alg:moves}
-\begin{algorithmic}[1]
-\Require graph $G$, importance $NI$, partition $L$, sweeps $S$
-\Ensure partition $L'$ (or $L$ if the gate rejects the pass)
-\State $L'\gets L$; compute $\mathrm{vol}$, $\mathrm{cut}$ of every module
-\For{$s=1$ \textbf{to} $S$}
-  \State $changed\gets0$
-  \For{all $i\in V$ in descending $NI(i)$}
-    \State $a\gets L'(i)$; count links $k_{ib}$ into each neighbouring module $b\ne a$
-    \State $\Delta J_b\gets j(a')+j(b')-j(a)-j(b)$ for each such $b$ \Comment{Eq.~\eqref{eq:move}}
-    \State $b^{*}\gets\argmax_b\Delta J_b$
-    \If{$\Delta J_{b^{*}}>0$}
-      \State move $i$ to $b^{*}$; update $\mathrm{vol}$, $\mathrm{cut}$; $changed\gets changed+1$
-    \EndIf
-  \EndFor
-  \If{$changed=0$} \textbf{break} \EndIf
-\EndFor
-\If{$L_{\mathrm{reg}}(L')<L_{\mathrm{reg}}(L)$}
-  \State \Return $L'$
-\Else
-  \State \Return $L$ \Comment{the gate rejects the pass}
-\EndIf
-\end{algorithmic}
-\end{algorithm}
+\emph{Stage 1} (Fig.~\ref{fig:stage1}). In (a) no node has a label. Node~2 has the largest $NI$ and becomes the first core (b). Its free neighbours are tried in decreasing $NI$, and each may join only if the tightness--sparsity value CTS of the grown community does not fall ($\alpha=1$). Nodes 5 and 3 join (c; CTS 0.265 and 0.588), then nodes 4 and 7 (d; 0.611 and 0.825). Adding node~9 or node~6 would give 0.778 or 0.798, below 0.825, so both stay free. The free node with the next-largest $NI$ then becomes a core and the loop repeats: node~1 takes 6 and 15 (e; CTS 0.269 and 0.375), node~9 takes 11, 10 and 12 (f; 0.273, 0.667 and 0.700), node~14 has no free neighbour left (g), node~13 takes 16 (h; 0.300), and node~8 stays alone (i). Stage~1 ends with six fragments (NMI 0.705); it is the same as in TPOC-LPA.
+
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}
+\draw[ge] (0.315,12.395) -- (0.673,11.404);
+\draw[ge] (0.315,12.395) -- (1.334,12.223);
+\draw[ge] (0.315,12.395) -- (1.687,11.211);
+\draw[ge] (0.315,12.395) -- (0.968,13.224);
+\draw[ge] (0.315,12.395) -- (1.997,13.038);
+\draw[ge] (2.357,12.035) -- (0.673,11.404);
+\draw[ge] (2.357,12.035) -- (1.334,12.223);
+\draw[ge] (2.357,12.035) -- (1.687,11.211);
+\draw[ge] (2.357,12.035) -- (0.968,13.224);
+\draw[ge] (2.357,12.035) -- (2.738,11.048);
+\draw[ge] (2.357,12.035) -- (3.497,12.056);
+\draw[ge] (0.673,11.404) -- (1.687,11.211);
+\draw[ge] (1.687,11.211) -- (2.738,11.048);
+\draw[ge] (0.968,13.224) -- (0.730,14.250);
+\draw[ge] (4.875,11.178) -- (3.848,11.021);
+\draw[ge] (3.497,12.056) -- (4.532,12.427);
+\draw[ge] (3.497,12.056) -- (3.715,13.084);
+\draw[ge] (3.497,12.056) -- (3.848,11.021);
+\draw[ge] (4.532,12.427) -- (3.715,13.084);
+\draw[ge] (3.715,13.084) -- (2.863,13.708);
+\draw[ge] (0.730,14.250) -- (1.767,14.071);
+\draw[ge] (2.863,13.708) -- (1.997,13.038);
+\draw[ge] (1.997,13.038) -- (1.767,14.071);
+\node[gn, fill=white, text=black] (P1n1) at (0.315,12.395) {1};
+\node[gn, fill=white, text=black] (P1n2) at (2.357,12.035) {2};
+\node[gn, fill=white, text=black] (P1n3) at (0.673,11.404) {3};
+\node[gn, fill=white, text=black] (P1n4) at (1.334,12.223) {4};
+\node[gn, fill=white, text=black] (P1n5) at (1.687,11.211) {5};
+\node[gn, fill=white, text=black] (P1n6) at (0.968,13.224) {6};
+\node[gn, fill=white, text=black] (P1n7) at (2.738,11.048) {7};
+\node[gn, fill=white, text=black] (P1n8) at (4.875,11.178) {8};
+\node[gn, fill=white, text=black] (P1n9) at (3.497,12.056) {9};
+\node[gn, fill=white, text=black] (P1n10) at (4.532,12.427) {10};
+\node[gn, fill=white, text=black] (P1n11) at (3.715,13.084) {11};
+\node[gn, fill=white, text=black] (P1n12) at (3.848,11.021) {12};
+\node[gn, fill=white, text=black] (P1n13) at (0.730,14.250) {13};
+\node[gn, fill=white, text=black] (P1n14) at (2.863,13.708) {14};
+\node[gn, fill=white, text=black] (P1n15) at (1.997,13.038) {15};
+\node[gn, fill=white, text=black] (P1n16) at (1.767,14.071) {16};
+\node[ptitle] at (2.583,14.500) {(a)};
+\draw[ge] (6.782,12.395) -- (7.140,11.404);
+\draw[ge] (6.782,12.395) -- (7.800,12.223);
+\draw[ge] (6.782,12.395) -- (8.153,11.211);
+\draw[ge] (6.782,12.395) -- (7.434,13.224);
+\draw[ge] (6.782,12.395) -- (8.464,13.038);
+\draw[ge] (8.823,12.035) -- (7.140,11.404);
+\draw[ge] (8.823,12.035) -- (7.800,12.223);
+\draw[ge] (8.823,12.035) -- (8.153,11.211);
+\draw[ge] (8.823,12.035) -- (7.434,13.224);
+\draw[ge] (8.823,12.035) -- (9.205,11.048);
+\draw[ge] (8.823,12.035) -- (9.964,12.056);
+\draw[ge] (7.140,11.404) -- (8.153,11.211);
+\draw[ge] (8.153,11.211) -- (9.205,11.048);
+\draw[ge] (7.434,13.224) -- (7.197,14.250);
+\draw[ge] (11.342,11.178) -- (10.315,11.021);
+\draw[ge] (9.964,12.056) -- (10.999,12.427);
+\draw[ge] (9.964,12.056) -- (10.181,13.084);
+\draw[ge] (9.964,12.056) -- (10.315,11.021);
+\draw[ge] (10.999,12.427) -- (10.181,13.084);
+\draw[ge] (10.181,13.084) -- (9.329,13.708);
+\draw[ge] (7.197,14.250) -- (8.233,14.071);
+\draw[ge] (9.329,13.708) -- (8.464,13.038);
+\draw[ge] (8.464,13.038) -- (8.233,14.071);
+\node[circle, draw=black, line width=1.4pt, minimum size=7.4mm, inner sep=0pt] at (8.823,12.035) {};
+\node[gn, fill=white, text=black] (P2n1) at (6.782,12.395) {1};
+\node[gn, fill=pc0, text=white] (P2n2) at (8.823,12.035) {2};
+\node[gn, fill=white, text=black] (P2n3) at (7.140,11.404) {3};
+\node[gn, fill=white, text=black] (P2n4) at (7.800,12.223) {4};
+\node[gn, fill=white, text=black] (P2n5) at (8.153,11.211) {5};
+\node[gn, fill=white, text=black] (P2n6) at (7.434,13.224) {6};
+\node[gn, fill=white, text=black] (P2n7) at (9.205,11.048) {7};
+\node[gn, fill=white, text=black] (P2n8) at (11.342,11.178) {8};
+\node[gn, fill=white, text=black] (P2n9) at (9.964,12.056) {9};
+\node[gn, fill=white, text=black] (P2n10) at (10.999,12.427) {10};
+\node[gn, fill=white, text=black] (P2n11) at (10.181,13.084) {11};
+\node[gn, fill=white, text=black] (P2n12) at (10.315,11.021) {12};
+\node[gn, fill=white, text=black] (P2n13) at (7.197,14.250) {13};
+\node[gn, fill=white, text=black] (P2n14) at (9.329,13.708) {14};
+\node[gn, fill=white, text=black] (P2n15) at (8.464,13.038) {15};
+\node[gn, fill=white, text=black] (P2n16) at (8.233,14.071) {16};
+\node[ptitle] at (9.050,14.500) {(b)};
+\node[barrow, rotate=0, minimum height=9mm] at (5.817,12.500) {};
+\node[note, anchor=south] at (5.817,12.780) {core 2};
+\draw[ge] (13.249,12.395) -- (13.606,11.404);
+\draw[ge] (13.249,12.395) -- (14.267,12.223);
+\draw[ge] (13.249,12.395) -- (14.620,11.211);
+\draw[ge] (13.249,12.395) -- (13.901,13.224);
+\draw[ge] (13.249,12.395) -- (14.930,13.038);
+\draw[ge] (15.290,12.035) -- (13.606,11.404);
+\draw[ge] (15.290,12.035) -- (14.267,12.223);
+\draw[ge] (15.290,12.035) -- (14.620,11.211);
+\draw[ge] (15.290,12.035) -- (13.901,13.224);
+\draw[ge] (15.290,12.035) -- (15.672,11.048);
+\draw[ge] (15.290,12.035) -- (16.430,12.056);
+\draw[ge] (13.606,11.404) -- (14.620,11.211);
+\draw[ge] (14.620,11.211) -- (15.672,11.048);
+\draw[ge] (13.901,13.224) -- (13.664,14.250);
+\draw[ge] (17.808,11.178) -- (16.781,11.021);
+\draw[ge] (16.430,12.056) -- (17.466,12.427);
+\draw[ge] (16.430,12.056) -- (16.648,13.084);
+\draw[ge] (16.430,12.056) -- (16.781,11.021);
+\draw[ge] (17.466,12.427) -- (16.648,13.084);
+\draw[ge] (16.648,13.084) -- (15.796,13.708);
+\draw[ge] (13.664,14.250) -- (14.700,14.071);
+\draw[ge] (15.796,13.708) -- (14.930,13.038);
+\draw[ge] (14.930,13.038) -- (14.700,14.071);
+\node[circle, draw=black, line width=1.4pt, minimum size=7.4mm, inner sep=0pt] at (15.290,12.035) {};
+\node[gn, fill=white, text=black] (P3n1) at (13.249,12.395) {1};
+\node[gn, fill=pc0, text=white] (P3n2) at (15.290,12.035) {2};
+\node[gn, fill=pc0, text=white] (P3n3) at (13.606,11.404) {3};
+\node[gn, fill=white, text=black] (P3n4) at (14.267,12.223) {4};
+\node[gn, fill=pc0, text=white] (P3n5) at (14.620,11.211) {5};
+\node[gn, fill=white, text=black] (P3n6) at (13.901,13.224) {6};
+\node[gn, fill=white, text=black] (P3n7) at (15.672,11.048) {7};
+\node[gn, fill=white, text=black] (P3n8) at (17.808,11.178) {8};
+\node[gn, fill=white, text=black] (P3n9) at (16.430,12.056) {9};
+\node[gn, fill=white, text=black] (P3n10) at (17.466,12.427) {10};
+\node[gn, fill=white, text=black] (P3n11) at (16.648,13.084) {11};
+\node[gn, fill=white, text=black] (P3n12) at (16.781,11.021) {12};
+\node[gn, fill=white, text=black] (P3n13) at (13.664,14.250) {13};
+\node[gn, fill=white, text=black] (P3n14) at (15.796,13.708) {14};
+\node[gn, fill=white, text=black] (P3n15) at (14.930,13.038) {15};
+\node[gn, fill=white, text=black] (P3n16) at (14.700,14.071) {16};
+\node[ptitle] at (15.517,14.500) {(c)};
+\node[barrow, rotate=0, minimum height=9mm] at (12.283,12.500) {};
+\node[note, anchor=south] at (12.283,12.780) {5, 3};
+\draw[ge] (13.249,7.145) -- (13.606,6.154);
+\draw[ge] (13.249,7.145) -- (14.267,6.973);
+\draw[ge] (13.249,7.145) -- (14.620,5.961);
+\draw[ge] (13.249,7.145) -- (13.901,7.974);
+\draw[ge] (13.249,7.145) -- (14.930,7.788);
+\draw[ge] (15.290,6.785) -- (13.606,6.154);
+\draw[ge] (15.290,6.785) -- (14.267,6.973);
+\draw[ge] (15.290,6.785) -- (14.620,5.961);
+\draw[ge] (15.290,6.785) -- (13.901,7.974);
+\draw[ge] (15.290,6.785) -- (15.672,5.798);
+\draw[ge] (15.290,6.785) -- (16.430,6.806);
+\draw[ge] (13.606,6.154) -- (14.620,5.961);
+\draw[ge] (14.620,5.961) -- (15.672,5.798);
+\draw[ge] (13.901,7.974) -- (13.664,9.000);
+\draw[ge] (17.808,5.928) -- (16.781,5.771);
+\draw[ge] (16.430,6.806) -- (17.466,7.177);
+\draw[ge] (16.430,6.806) -- (16.648,7.834);
+\draw[ge] (16.430,6.806) -- (16.781,5.771);
+\draw[ge] (17.466,7.177) -- (16.648,7.834);
+\draw[ge] (16.648,7.834) -- (15.796,8.458);
+\draw[ge] (13.664,9.000) -- (14.700,8.821);
+\draw[ge] (15.796,8.458) -- (14.930,7.788);
+\draw[ge] (14.930,7.788) -- (14.700,8.821);
+\node[circle, draw=black, line width=1.4pt, minimum size=7.4mm, inner sep=0pt] at (15.290,6.785) {};
+\node[gn, fill=white, text=black] (P4n1) at (13.249,7.145) {1};
+\node[gn, fill=pc0, text=white] (P4n2) at (15.290,6.785) {2};
+\node[gn, fill=pc0, text=white] (P4n3) at (13.606,6.154) {3};
+\node[gn, fill=pc0, text=white] (P4n4) at (14.267,6.973) {4};
+\node[gn, fill=pc0, text=white] (P4n5) at (14.620,5.961) {5};
+\node[gn, fill=white, text=black] (P4n6) at (13.901,7.974) {6};
+\node[gn, fill=pc0, text=white] (P4n7) at (15.672,5.798) {7};
+\node[gn, fill=white, text=black] (P4n8) at (17.808,5.928) {8};
+\node[gn, fill=white, text=black] (P4n9) at (16.430,6.806) {9};
+\node[gn, fill=white, text=black] (P4n10) at (17.466,7.177) {10};
+\node[gn, fill=white, text=black] (P4n11) at (16.648,7.834) {11};
+\node[gn, fill=white, text=black] (P4n12) at (16.781,5.771) {12};
+\node[gn, fill=white, text=black] (P4n13) at (13.664,9.000) {13};
+\node[gn, fill=white, text=black] (P4n14) at (15.796,8.458) {14};
+\node[gn, fill=white, text=black] (P4n15) at (14.930,7.788) {15};
+\node[gn, fill=white, text=black] (P4n16) at (14.700,8.821) {16};
+\node[ptitle] at (15.517,9.250) {(d)};
+\node[barrow, rotate=-90, minimum height=1.00cm] at (17.800,9.825) {};
+\node[note, anchor=east] at (17.450,9.825) {4, 7};
+\draw[ge] (6.782,7.145) -- (7.140,6.154);
+\draw[ge] (6.782,7.145) -- (7.800,6.973);
+\draw[ge] (6.782,7.145) -- (8.153,5.961);
+\draw[ge] (6.782,7.145) -- (7.434,7.974);
+\draw[ge] (6.782,7.145) -- (8.464,7.788);
+\draw[ge] (8.823,6.785) -- (7.140,6.154);
+\draw[ge] (8.823,6.785) -- (7.800,6.973);
+\draw[ge] (8.823,6.785) -- (8.153,5.961);
+\draw[ge] (8.823,6.785) -- (7.434,7.974);
+\draw[ge] (8.823,6.785) -- (9.205,5.798);
+\draw[ge] (8.823,6.785) -- (9.964,6.806);
+\draw[ge] (7.140,6.154) -- (8.153,5.961);
+\draw[ge] (8.153,5.961) -- (9.205,5.798);
+\draw[ge] (7.434,7.974) -- (7.197,9.000);
+\draw[ge] (11.342,5.928) -- (10.315,5.771);
+\draw[ge] (9.964,6.806) -- (10.999,7.177);
+\draw[ge] (9.964,6.806) -- (10.181,7.834);
+\draw[ge] (9.964,6.806) -- (10.315,5.771);
+\draw[ge] (10.999,7.177) -- (10.181,7.834);
+\draw[ge] (10.181,7.834) -- (9.329,8.458);
+\draw[ge] (7.197,9.000) -- (8.233,8.821);
+\draw[ge] (9.329,8.458) -- (8.464,7.788);
+\draw[ge] (8.464,7.788) -- (8.233,8.821);
+\node[circle, draw=black, line width=1.4pt, minimum size=7.4mm, inner sep=0pt] at (6.782,7.145) {};
+\node[gn, fill=pc3, text=black] (P5n1) at (6.782,7.145) {1};
+\node[gn, fill=pc0, text=white] (P5n2) at (8.823,6.785) {2};
+\node[gn, fill=pc0, text=white] (P5n3) at (7.140,6.154) {3};
+\node[gn, fill=pc0, text=white] (P5n4) at (7.800,6.973) {4};
+\node[gn, fill=pc0, text=white] (P5n5) at (8.153,5.961) {5};
+\node[gn, fill=pc3, text=black] (P5n6) at (7.434,7.974) {6};
+\node[gn, fill=pc0, text=white] (P5n7) at (9.205,5.798) {7};
+\node[gn, fill=white, text=black] (P5n8) at (11.342,5.928) {8};
+\node[gn, fill=white, text=black] (P5n9) at (9.964,6.806) {9};
+\node[gn, fill=white, text=black] (P5n10) at (10.999,7.177) {10};
+\node[gn, fill=white, text=black] (P5n11) at (10.181,7.834) {11};
+\node[gn, fill=white, text=black] (P5n12) at (10.315,5.771) {12};
+\node[gn, fill=white, text=black] (P5n13) at (7.197,9.000) {13};
+\node[gn, fill=white, text=black] (P5n14) at (9.329,8.458) {14};
+\node[gn, fill=pc3, text=black] (P5n15) at (8.464,7.788) {15};
+\node[gn, fill=white, text=black] (P5n16) at (8.233,8.821) {16};
+\node[ptitle] at (9.050,9.250) {(e)};
+\node[barrow, rotate=180, minimum height=9mm] at (12.283,7.250) {};
+\node[note, anchor=south] at (12.283,7.530) {core 1};
+\draw[ge] (0.315,7.145) -- (0.673,6.154);
+\draw[ge] (0.315,7.145) -- (1.334,6.973);
+\draw[ge] (0.315,7.145) -- (1.687,5.961);
+\draw[ge] (0.315,7.145) -- (0.968,7.974);
+\draw[ge] (0.315,7.145) -- (1.997,7.788);
+\draw[ge] (2.357,6.785) -- (0.673,6.154);
+\draw[ge] (2.357,6.785) -- (1.334,6.973);
+\draw[ge] (2.357,6.785) -- (1.687,5.961);
+\draw[ge] (2.357,6.785) -- (0.968,7.974);
+\draw[ge] (2.357,6.785) -- (2.738,5.798);
+\draw[ge] (2.357,6.785) -- (3.497,6.806);
+\draw[ge] (0.673,6.154) -- (1.687,5.961);
+\draw[ge] (1.687,5.961) -- (2.738,5.798);
+\draw[ge] (0.968,7.974) -- (0.730,9.000);
+\draw[ge] (4.875,5.928) -- (3.848,5.771);
+\draw[ge] (3.497,6.806) -- (4.532,7.177);
+\draw[ge] (3.497,6.806) -- (3.715,7.834);
+\draw[ge] (3.497,6.806) -- (3.848,5.771);
+\draw[ge] (4.532,7.177) -- (3.715,7.834);
+\draw[ge] (3.715,7.834) -- (2.863,8.458);
+\draw[ge] (0.730,9.000) -- (1.767,8.821);
+\draw[ge] (2.863,8.458) -- (1.997,7.788);
+\draw[ge] (1.997,7.788) -- (1.767,8.821);
+\node[circle, draw=black, line width=1.4pt, minimum size=7.4mm, inner sep=0pt] at (3.497,6.806) {};
+\node[gn, fill=pc3, text=black] (P6n1) at (0.315,7.145) {1};
+\node[gn, fill=pc0, text=white] (P6n2) at (2.357,6.785) {2};
+\node[gn, fill=pc0, text=white] (P6n3) at (0.673,6.154) {3};
+\node[gn, fill=pc0, text=white] (P6n4) at (1.334,6.973) {4};
+\node[gn, fill=pc0, text=white] (P6n5) at (1.687,5.961) {5};
+\node[gn, fill=pc3, text=black] (P6n6) at (0.968,7.974) {6};
+\node[gn, fill=pc0, text=white] (P6n7) at (2.738,5.798) {7};
+\node[gn, fill=white, text=black] (P6n8) at (4.875,5.928) {8};
+\node[gn, fill=pc5, text=black] (P6n9) at (3.497,6.806) {9};
+\node[gn, fill=pc5, text=black] (P6n10) at (4.532,7.177) {10};
+\node[gn, fill=pc5, text=black] (P6n11) at (3.715,7.834) {11};
+\node[gn, fill=pc5, text=black] (P6n12) at (3.848,5.771) {12};
+\node[gn, fill=white, text=black] (P6n13) at (0.730,9.000) {13};
+\node[gn, fill=white, text=black] (P6n14) at (2.863,8.458) {14};
+\node[gn, fill=pc3, text=black] (P6n15) at (1.997,7.788) {15};
+\node[gn, fill=white, text=black] (P6n16) at (1.767,8.821) {16};
+\node[ptitle] at (2.583,9.250) {(f)};
+\node[barrow, rotate=180, minimum height=9mm] at (5.817,7.250) {};
+\node[note, anchor=south] at (5.817,7.530) {core 9};
+\draw[ge] (0.315,1.895) -- (0.673,0.904);
+\draw[ge] (0.315,1.895) -- (1.334,1.723);
+\draw[ge] (0.315,1.895) -- (1.687,0.711);
+\draw[ge] (0.315,1.895) -- (0.968,2.724);
+\draw[ge] (0.315,1.895) -- (1.997,2.538);
+\draw[ge] (2.357,1.535) -- (0.673,0.904);
+\draw[ge] (2.357,1.535) -- (1.334,1.723);
+\draw[ge] (2.357,1.535) -- (1.687,0.711);
+\draw[ge] (2.357,1.535) -- (0.968,2.724);
+\draw[ge] (2.357,1.535) -- (2.738,0.548);
+\draw[ge] (2.357,1.535) -- (3.497,1.556);
+\draw[ge] (0.673,0.904) -- (1.687,0.711);
+\draw[ge] (1.687,0.711) -- (2.738,0.548);
+\draw[ge] (0.968,2.724) -- (0.730,3.750);
+\draw[ge] (4.875,0.678) -- (3.848,0.521);
+\draw[ge] (3.497,1.556) -- (4.532,1.927);
+\draw[ge] (3.497,1.556) -- (3.715,2.584);
+\draw[ge] (3.497,1.556) -- (3.848,0.521);
+\draw[ge] (4.532,1.927) -- (3.715,2.584);
+\draw[ge] (3.715,2.584) -- (2.863,3.208);
+\draw[ge] (0.730,3.750) -- (1.767,3.571);
+\draw[ge] (2.863,3.208) -- (1.997,2.538);
+\draw[ge] (1.997,2.538) -- (1.767,3.571);
+\node[circle, draw=black, line width=1.4pt, minimum size=7.4mm, inner sep=0pt] at (2.863,3.208) {};
+\node[gn, fill=pc3, text=black] (P7n1) at (0.315,1.895) {1};
+\node[gn, fill=pc0, text=white] (P7n2) at (2.357,1.535) {2};
+\node[gn, fill=pc0, text=white] (P7n3) at (0.673,0.904) {3};
+\node[gn, fill=pc0, text=white] (P7n4) at (1.334,1.723) {4};
+\node[gn, fill=pc0, text=white] (P7n5) at (1.687,0.711) {5};
+\node[gn, fill=pc3, text=black] (P7n6) at (0.968,2.724) {6};
+\node[gn, fill=pc0, text=white] (P7n7) at (2.738,0.548) {7};
+\node[gn, fill=white, text=black] (P7n8) at (4.875,0.678) {8};
+\node[gn, fill=pc5, text=black] (P7n9) at (3.497,1.556) {9};
+\node[gn, fill=pc5, text=black] (P7n10) at (4.532,1.927) {10};
+\node[gn, fill=pc5, text=black] (P7n11) at (3.715,2.584) {11};
+\node[gn, fill=pc5, text=black] (P7n12) at (3.848,0.521) {12};
+\node[gn, fill=white, text=black] (P7n13) at (0.730,3.750) {13};
+\node[gn, fill=pc2, text=black] (P7n14) at (2.863,3.208) {14};
+\node[gn, fill=pc3, text=black] (P7n15) at (1.997,2.538) {15};
+\node[gn, fill=white, text=black] (P7n16) at (1.767,3.571) {16};
+\node[ptitle] at (2.583,4.000) {(g)};
+\node[barrow, rotate=-90, minimum height=1.00cm] at (0.300,4.575) {};
+\node[note, anchor=west] at (0.650,4.575) {core 14};
+\draw[ge] (6.782,1.895) -- (7.140,0.904);
+\draw[ge] (6.782,1.895) -- (7.800,1.723);
+\draw[ge] (6.782,1.895) -- (8.153,0.711);
+\draw[ge] (6.782,1.895) -- (7.434,2.724);
+\draw[ge] (6.782,1.895) -- (8.464,2.538);
+\draw[ge] (8.823,1.535) -- (7.140,0.904);
+\draw[ge] (8.823,1.535) -- (7.800,1.723);
+\draw[ge] (8.823,1.535) -- (8.153,0.711);
+\draw[ge] (8.823,1.535) -- (7.434,2.724);
+\draw[ge] (8.823,1.535) -- (9.205,0.548);
+\draw[ge] (8.823,1.535) -- (9.964,1.556);
+\draw[ge] (7.140,0.904) -- (8.153,0.711);
+\draw[ge] (8.153,0.711) -- (9.205,0.548);
+\draw[ge] (7.434,2.724) -- (7.197,3.750);
+\draw[ge] (11.342,0.678) -- (10.315,0.521);
+\draw[ge] (9.964,1.556) -- (10.999,1.927);
+\draw[ge] (9.964,1.556) -- (10.181,2.584);
+\draw[ge] (9.964,1.556) -- (10.315,0.521);
+\draw[ge] (10.999,1.927) -- (10.181,2.584);
+\draw[ge] (10.181,2.584) -- (9.329,3.208);
+\draw[ge] (7.197,3.750) -- (8.233,3.571);
+\draw[ge] (9.329,3.208) -- (8.464,2.538);
+\draw[ge] (8.464,2.538) -- (8.233,3.571);
+\node[circle, draw=black, line width=1.4pt, minimum size=7.4mm, inner sep=0pt] at (7.197,3.750) {};
+\node[gn, fill=pc3, text=black] (P8n1) at (6.782,1.895) {1};
+\node[gn, fill=pc0, text=white] (P8n2) at (8.823,1.535) {2};
+\node[gn, fill=pc0, text=white] (P8n3) at (7.140,0.904) {3};
+\node[gn, fill=pc0, text=white] (P8n4) at (7.800,1.723) {4};
+\node[gn, fill=pc0, text=white] (P8n5) at (8.153,0.711) {5};
+\node[gn, fill=pc3, text=black] (P8n6) at (7.434,2.724) {6};
+\node[gn, fill=pc0, text=white] (P8n7) at (9.205,0.548) {7};
+\node[gn, fill=white, text=black] (P8n8) at (11.342,0.678) {8};
+\node[gn, fill=pc5, text=black] (P8n9) at (9.964,1.556) {9};
+\node[gn, fill=pc5, text=black] (P8n10) at (10.999,1.927) {10};
+\node[gn, fill=pc5, text=black] (P8n11) at (10.181,2.584) {11};
+\node[gn, fill=pc5, text=black] (P8n12) at (10.315,0.521) {12};
+\node[gn, fill=pc4, text=white] (P8n13) at (7.197,3.750) {13};
+\node[gn, fill=pc2, text=black] (P8n14) at (9.329,3.208) {14};
+\node[gn, fill=pc3, text=black] (P8n15) at (8.464,2.538) {15};
+\node[gn, fill=pc4, text=white] (P8n16) at (8.233,3.571) {16};
+\node[ptitle] at (9.050,4.000) {(h)};
+\node[barrow, rotate=0, minimum height=9mm] at (5.817,2.000) {};
+\node[note, anchor=south] at (5.817,2.280) {core 13};
+\draw[ge] (13.249,1.895) -- (13.606,0.904);
+\draw[ge] (13.249,1.895) -- (14.267,1.723);
+\draw[ge] (13.249,1.895) -- (14.620,0.711);
+\draw[ge] (13.249,1.895) -- (13.901,2.724);
+\draw[ge] (13.249,1.895) -- (14.930,2.538);
+\draw[ge] (15.290,1.535) -- (13.606,0.904);
+\draw[ge] (15.290,1.535) -- (14.267,1.723);
+\draw[ge] (15.290,1.535) -- (14.620,0.711);
+\draw[ge] (15.290,1.535) -- (13.901,2.724);
+\draw[ge] (15.290,1.535) -- (15.672,0.548);
+\draw[ge] (15.290,1.535) -- (16.430,1.556);
+\draw[ge] (13.606,0.904) -- (14.620,0.711);
+\draw[ge] (14.620,0.711) -- (15.672,0.548);
+\draw[ge] (13.901,2.724) -- (13.664,3.750);
+\draw[ge] (17.808,0.678) -- (16.781,0.521);
+\draw[ge] (16.430,1.556) -- (17.466,1.927);
+\draw[ge] (16.430,1.556) -- (16.648,2.584);
+\draw[ge] (16.430,1.556) -- (16.781,0.521);
+\draw[ge] (17.466,1.927) -- (16.648,2.584);
+\draw[ge] (16.648,2.584) -- (15.796,3.208);
+\draw[ge] (13.664,3.750) -- (14.700,3.571);
+\draw[ge] (15.796,3.208) -- (14.930,2.538);
+\draw[ge] (14.930,2.538) -- (14.700,3.571);
+\node[circle, draw=black, line width=1.4pt, minimum size=7.4mm, inner sep=0pt] at (17.808,0.678) {};
+\node[gn, fill=pc3, text=black] (P9n1) at (13.249,1.895) {1};
+\node[gn, fill=pc0, text=white] (P9n2) at (15.290,1.535) {2};
+\node[gn, fill=pc0, text=white] (P9n3) at (13.606,0.904) {3};
+\node[gn, fill=pc0, text=white] (P9n4) at (14.267,1.723) {4};
+\node[gn, fill=pc0, text=white] (P9n5) at (14.620,0.711) {5};
+\node[gn, fill=pc3, text=black] (P9n6) at (13.901,2.724) {6};
+\node[gn, fill=pc0, text=white] (P9n7) at (15.672,0.548) {7};
+\node[gn, fill=pc1, text=white] (P9n8) at (17.808,0.678) {8};
+\node[gn, fill=pc5, text=black] (P9n9) at (16.430,1.556) {9};
+\node[gn, fill=pc5, text=black] (P9n10) at (17.466,1.927) {10};
+\node[gn, fill=pc5, text=black] (P9n11) at (16.648,2.584) {11};
+\node[gn, fill=pc5, text=black] (P9n12) at (16.781,0.521) {12};
+\node[gn, fill=pc4, text=white] (P9n13) at (13.664,3.750) {13};
+\node[gn, fill=pc2, text=black] (P9n14) at (15.796,3.208) {14};
+\node[gn, fill=pc3, text=black] (P9n15) at (14.930,2.538) {15};
+\node[gn, fill=pc4, text=white] (P9n16) at (14.700,3.571) {16};
+\node[ptitle] at (15.517,4.000) {(i)};
+\node[barrow, rotate=0, minimum height=9mm] at (12.283,2.000) {};
+\node[note, anchor=south] at (12.283,2.280) {core 8};
+\end{tikzpicture}
+\caption{Community pre-selection (Stage~1) of SN-LPA on an example network with three planted communities (nodes 1--7, 8--12 and 13--16). The black ring marks the current core; white nodes are not yet labelled.}
+\label{fig:stage1}
+\end{figure*}
+
+
+\emph{Stage 2} (Fig.~\ref{fig:stage2}). Both Stage~2 runs start from the Stage~1 result (a). With the TPOC-LPA rule ($\gamma=0$) a single round merges the fragments into two communities, and the community of node~2 absorbs nodes 13--16 (b, NMI 0.734); this is the result of TPOC-LPA itself. Its modularity (0.299) is below that of (a) (0.304), so the best-iterate guard keeps (a) as $L^{(0)}$. The size-normalised run ($\gamma=1$) stops after one round with five communities (c); since $5\le1.5\times6$, the granularity rule keeps it. The map-equation merge joins the two fragments of nodes 8--12 (d), because this lowers the codelength $L$ from 3.545 to 3.491 bits. The Synwalk boundary moves then take node~13 to the community of nodes 14--16 in their first sweep (e), and in the second sweep node~6, whose other neighbours 1 and 2 are in the community of node~2 (f). Together the two moves raise the Synwalk objective $J$ from 0.4076 to 0.4335 and lower the regularised codelength from 4.408 to 4.313 bits, so the gate accepts them, and the result is the planted partition.
+
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}
+\draw[ge] (0.315,7.505) -- (0.673,6.514);
+\draw[ge] (0.315,7.505) -- (1.334,7.333);
+\draw[ge] (0.315,7.505) -- (1.687,6.321);
+\draw[ge] (0.315,7.505) -- (0.968,8.334);
+\draw[ge] (0.315,7.505) -- (1.997,8.148);
+\draw[ge] (2.357,7.145) -- (0.673,6.514);
+\draw[ge] (2.357,7.145) -- (1.334,7.333);
+\draw[ge] (2.357,7.145) -- (1.687,6.321);
+\draw[ge] (2.357,7.145) -- (0.968,8.334);
+\draw[ge] (2.357,7.145) -- (2.738,6.158);
+\draw[ge] (2.357,7.145) -- (3.497,7.166);
+\draw[ge] (0.673,6.514) -- (1.687,6.321);
+\draw[ge] (1.687,6.321) -- (2.738,6.158);
+\draw[ge] (0.968,8.334) -- (0.730,9.360);
+\draw[ge] (4.875,6.288) -- (3.848,6.131);
+\draw[ge] (3.497,7.166) -- (4.532,7.537);
+\draw[ge] (3.497,7.166) -- (3.715,8.194);
+\draw[ge] (3.497,7.166) -- (3.848,6.131);
+\draw[ge] (4.532,7.537) -- (3.715,8.194);
+\draw[ge] (3.715,8.194) -- (2.863,8.818);
+\draw[ge] (0.730,9.360) -- (1.767,9.181);
+\draw[ge] (2.863,8.818) -- (1.997,8.148);
+\draw[ge] (1.997,8.148) -- (1.767,9.181);
+\node[gn, fill=pc3, text=black] (P1n1) at (0.315,7.505) {1};
+\node[gn, fill=pc0, text=white] (P1n2) at (2.357,7.145) {2};
+\node[gn, fill=pc0, text=white] (P1n3) at (0.673,6.514) {3};
+\node[gn, fill=pc0, text=white] (P1n4) at (1.334,7.333) {4};
+\node[gn, fill=pc0, text=white] (P1n5) at (1.687,6.321) {5};
+\node[gn, fill=pc3, text=black] (P1n6) at (0.968,8.334) {6};
+\node[gn, fill=pc0, text=white] (P1n7) at (2.738,6.158) {7};
+\node[gn, fill=pc1, text=white] (P1n8) at (4.875,6.288) {8};
+\node[gn, fill=pc5, text=black] (P1n9) at (3.497,7.166) {9};
+\node[gn, fill=pc5, text=black] (P1n10) at (4.532,7.537) {10};
+\node[gn, fill=pc5, text=black] (P1n11) at (3.715,8.194) {11};
+\node[gn, fill=pc5, text=black] (P1n12) at (3.848,6.131) {12};
+\node[gn, fill=pc4, text=white] (P1n13) at (0.730,9.360) {13};
+\node[gn, fill=pc2, text=black] (P1n14) at (2.863,8.818) {14};
+\node[gn, fill=pc3, text=black] (P1n15) at (1.997,8.148) {15};
+\node[gn, fill=pc4, text=white] (P1n16) at (1.767,9.181) {16};
+\node[ptitle] at (2.583,9.610) {(a) Stage 1 result};
+\node[pstat] at (2.583,5.610) {6 comm., $Q{=}0.304$, NMI 0.705};
+\draw[ge] (6.782,7.505) -- (7.140,6.514);
+\draw[ge] (6.782,7.505) -- (7.800,7.333);
+\draw[ge] (6.782,7.505) -- (8.153,6.321);
+\draw[ge] (6.782,7.505) -- (7.434,8.334);
+\draw[ge] (6.782,7.505) -- (8.464,8.148);
+\draw[ge] (8.823,7.145) -- (7.140,6.514);
+\draw[ge] (8.823,7.145) -- (7.800,7.333);
+\draw[ge] (8.823,7.145) -- (8.153,6.321);
+\draw[ge] (8.823,7.145) -- (7.434,8.334);
+\draw[ge] (8.823,7.145) -- (9.205,6.158);
+\draw[ge] (8.823,7.145) -- (9.964,7.166);
+\draw[ge] (7.140,6.514) -- (8.153,6.321);
+\draw[ge] (8.153,6.321) -- (9.205,6.158);
+\draw[ge] (7.434,8.334) -- (7.197,9.360);
+\draw[ge] (11.342,6.288) -- (10.315,6.131);
+\draw[ge] (9.964,7.166) -- (10.999,7.537);
+\draw[ge] (9.964,7.166) -- (10.181,8.194);
+\draw[ge] (9.964,7.166) -- (10.315,6.131);
+\draw[ge] (10.999,7.537) -- (10.181,8.194);
+\draw[ge] (10.181,8.194) -- (9.329,8.818);
+\draw[ge] (7.197,9.360) -- (8.233,9.181);
+\draw[ge] (9.329,8.818) -- (8.464,8.148);
+\draw[ge] (8.464,8.148) -- (8.233,9.181);
+\node[gn, fill=pc0, text=white] (P2n1) at (6.782,7.505) {1};
+\node[gn, fill=pc0, text=white] (P2n2) at (8.823,7.145) {2};
+\node[gn, fill=pc0, text=white] (P2n3) at (7.140,6.514) {3};
+\node[gn, fill=pc0, text=white] (P2n4) at (7.800,7.333) {4};
+\node[gn, fill=pc0, text=white] (P2n5) at (8.153,6.321) {5};
+\node[gn, fill=pc0, text=white] (P2n6) at (7.434,8.334) {6};
+\node[gn, fill=pc0, text=white] (P2n7) at (9.205,6.158) {7};
+\node[gn, fill=pc5, text=black] (P2n8) at (11.342,6.288) {8};
+\node[gn, fill=pc5, text=black] (P2n9) at (9.964,7.166) {9};
+\node[gn, fill=pc5, text=black] (P2n10) at (10.999,7.537) {10};
+\node[gn, fill=pc5, text=black] (P2n11) at (10.181,8.194) {11};
+\node[gn, fill=pc5, text=black] (P2n12) at (10.315,6.131) {12};
+\node[gn, fill=pc0, text=white] (P2n13) at (7.197,9.360) {13};
+\node[gn, fill=pc0, text=white] (P2n14) at (9.329,8.818) {14};
+\node[gn, fill=pc0, text=white] (P2n15) at (8.464,8.148) {15};
+\node[gn, fill=pc0, text=white] (P2n16) at (8.233,9.181) {16};
+\node[ptitle] at (9.050,9.610) {(b) plain-sum run, $\gamma{=}0$ (TPOC-LPA rule)};
+\node[pstat] at (9.050,5.610) {2 comm., $Q{=}0.299$, NMI 0.734\\\textit{lower $Q$ than (a): rejected}};
+\node[barrow, rotate=0, minimum height=9mm] at (5.817,7.610) {};
+\node[note, anchor=south] at (5.817,7.890) {plain sum};
+\draw[goodc, line width=1.1pt, rounded corners=2pt] (12.933,5.610) rectangle (18.100,9.610);
+\draw[ge] (13.249,7.505) -- (13.606,6.514);
+\draw[ge] (13.249,7.505) -- (14.267,7.333);
+\draw[ge] (13.249,7.505) -- (14.620,6.321);
+\draw[ge] (13.249,7.505) -- (13.901,8.334);
+\draw[ge] (13.249,7.505) -- (14.930,8.148);
+\draw[ge] (15.290,7.145) -- (13.606,6.514);
+\draw[ge] (15.290,7.145) -- (14.267,7.333);
+\draw[ge] (15.290,7.145) -- (14.620,6.321);
+\draw[ge] (15.290,7.145) -- (13.901,8.334);
+\draw[ge] (15.290,7.145) -- (15.672,6.158);
+\draw[ge] (15.290,7.145) -- (16.430,7.166);
+\draw[ge] (13.606,6.514) -- (14.620,6.321);
+\draw[ge] (14.620,6.321) -- (15.672,6.158);
+\draw[ge] (13.901,8.334) -- (13.664,9.360);
+\draw[ge] (17.808,6.288) -- (16.781,6.131);
+\draw[ge] (16.430,7.166) -- (17.466,7.537);
+\draw[ge] (16.430,7.166) -- (16.648,8.194);
+\draw[ge] (16.430,7.166) -- (16.781,6.131);
+\draw[ge] (17.466,7.537) -- (16.648,8.194);
+\draw[ge] (16.648,8.194) -- (15.796,8.818);
+\draw[ge] (13.664,9.360) -- (14.700,9.181);
+\draw[ge] (15.796,8.818) -- (14.930,8.148);
+\draw[ge] (14.930,8.148) -- (14.700,9.181);
+\node[gn, fill=pc0, text=white] (P3n1) at (13.249,7.505) {1};
+\node[gn, fill=pc0, text=white] (P3n2) at (15.290,7.145) {2};
+\node[gn, fill=pc0, text=white] (P3n3) at (13.606,6.514) {3};
+\node[gn, fill=pc0, text=white] (P3n4) at (14.267,7.333) {4};
+\node[gn, fill=pc0, text=white] (P3n5) at (14.620,6.321) {5};
+\node[gn, fill=pc4, text=white] (P3n6) at (13.901,8.334) {6};
+\node[gn, fill=pc0, text=white] (P3n7) at (15.672,6.158) {7};
+\node[gn, fill=pc1, text=white] (P3n8) at (17.808,6.288) {8};
+\node[gn, fill=pc5, text=black] (P3n9) at (16.430,7.166) {9};
+\node[gn, fill=pc5, text=black] (P3n10) at (17.466,7.537) {10};
+\node[gn, fill=pc5, text=black] (P3n11) at (16.648,8.194) {11};
+\node[gn, fill=pc1, text=white] (P3n12) at (16.781,6.131) {12};
+\node[gn, fill=pc4, text=white] (P3n13) at (13.664,9.360) {13};
+\node[gn, fill=pc2, text=black] (P3n14) at (15.796,8.818) {14};
+\node[gn, fill=pc2, text=black] (P3n15) at (14.930,8.148) {15};
+\node[gn, fill=pc2, text=black] (P3n16) at (14.700,9.181) {16};
+\node[ptitle] at (15.517,9.610) {(c) size-normalised run, $\gamma{=}1$};
+\node[pstat] at (15.517,5.610) {5 comm., $Q{=}0.389$, NMI 0.762\\\textit{$5\le1.5\times6$ communities: kept}};
+\node[barrow, rotate=0, minimum height=9mm] at (12.283,7.610) {};
+\node[note, anchor=south] at (12.283,7.890) {normalised};
+\draw[ge] (13.249,1.895) -- (13.606,0.904);
+\draw[ge] (13.249,1.895) -- (14.267,1.723);
+\draw[ge] (13.249,1.895) -- (14.620,0.711);
+\draw[ge] (13.249,1.895) -- (13.901,2.724);
+\draw[ge] (13.249,1.895) -- (14.930,2.538);
+\draw[ge] (15.290,1.535) -- (13.606,0.904);
+\draw[ge] (15.290,1.535) -- (14.267,1.723);
+\draw[ge] (15.290,1.535) -- (14.620,0.711);
+\draw[ge] (15.290,1.535) -- (13.901,2.724);
+\draw[ge] (15.290,1.535) -- (15.672,0.548);
+\draw[ge] (15.290,1.535) -- (16.430,1.556);
+\draw[ge] (13.606,0.904) -- (14.620,0.711);
+\draw[ge] (14.620,0.711) -- (15.672,0.548);
+\draw[ge] (13.901,2.724) -- (13.664,3.750);
+\draw[ge] (17.808,0.678) -- (16.781,0.521);
+\draw[ge] (16.430,1.556) -- (17.466,1.927);
+\draw[ge] (16.430,1.556) -- (16.648,2.584);
+\draw[ge] (16.430,1.556) -- (16.781,0.521);
+\draw[ge] (17.466,1.927) -- (16.648,2.584);
+\draw[ge] (16.648,2.584) -- (15.796,3.208);
+\draw[ge] (13.664,3.750) -- (14.700,3.571);
+\draw[ge] (15.796,3.208) -- (14.930,2.538);
+\draw[ge] (14.930,2.538) -- (14.700,3.571);
+\node[gn, fill=pc0, text=white] (P4n1) at (13.249,1.895) {1};
+\node[gn, fill=pc0, text=white] (P4n2) at (15.290,1.535) {2};
+\node[gn, fill=pc0, text=white] (P4n3) at (13.606,0.904) {3};
+\node[gn, fill=pc0, text=white] (P4n4) at (14.267,1.723) {4};
+\node[gn, fill=pc0, text=white] (P4n5) at (14.620,0.711) {5};
+\node[gn, fill=pc4, text=white] (P4n6) at (13.901,2.724) {6};
+\node[gn, fill=pc0, text=white] (P4n7) at (15.672,0.548) {7};
+\node[gn, fill=pc1, text=white] (P4n8) at (17.808,0.678) {8};
+\node[gn, fill=pc1, text=white] (P4n9) at (16.430,1.556) {9};
+\node[gn, fill=pc1, text=white] (P4n10) at (17.466,1.927) {10};
+\node[gn, fill=pc1, text=white] (P4n11) at (16.648,2.584) {11};
+\node[gn, fill=pc1, text=white] (P4n12) at (16.781,0.521) {12};
+\node[gn, fill=pc4, text=white] (P4n13) at (13.664,3.750) {13};
+\node[gn, fill=pc2, text=black] (P4n14) at (15.796,3.208) {14};
+\node[gn, fill=pc2, text=black] (P4n15) at (14.930,2.538) {15};
+\node[gn, fill=pc2, text=black] (P4n16) at (14.700,3.571) {16};
+\node[ptitle] at (15.517,4.000) {(d) after the merge};
+\node[pstat] at (15.517,0.000) {4 comm., $Q{=}0.407$, NMI 0.829\\\textit{codelength $L$ falls: accepted}};
+\node[barrow, rotate=-90, minimum height=1.36cm] at (17.800,4.755) {};
+\node[note, anchor=east] at (17.450,4.755) {merge};
+\draw[ge] (6.782,1.895) -- (7.140,0.904);
+\draw[ge] (6.782,1.895) -- (7.800,1.723);
+\draw[ge] (6.782,1.895) -- (8.153,0.711);
+\draw[ge] (6.782,1.895) -- (7.434,2.724);
+\draw[ge] (6.782,1.895) -- (8.464,2.538);
+\draw[ge] (8.823,1.535) -- (7.140,0.904);
+\draw[ge] (8.823,1.535) -- (7.800,1.723);
+\draw[ge] (8.823,1.535) -- (8.153,0.711);
+\draw[ge] (8.823,1.535) -- (7.434,2.724);
+\draw[ge] (8.823,1.535) -- (9.205,0.548);
+\draw[ge] (8.823,1.535) -- (9.964,1.556);
+\draw[ge] (7.140,0.904) -- (8.153,0.711);
+\draw[ge] (8.153,0.711) -- (9.205,0.548);
+\draw[ge] (7.434,2.724) -- (7.197,3.750);
+\draw[ge] (11.342,0.678) -- (10.315,0.521);
+\draw[ge] (9.964,1.556) -- (10.999,1.927);
+\draw[ge] (9.964,1.556) -- (10.181,2.584);
+\draw[ge] (9.964,1.556) -- (10.315,0.521);
+\draw[ge] (10.999,1.927) -- (10.181,2.584);
+\draw[ge] (10.181,2.584) -- (9.329,3.208);
+\draw[ge] (7.197,3.750) -- (8.233,3.571);
+\draw[ge] (9.329,3.208) -- (8.464,2.538);
+\draw[ge] (8.464,2.538) -- (8.233,3.571);
+\node[ring] at (7.197,3.750) {};
+\node[gn, fill=pc0, text=white] (P5n1) at (6.782,1.895) {1};
+\node[gn, fill=pc0, text=white] (P5n2) at (8.823,1.535) {2};
+\node[gn, fill=pc0, text=white] (P5n3) at (7.140,0.904) {3};
+\node[gn, fill=pc0, text=white] (P5n4) at (7.800,1.723) {4};
+\node[gn, fill=pc0, text=white] (P5n5) at (8.153,0.711) {5};
+\node[gn, fill=pc4, text=white] (P5n6) at (7.434,2.724) {6};
+\node[gn, fill=pc0, text=white] (P5n7) at (9.205,0.548) {7};
+\node[gn, fill=pc1, text=white] (P5n8) at (11.342,0.678) {8};
+\node[gn, fill=pc1, text=white] (P5n9) at (9.964,1.556) {9};
+\node[gn, fill=pc1, text=white] (P5n10) at (10.999,1.927) {10};
+\node[gn, fill=pc1, text=white] (P5n11) at (10.181,2.584) {11};
+\node[gn, fill=pc1, text=white] (P5n12) at (10.315,0.521) {12};
+\node[gn, fill=pc2, text=black] (P5n13) at (7.197,3.750) {13};
+\node[gn, fill=pc2, text=black] (P5n14) at (9.329,3.208) {14};
+\node[gn, fill=pc2, text=black] (P5n15) at (8.464,2.538) {15};
+\node[gn, fill=pc2, text=black] (P5n16) at (8.233,3.571) {16};
+\node[ptitle] at (9.050,4.000) {(e) Synwalk move of node 13};
+\node[pstat] at (9.050,0.000) {4 comm., $Q{=}0.400$, NMI 0.923\\\textit{random walk stays inside}};
+\node[barrow, rotate=180, minimum height=9mm] at (12.283,2.000) {};
+\node[note, anchor=south] at (12.283,2.280) {move};
+\draw[goodc, line width=1.1pt, rounded corners=2pt] (0.000,0.000) rectangle (5.167,4.000);
+\draw[ge] (0.315,1.895) -- (0.673,0.904);
+\draw[ge] (0.315,1.895) -- (1.334,1.723);
+\draw[ge] (0.315,1.895) -- (1.687,0.711);
+\draw[ge] (0.315,1.895) -- (0.968,2.724);
+\draw[ge] (0.315,1.895) -- (1.997,2.538);
+\draw[ge] (2.357,1.535) -- (0.673,0.904);
+\draw[ge] (2.357,1.535) -- (1.334,1.723);
+\draw[ge] (2.357,1.535) -- (1.687,0.711);
+\draw[ge] (2.357,1.535) -- (0.968,2.724);
+\draw[ge] (2.357,1.535) -- (2.738,0.548);
+\draw[ge] (2.357,1.535) -- (3.497,1.556);
+\draw[ge] (0.673,0.904) -- (1.687,0.711);
+\draw[ge] (1.687,0.711) -- (2.738,0.548);
+\draw[ge] (0.968,2.724) -- (0.730,3.750);
+\draw[ge] (4.875,0.678) -- (3.848,0.521);
+\draw[ge] (3.497,1.556) -- (4.532,1.927);
+\draw[ge] (3.497,1.556) -- (3.715,2.584);
+\draw[ge] (3.497,1.556) -- (3.848,0.521);
+\draw[ge] (4.532,1.927) -- (3.715,2.584);
+\draw[ge] (3.715,2.584) -- (2.863,3.208);
+\draw[ge] (0.730,3.750) -- (1.767,3.571);
+\draw[ge] (2.863,3.208) -- (1.997,2.538);
+\draw[ge] (1.997,2.538) -- (1.767,3.571);
+\node[ring] at (0.968,2.724) {};
+\node[gn, fill=pc0, text=white] (P6n1) at (0.315,1.895) {1};
+\node[gn, fill=pc0, text=white] (P6n2) at (2.357,1.535) {2};
+\node[gn, fill=pc0, text=white] (P6n3) at (0.673,0.904) {3};
+\node[gn, fill=pc0, text=white] (P6n4) at (1.334,1.723) {4};
+\node[gn, fill=pc0, text=white] (P6n5) at (1.687,0.711) {5};
+\node[gn, fill=pc0, text=white] (P6n6) at (0.968,2.724) {6};
+\node[gn, fill=pc0, text=white] (P6n7) at (2.738,0.548) {7};
+\node[gn, fill=pc1, text=white] (P6n8) at (4.875,0.678) {8};
+\node[gn, fill=pc1, text=white] (P6n9) at (3.497,1.556) {9};
+\node[gn, fill=pc1, text=white] (P6n10) at (4.532,1.927) {10};
+\node[gn, fill=pc1, text=white] (P6n11) at (3.715,2.584) {11};
+\node[gn, fill=pc1, text=white] (P6n12) at (3.848,0.521) {12};
+\node[gn, fill=pc2, text=black] (P6n13) at (0.730,3.750) {13};
+\node[gn, fill=pc2, text=black] (P6n14) at (2.863,3.208) {14};
+\node[gn, fill=pc2, text=black] (P6n15) at (1.997,2.538) {15};
+\node[gn, fill=pc2, text=black] (P6n16) at (1.767,3.571) {16};
+\node[ptitle] at (2.583,4.000) {(f) Synwalk move of node 6};
+\node[pstat] at (2.583,0.000) {3 comm., $Q{=}0.424$, NMI 1.000\\\textit{$L_{\mathrm{reg}}$ falls: moves kept}};
+\node[barrow, rotate=180, minimum height=9mm] at (5.817,2.000) {};
+\node[note, anchor=south] at (5.817,2.280) {move};
+\end{tikzpicture}
+\caption{Community evolution (Stage~2) of SN-LPA on the example network of Fig.~\ref{fig:stage1}: two evolution runs from the Stage~1 result, the choice between them by the granularity rule, the map-equation merge and the Synwalk boundary moves. The green frame marks the run that is kept and the final result.}
+\label{fig:stage2}
+\end{figure*}
+
+
+\emph{Stage 3} (Fig.~\ref{fig:stage3}). Eight nodes of the Stage~2 result (a) have neighbours in more than one community; (b) lists, for each of them, the communities among its neighbours, named by their core node. For each candidate community the weighted affiliation WAS (Eq.~\eqref{eq:was}) is computed; with two candidates their mean is 0.5, so a label is kept if its WAS is at least $0.8\times0.5=0.40$. Node~13 has WAS 0.551 for the community of node~2 and 0.449 for its own, and node~14 has 0.499 for the community of node~8 and 0.501 for its own, so both keep two labels (c, two-coloured nodes). For the other six nodes the second value is at most 0.387 (node~15), so they keep one label. Stage~3 is the same as in TPOC-LPA.
+
+\begin{figure*}[b]
+\centering
+\begin{tikzpicture}
+\draw[ge] (0.315,2.647) -- (0.673,1.203);
+\draw[ge] (0.315,2.647) -- (1.334,2.396);
+\draw[ge] (0.315,2.647) -- (1.687,0.922);
+\draw[ge] (0.315,2.647) -- (0.968,3.855);
+\draw[ge] (0.315,2.647) -- (1.997,3.584);
+\draw[ge] (2.357,2.122) -- (0.673,1.203);
+\draw[ge] (2.357,2.122) -- (1.334,2.396);
+\draw[ge] (2.357,2.122) -- (1.687,0.922);
+\draw[ge] (2.357,2.122) -- (0.968,3.855);
+\draw[ge] (2.357,2.122) -- (2.738,0.685);
+\draw[ge] (2.357,2.122) -- (3.497,2.153);
+\draw[ge] (0.673,1.203) -- (1.687,0.922);
+\draw[ge] (1.687,0.922) -- (2.738,0.685);
+\draw[ge] (0.968,3.855) -- (0.730,5.350);
+\draw[ge] (4.875,0.873) -- (3.848,0.644);
+\draw[ge] (3.497,2.153) -- (4.532,2.694);
+\draw[ge] (3.497,2.153) -- (3.715,3.652);
+\draw[ge] (3.497,2.153) -- (3.848,0.644);
+\draw[ge] (4.532,2.694) -- (3.715,3.652);
+\draw[ge] (3.715,3.652) -- (2.863,4.561);
+\draw[ge] (0.730,5.350) -- (1.767,5.090);
+\draw[ge] (2.863,4.561) -- (1.997,3.584);
+\draw[ge] (1.997,3.584) -- (1.767,5.090);
+\node[gn, fill=pc0, text=white] (P1n1) at (0.315,2.647) {1};
+\node[gn, fill=pc0, text=white] (P1n2) at (2.357,2.122) {2};
+\node[gn, fill=pc0, text=white] (P1n3) at (0.673,1.203) {3};
+\node[gn, fill=pc0, text=white] (P1n4) at (1.334,2.396) {4};
+\node[gn, fill=pc0, text=white] (P1n5) at (1.687,0.922) {5};
+\node[gn, fill=pc0, text=white] (P1n6) at (0.968,3.855) {6};
+\node[gn, fill=pc0, text=white] (P1n7) at (2.738,0.685) {7};
+\node[gn, fill=pc1, text=white] (P1n8) at (4.875,0.873) {8};
+\node[gn, fill=pc1, text=white] (P1n9) at (3.497,2.153) {9};
+\node[gn, fill=pc1, text=white] (P1n10) at (4.532,2.694) {10};
+\node[gn, fill=pc1, text=white] (P1n11) at (3.715,3.652) {11};
+\node[gn, fill=pc1, text=white] (P1n12) at (3.848,0.644) {12};
+\node[gn, fill=pc2, text=black] (P1n13) at (0.730,5.350) {13};
+\node[gn, fill=pc2, text=black] (P1n14) at (2.863,4.561) {14};
+\node[gn, fill=pc2, text=black] (P1n15) at (1.997,3.584) {15};
+\node[gn, fill=pc2, text=black] (P1n16) at (1.767,5.090) {16};
+\node[ptitle] at (2.583,5.600) {(a) Stage 2 result};
+\node[barrow, rotate=0, minimum height=9mm] at (5.817,2.800) {};
+\node[note, anchor=south] at (5.817,3.080) {WAS};
+\draw[ge] (6.782,2.647) -- (7.140,1.203);
+\draw[ge] (6.782,2.647) -- (7.800,2.396);
+\draw[ge] (6.782,2.647) -- (8.153,0.922);
+\draw[ge] (6.782,2.647) -- (7.434,3.855);
+\draw[ge] (6.782,2.647) -- (8.464,3.584);
+\draw[ge] (8.823,2.122) -- (7.140,1.203);
+\draw[ge] (8.823,2.122) -- (7.800,2.396);
+\draw[ge] (8.823,2.122) -- (8.153,0.922);
+\draw[ge] (8.823,2.122) -- (7.434,3.855);
+\draw[ge] (8.823,2.122) -- (9.205,0.685);
+\draw[ge] (8.823,2.122) -- (9.964,2.153);
+\draw[ge] (7.140,1.203) -- (8.153,0.922);
+\draw[ge] (8.153,0.922) -- (9.205,0.685);
+\draw[ge] (7.434,3.855) -- (7.197,5.350);
+\draw[ge] (11.342,0.873) -- (10.315,0.644);
+\draw[ge] (9.964,2.153) -- (10.999,2.694);
+\draw[ge] (9.964,2.153) -- (10.181,3.652);
+\draw[ge] (9.964,2.153) -- (10.315,0.644);
+\draw[ge] (10.999,2.694) -- (10.181,3.652);
+\draw[ge] (10.181,3.652) -- (9.329,4.561);
+\draw[ge] (7.197,5.350) -- (8.233,5.090);
+\draw[ge] (9.329,4.561) -- (8.464,3.584);
+\draw[ge] (8.464,3.584) -- (8.233,5.090);
+\node[ring] at (7.197,5.350) {};
+\node[ring] at (9.329,4.561) {};
+\node[gn, fill=pc0, text=white] (P2n1) at (6.782,2.647) {1};
+\node[gn, fill=pc0, text=white] (P2n2) at (8.823,2.122) {2};
+\node[gn, fill=pc0, text=white] (P2n3) at (7.140,1.203) {3};
+\node[gn, fill=pc0, text=white] (P2n4) at (7.800,2.396) {4};
+\node[gn, fill=pc0, text=white] (P2n5) at (8.153,0.922) {5};
+\node[gn, fill=pc0, text=white] (P2n6) at (7.434,3.855) {6};
+\node[gn, fill=pc0, text=white] (P2n7) at (9.205,0.685) {7};
+\node[gn, fill=pc1, text=white] (P2n8) at (11.342,0.873) {8};
+\node[gn, fill=pc1, text=white] (P2n9) at (9.964,2.153) {9};
+\node[gn, fill=pc1, text=white] (P2n10) at (10.999,2.694) {10};
+\node[gn, fill=pc1, text=white] (P2n11) at (10.181,3.652) {11};
+\node[gn, fill=pc1, text=white] (P2n12) at (10.315,0.644) {12};
+\node[gn, fill=pc2, text=black] (P2n13) at (7.197,5.350) {13};
+\node[gn, fill=pc2, text=black] (P2n14) at (9.329,4.561) {14};
+\node[gn, fill=pc2, text=black] (P2n15) at (8.464,3.584) {15};
+\node[gn, fill=pc2, text=black] (P2n16) at (8.233,5.090) {16};
+\node[elab, font=\sffamily\fontsize{6.5}{6.5}\selectfont] at (8.823,2.562) {(2, 8)};
+\node[elab, font=\sffamily\fontsize{6.5}{6.5}\selectfont] at (10.466,1.823) {(2, 8)};
+\node[elab, font=\sffamily\fontsize{6.5}{6.5}\selectfont] at (6.782,3.087) {(2, 14)};
+\node[elab, font=\sffamily\fontsize{6.5}{6.5}\selectfont] at (6.894,4.185) {(2, 14)};
+\node[elab, font=\sffamily\fontsize{6.5}{6.5}\selectfont] at (6.567,4.930) {(2, 14)};
+\node[elab, font=\sffamily\fontsize{6.5}{6.5}\selectfont] at (9.004,3.254) {(2, 14)};
+\node[elab, font=\sffamily\fontsize{6.5}{6.5}\selectfont] at (10.721,3.982) {(8, 14)};
+\node[elab, font=\sffamily\fontsize{6.5}{6.5}\selectfont] at (9.959,4.981) {(8, 14)};
+\node[ptitle] at (9.050,5.600) {(b) candidate labels of boundary nodes};
+\node[barrow, rotate=0, minimum height=9mm] at (12.283,2.800) {};
+\node[note, anchor=south] at (12.283,3.080) {$\beta{=}0.8$};
+\draw[ge] (13.249,2.647) -- (13.606,1.203);
+\draw[ge] (13.249,2.647) -- (14.267,2.396);
+\draw[ge] (13.249,2.647) -- (14.620,0.922);
+\draw[ge] (13.249,2.647) -- (13.901,3.855);
+\draw[ge] (13.249,2.647) -- (14.930,3.584);
+\draw[ge] (15.290,2.122) -- (13.606,1.203);
+\draw[ge] (15.290,2.122) -- (14.267,2.396);
+\draw[ge] (15.290,2.122) -- (14.620,0.922);
+\draw[ge] (15.290,2.122) -- (13.901,3.855);
+\draw[ge] (15.290,2.122) -- (15.672,0.685);
+\draw[ge] (15.290,2.122) -- (16.430,2.153);
+\draw[ge] (13.606,1.203) -- (14.620,0.922);
+\draw[ge] (14.620,0.922) -- (15.672,0.685);
+\draw[ge] (13.901,3.855) -- (13.664,5.350);
+\draw[ge] (17.808,0.873) -- (16.781,0.644);
+\draw[ge] (16.430,2.153) -- (17.466,2.694);
+\draw[ge] (16.430,2.153) -- (16.648,3.652);
+\draw[ge] (16.430,2.153) -- (16.781,0.644);
+\draw[ge] (17.466,2.694) -- (16.648,3.652);
+\draw[ge] (16.648,3.652) -- (15.796,4.561);
+\draw[ge] (13.664,5.350) -- (14.700,5.090);
+\draw[ge] (15.796,4.561) -- (14.930,3.584);
+\draw[ge] (14.930,3.584) -- (14.700,5.090);
+\node[gn, fill=pc0, text=white] (P3n1) at (13.249,2.647) {1};
+\node[gn, fill=pc0, text=white] (P3n2) at (15.290,2.122) {2};
+\node[gn, fill=pc0, text=white] (P3n3) at (13.606,1.203) {3};
+\node[gn, fill=pc0, text=white] (P3n4) at (14.267,2.396) {4};
+\node[gn, fill=pc0, text=white] (P3n5) at (14.620,0.922) {5};
+\node[gn, fill=pc0, text=white] (P3n6) at (13.901,3.855) {6};
+\node[gn, fill=pc0, text=white] (P3n7) at (15.672,0.685) {7};
+\node[gn, fill=pc1, text=white] (P3n8) at (17.808,0.873) {8};
+\node[gn, fill=pc1, text=white] (P3n9) at (16.430,2.153) {9};
+\node[gn, fill=pc1, text=white] (P3n10) at (17.466,2.694) {10};
+\node[gn, fill=pc1, text=white] (P3n11) at (16.648,3.652) {11};
+\node[gn, fill=pc1, text=white] (P3n12) at (16.781,0.644) {12};
+\fill[pc0] (13.664,5.350) -- ++(90.0:0.26) arc (90.0:270.0:0.26) -- cycle;
+\fill[pc2] (13.664,5.350) -- ++(270.0:0.26) arc (270.0:450.0:0.26) -- cycle;
+\node[gn, fill=none, text=black] (P3n13) at (13.664,5.350) {13};
+\fill[pc1] (15.796,4.561) -- ++(90.0:0.26) arc (90.0:270.0:0.26) -- cycle;
+\fill[pc2] (15.796,4.561) -- ++(270.0:0.26) arc (270.0:450.0:0.26) -- cycle;
+\node[gn, fill=none, text=black] (P3n14) at (15.796,4.561) {14};
+\node[gn, fill=pc2, text=black] (P3n15) at (14.930,3.584) {15};
+\node[gn, fill=pc2, text=black] (P3n16) at (14.700,5.090) {16};
+\node[ptitle] at (15.517,5.600) {(c) overlapping communities};
+\end{tikzpicture}
+\caption{Community label filtering (Stage~3) of SN-LPA on the example network of Fig.~\ref{fig:stage1}. In (b) each boundary node lists the communities among its neighbours (by core node); in (c) two-coloured nodes belong to two communities.}
+\label{fig:stage3}
+\end{figure*}
+
+
+
+
+
+
+
+
 
 
 
 \begin{figure*}[t]
 \centering
-\begin{tikzpicture}[x=1cm,y=1cm]
-\node[term] (s) at (0.8,0) {Start};
-\node[io] (in) at (3.5,0) {Input graph $G$};
-\node[proc, text width=33mm] (ni) at (7.2,0) {Node importance $NI$;\\ rank nodes};
-\node[proc, text width=40mm] (s1) at (11.9,0) {\textbf{Stage 1: pre-selection}\\ core = highest-$NI$ node,\\ CTS gate $\alpha$ (unchanged)};
-\node[modp, text width=47mm] (s2) at (11.9,-3.1) {\textbf{Stage 2$'$: evolution} (modified)\\ \textbf{M1} similarity $c/(1{+}c)$ (triangles)\\ \textbf{M3} gain $=\sum A-\gamma s_iS_c/W$\\ \textbf{M2} keep best-$Q$ round};
-\node[dec] (d2) at (7.0,-3.1) {Labels\\changed?};
-\node[modp, text width=40mm] (m4) at (2.6,-3.1) {\textbf{M4} granularity rule:\\ run $\gamma{=}0$ and $\gamma{=}1$;\\ keep $\gamma{=}1$ iff $\le1.5\times$ communities};
-\node[newp, text width=40mm] (m5) at (2.6,-6.6) {\textbf{M5} map-equation merge:\\ greedy $\Delta Q$ order;\\ keep prefix with minimum $L$};
-\node[newp, text width=38mm] (m6) at (7.6,-6.6) {\textbf{M6} boundary moves:\\ node moves if Synwalk $J$ rises};
-\node[dec] (g) at (11.7,-6.6) {Regularised\\$L$ lower?};
-\node[proc, text width=29mm] (s3) at (16.0,-6.6) {\textbf{Stage 3}: WAS filtering\\ (unchanged)};
-\node[io] (out) at (16.0,-8.6) {Output: communities};
-\node[term] (e) at (11.7,-8.6) {End};
-\draw[arr] (s)--(in); \draw[arr] (in)--(ni); \draw[arr] (ni)--(s1);
-\draw[arr] (s1)--(s2);
-\draw[arr] (s2)--(d2);
-\draw[arr] (d2.south) -- ++(0,-1.0) -| (s2.south) node[lab, pos=.15, below]{yes};
-\draw[arr] (d2)--(m4) node[lab, pos=.4, above]{no};
-\draw[arr] (m4)--(m5);
-\draw[arr] (m5)--(m6);
-\draw[arr] (m6)--(g);
-\draw[arr] (g)--(s3) node[lab, pos=.5, above]{yes};
-\draw[arr] (g.north) -- ++(0,1.0) -| (s3.north) node[lab, pos=.25, above]{no: discard all moves};
-\draw[arr] (s3)--(out); \draw[arr] (out)--(e);
-\node[proc, fill=orange!28, minimum width=7mm, minimum height=4mm] at (15.1,-0.55) (l1) {};
-\node[font=\scriptsize, anchor=west] at (15.5,-0.55) {modified step};
-\node[proc, fill=blue!14, minimum width=7mm, minimum height=4mm] at (15.1,-1.25) (l2) {};
-\node[font=\scriptsize, anchor=west] at (15.5,-1.25) {new step};
-\node[proc, minimum width=7mm, minimum height=4mm] at (15.1,-1.95) (l3) {};
-\node[font=\scriptsize, anchor=west] at (15.5,-1.95) {unchanged};
+\begin{tikzpicture}
+\draw[ge] (1.289,4.259) -- (2.017,3.605);
+\draw[ge] (1.289,4.259) -- (3.524,3.932);
+\draw[ge] (1.289,4.259) -- (2.329,4.750);
+\draw[ge] (1.289,4.259) -- (1.289,2.295);
+\draw[ge] (2.017,3.605) -- (4.200,2.459);
+\draw[ge] (2.017,3.605) -- (3.524,3.932);
+\draw[ge] (2.017,3.605) -- (2.329,4.750);
+\draw[ge] (2.017,3.605) -- (1.289,2.295);
+\draw[ge] (4.200,2.459) -- (3.524,3.932);
+\draw[ge] (4.200,2.459) -- (2.641,2.295);
+\draw[ge] (3.524,3.932) -- (2.329,4.750);
+\draw[ge] (3.524,3.932) -- (2.641,2.295);
+\draw[ge] (3.524,3.932) -- (3.524,0.659);
+\draw[ge] (2.641,2.295) -- (3.524,0.659);
+\draw[ge] (2.641,2.295) -- (1.289,2.295);
+\draw[ge] (3.524,0.659) -- (1.289,2.295);
+\draw[ge] (1.289,2.295) -- (0.666,1.641);
+\draw[ge] (0.458,0.659) -- (0.666,1.641);
+\draw[ge] (0.458,0.659) -- (1.082,0.250);
+\draw[ge] (0.250,2.459) -- (0.666,1.641);
+\node[ring] at (2.641,2.295) {};
+\node[gn, fill=pc0, text=white] (P1n1) at (1.289,4.259) {1};
+\node[gn, fill=pc0, text=white] (P1n2) at (2.017,3.605) {2};
+\node[gn, fill=pc0, text=white] (P1n3) at (4.200,2.459) {3};
+\node[gn, fill=pc0, text=white] (P1n4) at (3.524,3.932) {4};
+\node[gn, fill=pc0, text=white] (P1n5) at (2.329,4.750) {5};
+\node[gn, fill=pc1, text=white] (P1n6) at (2.641,2.295) {6};
+\node[gn, fill=pc1, text=white] (P1n7) at (3.524,0.659) {7};
+\node[gn, fill=pc1, text=white] (P1n8) at (1.289,2.295) {8};
+\node[gn, fill=pc1, text=white] (P1n9) at (0.458,0.659) {9};
+\node[gn, fill=pc1, text=white] (P1n10) at (0.250,2.459) {10};
+\node[gn, fill=pc1, text=white] (P1n11) at (0.666,1.641) {11};
+\node[gn, fill=pc1, text=white] (P1n12) at (1.082,0.250) {12};
+\node[ptitle] at (2.225,5.000) {(b) Stage 2 with Jaccard (TPOC-LPA)};
+\node[pstat] at (2.225,0.000) {2 comm., NMI 0.362};
+\node[barrow, rotate=180, minimum height=9mm] at (5.100,2.500) {};
+\node[note, anchor=south] at (5.100,2.780) {Jaccard};
+\draw[ge] (7.605,4.259) -- (8.729,3.605);
+\draw[ge] (7.605,4.259) -- (11.057,3.932);
+\draw[ge] (7.605,4.259) -- (9.211,4.750);
+\draw[ge] (7.605,4.259) -- (7.605,2.295);
+\draw[ge] (8.729,3.605) -- (12.100,2.459);
+\draw[ge] (8.729,3.605) -- (11.057,3.932);
+\draw[ge] (8.729,3.605) -- (9.211,4.750);
+\draw[ge] (8.729,3.605) -- (7.605,2.295);
+\draw[ge] (12.100,2.459) -- (11.057,3.932);
+\draw[ge, line width=1.5pt, draw=black!55] (12.100,2.459) -- (9.692,2.295);
+\draw[ge] (11.057,3.932) -- (9.211,4.750);
+\draw[ge, line width=1.5pt, draw=black!55] (11.057,3.932) -- (9.692,2.295);
+\draw[ge] (11.057,3.932) -- (11.057,0.659);
+\draw[ge, line width=1.5pt, draw=black!55] (9.692,2.295) -- (11.057,0.659);
+\draw[ge, line width=1.5pt, draw=black!55] (9.692,2.295) -- (7.605,2.295);
+\draw[ge] (11.057,0.659) -- (7.605,2.295);
+\draw[ge] (7.605,2.295) -- (6.642,1.641);
+\draw[ge] (6.321,0.659) -- (6.642,1.641);
+\draw[ge] (6.321,0.659) -- (7.284,0.250);
+\draw[ge] (6.000,2.459) -- (6.642,1.641);
+\path (9.692,2.295) -- (12.100,2.459) node[elab, sloped, pos=0.45] {0.17\,|\,0.50};
+\path (9.692,2.295) -- (11.057,3.932) node[elab, sloped, pos=0.60] {0.25\,|\,0.67};
+\path (9.692,2.295) -- (11.057,0.659) node[elab, sloped, pos=0.50] {0.40\,|\,0.67};
+\path (9.692,2.295) -- (7.605,2.295) node[elab, sloped, pos=0.50] {0.12\,|\,0.50};
+\node[ring] at (9.692,2.295) {};
+\node[gn, fill=pc0, text=white] (P2n1) at (7.605,4.259) {1};
+\node[gn, fill=pc0, text=white] (P2n2) at (8.729,3.605) {2};
+\node[gn, fill=pc0, text=white] (P2n3) at (12.100,2.459) {3};
+\node[gn, fill=pc0, text=white] (P2n4) at (11.057,3.932) {4};
+\node[gn, fill=pc0, text=white] (P2n5) at (9.211,4.750) {5};
+\node[gn, fill=pc1, text=white] (P2n6) at (9.692,2.295) {6};
+\node[gn, fill=pc1, text=white] (P2n7) at (11.057,0.659) {7};
+\node[gn, fill=pc1, text=white] (P2n8) at (7.605,2.295) {8};
+\node[gn, fill=pc3, text=black] (P2n9) at (6.321,0.659) {9};
+\node[gn, fill=pc2, text=black] (P2n10) at (6.000,2.459) {10};
+\node[gn, fill=pc1, text=white] (P2n11) at (6.642,1.641) {11};
+\node[gn, fill=pc3, text=black] (P2n12) at (7.284,0.250) {12};
+\node[ptitle] at (9.050,5.000) {(a) Stage 1 result};
+\node[pstat] at (9.050,0.000) {scores on the edges of node 6: Jaccard\,|\,motif};
+\node[barrow, rotate=0, minimum height=9mm] at (13.000,2.500) {};
+\node[note, anchor=south] at (13.000,2.780) {motif};
+\draw[goodc, line width=1.1pt, rounded corners=2pt] (13.650,0.000) rectangle (18.100,5.000);
+\draw[ge] (14.939,4.259) -- (15.667,3.605);
+\draw[ge] (14.939,4.259) -- (17.174,3.932);
+\draw[ge] (14.939,4.259) -- (15.979,4.750);
+\draw[ge] (14.939,4.259) -- (14.939,2.295);
+\draw[ge] (15.667,3.605) -- (17.850,2.459);
+\draw[ge] (15.667,3.605) -- (17.174,3.932);
+\draw[ge] (15.667,3.605) -- (15.979,4.750);
+\draw[ge] (15.667,3.605) -- (14.939,2.295);
+\draw[ge] (17.850,2.459) -- (17.174,3.932);
+\draw[ge] (17.850,2.459) -- (16.291,2.295);
+\draw[ge] (17.174,3.932) -- (15.979,4.750);
+\draw[ge] (17.174,3.932) -- (16.291,2.295);
+\draw[ge] (17.174,3.932) -- (17.174,0.659);
+\draw[ge] (16.291,2.295) -- (17.174,0.659);
+\draw[ge] (16.291,2.295) -- (14.939,2.295);
+\draw[ge] (17.174,0.659) -- (14.939,2.295);
+\draw[ge] (14.939,2.295) -- (14.316,1.641);
+\draw[ge] (14.108,0.659) -- (14.316,1.641);
+\draw[ge] (14.108,0.659) -- (14.732,0.250);
+\draw[ge] (13.900,2.459) -- (14.316,1.641);
+\node[ring] at (16.291,2.295) {};
+\node[gn, fill=pc0, text=white] (P3n1) at (14.939,4.259) {1};
+\node[gn, fill=pc0, text=white] (P3n2) at (15.667,3.605) {2};
+\node[gn, fill=pc0, text=white] (P3n3) at (17.850,2.459) {3};
+\node[gn, fill=pc0, text=white] (P3n4) at (17.174,3.932) {4};
+\node[gn, fill=pc0, text=white] (P3n5) at (15.979,4.750) {5};
+\node[gn, fill=pc0, text=white] (P3n6) at (16.291,2.295) {6};
+\node[gn, fill=pc0, text=white] (P3n7) at (17.174,0.659) {7};
+\node[gn, fill=pc0, text=white] (P3n8) at (14.939,2.295) {8};
+\node[gn, fill=pc1, text=white] (P3n9) at (14.108,0.659) {9};
+\node[gn, fill=pc1, text=white] (P3n10) at (13.900,2.459) {10};
+\node[gn, fill=pc1, text=white] (P3n11) at (14.316,1.641) {11};
+\node[gn, fill=pc1, text=white] (P3n12) at (14.732,0.250) {12};
+\node[ptitle] at (15.875,5.000) {(c) Stage 2 with motif similarity};
+\node[pstat] at (15.875,0.000) {2 comm., NMI 1.000};
 \end{tikzpicture}
-\caption{Architecture of the proposed pipeline. Orange boxes modify a step of TPOC-LPA, blue boxes are new steps, white boxes are unchanged (compare Fig.~\ref{fig:base}).}
-\label{fig:ours}
+\caption{Jaccard versus motif similarity, both run from the Stage~1 partition (a) of a planted graph (nodes 1--8 and 9--12).}
+\label{fig:m1}
 \end{figure*}
 
-\textbf{Preliminaries: the map equation.} Two of the modifications use the map equation~\cite{rosvall2008}, so we introduce it first. Imagine describing the path of a random walker on the graph with as few bits as possible. If the nodes are grouped into modules, each module gets its own short codebook for node names, and one extra code announces a move from one module to another. A partition that matches real communities keeps the walker inside a module most of the time, so the module codebooks are used often and the announcement code rarely, and the description is short. The expected description length per step is the \emph{codelength} $L$. For an undirected graph, with module exit rates $q_i=\mathrm{cut}_i/2m$, module visit rates $p_i=\mathrm{vol}_i/2m$, node visit rates $p_\alpha=k_\alpha/2m$, $q=\sum_iq_i$ and $f(x)=x\log_2x$,
-\begin{equation}
-L=f(q)-2\sum_if(q_i)+\sum_if(q_i+p_i)-\sum_\alpha f(p_\alpha).\label{eq:L}
-\end{equation}
-Lower is better. Merging two modules saves the announcements between them but lengthens the codebook of the merged module, so $L$ falls only if the two modules are linked strongly enough; this is why its resolution limit depends on the links between modules and not on the size of the whole graph~\cite{kawamoto2015}. Our implementation reproduces the codelength of the Infomap package (to $10^{-15}$ for this form, and to four decimals for the regularised form below). On sparse graphs $L$ can over-fit; the \emph{regularised} codelength $L_{\mathrm{reg}}$~\cite{smiljanic2020} is the map equation of $G$ plus a complete graph of small weight $\ln N/N$ on every pair of nodes, which stops it from trusting thin local patterns.
 
-\textbf{M1: triangle-based similarity (replaces Jaccard in Eq.~\eqref{eq:A}).} With $c=|N(i)\cap N(j)|$ the number of triangles on edge $(i,j)$,
+\textbf{Motif similarity (replaces Jaccard in Eq.~\eqref{eq:A}).} With $c=|N(i)\cap N(j)|$ the number of triangles on edge $(i,j)$,
 \begin{equation}
 \mathrm{Sim}(i,j)=\frac{c}{1+c}\quad(0\to0,\;1\to0.5,\;3\to0.75,\;9\to0.9),\label{eq:motif}
 \end{equation}
-which depends on the triangle count and not on the sizes of the neighbourhoods. It costs a little on sparse graphs, where one shared neighbour is often chance but scores 0.5.
+which depends on the triangle count and not on the sizes of the neighbourhoods. It costs a little on sparse graphs, where one shared neighbour is often chance but scores 0.5. Fig.~\ref{fig:m1} illustrates this. After Stage~1 of a 12-node graph, node~6 has two links into the community of node~4 and two into that of node~8. Its edges to nodes 4 and 7 each lie on two triangles, yet Jaccard scores 6--4 at 0.25 and 6--7 at 0.40, only because node~4 has six neighbours and node~7 three. With Jaccard, node~6 therefore joins the community of node~8 (score 1.665 against 1.626), which also holds node~11 of the other group, and Stage~2 ends with mixed communities (Fig.~\ref{fig:m1}(b), NMI 0.362). The motif similarity scores both edges 0.67, node~6 joins the community of node~4 (2.634 against 2.485), and Stage~2 recovers the planted partition (Fig.~\ref{fig:m1}(c)).
 
-\textbf{M2: best-iterate guard.} Let $Q_t$ be the modularity of the labels after Stage~2 round $t$ ($t=0$: the Stage~1 partition). The guard returns the labels of $\argmax_tQ_t$ instead of the last round. It changes nothing unless a later round is worse.
 
-\textbf{M3: size-corrected gain.} Stage~2 scores a candidate community by Eq.~\eqref{eq:gain} with $\gamma=1$. This is LPAm with importance-weighted edges; used alone it fragments graphs whose labels are coarse (Karate, Dolphin, Polbooks), hence M4.
+\begin{figure*}[b]
+\centering
+\begin{tikzpicture}
+\draw[ge] (3.675,2.479) -- (3.170,3.412);
+\draw[ge] (3.675,2.479) -- (4.378,3.297);
+\draw[ge] (3.675,2.479) -- (2.428,2.570);
+\draw[ge] (3.675,2.479) -- (4.207,1.350);
+\draw[ge] (1.069,1.675) -- (2.109,1.572);
+\draw[ge] (1.069,1.675) -- (2.163,0.522);
+\draw[ge] (1.069,1.675) -- (2.428,2.570);
+\draw[ge] (3.170,3.412) -- (4.378,3.297);
+\draw[ge] (3.170,3.412) -- (2.428,2.570);
+\draw[ge] (2.109,1.572) -- (2.428,2.570);
+\draw[ge] (2.109,1.572) -- (3.156,1.536);
+\draw[ge] (2.163,0.522) -- (3.156,1.536);
+\draw[ge] (2.163,0.522) -- (3.424,0.522);
+\draw[ge] (2.428,2.570) -- (3.156,1.536);
+\draw[ge] (3.156,1.536) -- (3.424,0.522);
+\draw[ge] (4.611,0.250) -- (4.207,1.350);
+\draw[ge] (4.611,0.250) -- (3.424,0.522);
+\draw[ge] (4.207,1.350) -- (3.424,0.522);
+\draw[ge] (4.207,1.350) -- (4.917,2.213);
+\node[gn, fill=pc0, text=white] (P1n1) at (3.675,2.479) {1};
+\node[gn, fill=pc0, text=white] (P1n2) at (1.069,1.675) {2};
+\node[gn, fill=pc0, text=white] (P1n3) at (3.170,3.412) {3};
+\node[gn, fill=pc0, text=white] (P1n4) at (2.109,1.572) {4};
+\node[gn, fill=pc1, text=white] (P1n5) at (2.163,0.522) {5};
+\node[gn, fill=pc3, text=black] (P1n6) at (4.378,3.297) {6};
+\node[gn, fill=pc0, text=white] (P1n7) at (2.428,2.570) {7};
+\node[gn, fill=pc0, text=white] (P1n8) at (3.156,1.536) {8};
+\node[gn, fill=pc1, text=white] (P1n9) at (4.611,0.250) {9};
+\node[gn, fill=pc1, text=white] (P1n10) at (4.207,1.350) {10};
+\node[gn, fill=pc1, text=white] (P1n11) at (3.424,0.522) {11};
+\node[gn, fill=pc2, text=black] (P1n12) at (4.917,2.213) {12};
+\node[ptitle] at (2.583,4.000) {(a) round 0 (Stage 1)};
+\node[pstat] at (2.583,0.000) {4 comm., $Q{=}0.176$, NMI 0.509};
+\node[barrow, rotate=0, minimum height=9mm] at (5.817,2.000) {};
+\node[note, anchor=south] at (5.817,2.280) {round 1};
+\draw[goodc, line width=1.1pt, rounded corners=2pt] (6.467,0.000) rectangle (11.633,4.000);
+\draw[ge] (10.142,2.479) -- (9.637,3.412);
+\draw[ge] (10.142,2.479) -- (10.845,3.297);
+\draw[ge] (10.142,2.479) -- (8.894,2.570);
+\draw[ge] (10.142,2.479) -- (10.673,1.350);
+\draw[ge] (7.536,1.675) -- (8.576,1.572);
+\draw[ge] (7.536,1.675) -- (8.630,0.522);
+\draw[ge] (7.536,1.675) -- (8.894,2.570);
+\draw[ge] (9.637,3.412) -- (10.845,3.297);
+\draw[ge] (9.637,3.412) -- (8.894,2.570);
+\draw[ge] (8.576,1.572) -- (8.894,2.570);
+\draw[ge] (8.576,1.572) -- (9.623,1.536);
+\draw[ge] (8.630,0.522) -- (9.623,1.536);
+\draw[ge] (8.630,0.522) -- (9.891,0.522);
+\draw[ge] (8.894,2.570) -- (9.623,1.536);
+\draw[ge] (9.623,1.536) -- (9.891,0.522);
+\draw[ge] (11.078,0.250) -- (10.673,1.350);
+\draw[ge] (11.078,0.250) -- (9.891,0.522);
+\draw[ge] (10.673,1.350) -- (9.891,0.522);
+\draw[ge] (10.673,1.350) -- (11.383,2.213);
+\node[gn, fill=pc0, text=white] (P2n1) at (10.142,2.479) {1};
+\node[gn, fill=pc0, text=white] (P2n2) at (7.536,1.675) {2};
+\node[gn, fill=pc0, text=white] (P2n3) at (9.637,3.412) {3};
+\node[gn, fill=pc0, text=white] (P2n4) at (8.576,1.572) {4};
+\node[gn, fill=pc0, text=white] (P2n5) at (8.630,0.522) {5};
+\node[gn, fill=pc0, text=white] (P2n6) at (10.845,3.297) {6};
+\node[gn, fill=pc0, text=white] (P2n7) at (8.894,2.570) {7};
+\node[gn, fill=pc0, text=white] (P2n8) at (9.623,1.536) {8};
+\node[gn, fill=pc1, text=white] (P2n9) at (11.078,0.250) {9};
+\node[gn, fill=pc1, text=white] (P2n10) at (10.673,1.350) {10};
+\node[gn, fill=pc1, text=white] (P2n11) at (9.891,0.522) {11};
+\node[gn, fill=pc1, text=white] (P2n12) at (11.383,2.213) {12};
+\node[ptitle] at (9.050,4.000) {(b) round 1: highest $Q$};
+\node[pstat] at (9.050,0.000) {2 comm., $Q{=}0.253$, NMI 1.000};
+\node[barrow, rotate=0, minimum height=9mm] at (12.283,2.000) {};
+\node[note, anchor=south] at (12.283,2.280) {round 2};
+\draw[ge] (16.608,2.479) -- (16.104,3.412);
+\draw[ge] (16.608,2.479) -- (17.312,3.297);
+\draw[ge] (16.608,2.479) -- (15.361,2.570);
+\draw[ge] (16.608,2.479) -- (17.140,1.350);
+\draw[ge] (14.002,1.675) -- (15.042,1.572);
+\draw[ge] (14.002,1.675) -- (15.097,0.522);
+\draw[ge] (14.002,1.675) -- (15.361,2.570);
+\draw[ge] (16.104,3.412) -- (17.312,3.297);
+\draw[ge] (16.104,3.412) -- (15.361,2.570);
+\draw[ge] (15.042,1.572) -- (15.361,2.570);
+\draw[ge] (15.042,1.572) -- (16.090,1.536);
+\draw[ge] (15.097,0.522) -- (16.090,1.536);
+\draw[ge] (15.097,0.522) -- (16.358,0.522);
+\draw[ge] (15.361,2.570) -- (16.090,1.536);
+\draw[ge] (16.090,1.536) -- (16.358,0.522);
+\draw[ge] (17.545,0.250) -- (17.140,1.350);
+\draw[ge] (17.545,0.250) -- (16.358,0.522);
+\draw[ge] (17.140,1.350) -- (16.358,0.522);
+\draw[ge] (17.140,1.350) -- (17.850,2.213);
+\node[gn, fill=pc0, text=white] (P3n1) at (16.608,2.479) {1};
+\node[gn, fill=pc0, text=white] (P3n2) at (14.002,1.675) {2};
+\node[gn, fill=pc0, text=white] (P3n3) at (16.104,3.412) {3};
+\node[gn, fill=pc0, text=white] (P3n4) at (15.042,1.572) {4};
+\node[gn, fill=pc0, text=white] (P3n5) at (15.097,0.522) {5};
+\node[gn, fill=pc0, text=white] (P3n6) at (17.312,3.297) {6};
+\node[gn, fill=pc0, text=white] (P3n7) at (15.361,2.570) {7};
+\node[gn, fill=pc0, text=white] (P3n8) at (16.090,1.536) {8};
+\node[gn, fill=pc0, text=white] (P3n9) at (17.545,0.250) {9};
+\node[gn, fill=pc0, text=white] (P3n10) at (17.140,1.350) {10};
+\node[gn, fill=pc0, text=white] (P3n11) at (16.358,0.522) {11};
+\node[gn, fill=pc0, text=white] (P3n12) at (17.850,2.213) {12};
+\node[ptitle] at (15.517,4.000) {(c) round 2: TPOC-LPA output};
+\node[pstat] at (15.517,0.000) {1 comm., $Q{=}0.000$, NMI 0.000};
+\node[barrow, rotate=-90, minimum height=0.85cm] at (9.050,-1.0) {};
+\node[note, anchor=west, font=\scriptsize\itshape] at (9.450,-1.0) {highest $Q$: passed to Stage~3};
+\end{tikzpicture}
+\caption{Best-iterate guard: Stage~2 rounds of TPOC-LPA on a planted graph (nodes 1--8 and 9--12). The guard passes the round with the highest $Q$ (green frame) to Stage~3.}
+\label{fig:m2}
+\end{figure*}
 
-\textbf{M4: granularity rule (selector).} Starting from the same Stage~1 partition we run the paper-style Stage~2 ($\gamma=0$, with M1 and M2) giving $L^{(0)}$, and the corrected one ($\gamma=1$, with M1) giving $L^{(1)}$. With $|L|$ the number of communities,
+
+\textbf{Best-iterate guard.} Let $Q_t$ be the modularity of the labels after Stage~2 round $t$ ($t=0$: the Stage~1 partition). The guard returns the labels of $\argmax_tQ_t$ instead of the last round. It changes nothing unless a later round is worse. Fig.~\ref{fig:m2} shows why this matters. On the planted graph of Fig.~\ref{fig:m2}(a)--(c), round~1 of TPOC-LPA's Stage~2 already finds the two planted communities ($Q=0.253$, NMI 1.000), but some labels changed in that round, so the rule runs a second round, which merges everything into one community ($Q=0$, NMI 0). This is what TPOC-LPA returns; the guard keeps round~1. The same collapse occurs on real data: on email-Eu, Stage~1 gives 335 communities (NMI 0.54), the first round of Stage~2 leaves 4 and the second leaves one (NMI 0). There the best round is the Stage~1 partition itself, and the guard returns it.
+
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}
+\node[font=\footnotesize\bfseries, anchor=west] at (0,8.800) {TPOC-LPA: plain sum ($\gamma{=}0$)};
+\draw[ge] (4.627,6.568) -- (3.456,7.385);
+\draw[ge] (4.627,6.568) -- (2.688,6.836);
+\draw[ge] (4.627,6.568) -- (3.050,6.094);
+\draw[ge] (4.627,6.568) -- (2.522,5.326);
+\draw[ge] (4.627,6.568) -- (4.639,5.050);
+\draw[ge] (3.456,7.385) -- (1.661,7.013);
+\draw[ge] (3.456,7.385) -- (3.050,6.094);
+\draw[ge] (3.456,7.385) -- (4.166,5.835);
+\draw[ge] (1.661,7.013) -- (2.688,6.836);
+\draw[ge] (1.661,7.013) -- (3.050,6.094);
+\draw[ge] (1.661,7.013) -- (2.522,5.326);
+\draw[ge] (2.688,6.836) -- (3.050,6.094);
+\draw[ge] (2.688,6.836) -- (4.166,5.835);
+\draw[ge] (2.688,6.836) -- (2.522,5.326);
+\draw[ge] (3.050,6.094) -- (4.166,5.835);
+\draw[ge] (3.050,6.094) -- (2.522,5.326);
+\draw[ge] (3.050,6.094) -- (4.639,5.050);
+\draw[ge] (3.050,6.094) -- (1.515,6.207);
+\draw[ge] (3.050,6.094) -- (1.484,5.393);
+\draw[ge] (4.166,5.835) -- (2.522,5.326);
+\draw[ge] (4.166,5.835) -- (4.639,5.050);
+\draw[ge] (2.522,5.326) -- (4.639,5.050);
+\draw[ge] (2.522,5.326) -- (1.484,5.393);
+\draw[ge] (0.524,5.933) -- (1.484,5.393);
+\draw[ge] (0.524,5.933) -- (0.496,5.050);
+\draw[ge] (1.515,6.207) -- (1.484,5.393);
+\draw[ge] (1.484,5.393) -- (0.496,5.050);
+\node[ring] at (1.515,6.207) {};
+\node[gn, fill=pc0, text=white] (P1n1) at (4.627,6.568) {1};
+\node[gn, fill=pc0, text=white] (P1n2) at (3.456,7.385) {2};
+\node[gn, fill=pc0, text=white] (P1n3) at (1.661,7.013) {3};
+\node[gn, fill=pc0, text=white] (P1n4) at (2.688,6.836) {4};
+\node[gn, fill=pc0, text=white] (P1n5) at (3.050,6.094) {5};
+\node[gn, fill=pc0, text=white] (P1n6) at (4.166,5.835) {6};
+\node[gn, fill=pc0, text=white] (P1n7) at (2.522,5.326) {7};
+\node[gn, fill=pc0, text=white] (P1n8) at (4.639,5.050) {8};
+\node[gn, fill=pc1, text=white] (P1n9) at (0.524,5.933) {9};
+\node[gn, fill=pc1, text=white] (P1n10) at (1.515,6.207) {10};
+\node[gn, fill=pc1, text=white] (P1n11) at (1.484,5.393) {11};
+\node[gn, fill=pc1, text=white] (P1n12) at (0.496,5.050) {12};
+\node[ptitle] at (2.583,8.000) {(a) Stage 1 (= ground truth)};
+\node[pstat] at (2.583,4.800) {2 comm., $Q{=}0.213$, NMI 1.000};
+\node[barrow, rotate=0, minimum height=9mm] at (5.817,6.400) {};
+\node[note, anchor=south] at (5.817,6.680) {node 10};
+\draw[ge] (11.094,6.568) -- (9.923,7.385);
+\draw[ge] (11.094,6.568) -- (9.155,6.836);
+\draw[ge] (11.094,6.568) -- (9.516,6.094);
+\draw[ge] (11.094,6.568) -- (8.988,5.326);
+\draw[ge] (11.094,6.568) -- (11.106,5.050);
+\draw[ge] (9.923,7.385) -- (8.128,7.013);
+\draw[ge] (9.923,7.385) -- (9.516,6.094);
+\draw[ge] (9.923,7.385) -- (10.632,5.835);
+\draw[ge] (8.128,7.013) -- (9.155,6.836);
+\draw[ge] (8.128,7.013) -- (9.516,6.094);
+\draw[ge] (8.128,7.013) -- (8.988,5.326);
+\draw[ge] (9.155,6.836) -- (9.516,6.094);
+\draw[ge] (9.155,6.836) -- (10.632,5.835);
+\draw[ge] (9.155,6.836) -- (8.988,5.326);
+\draw[ge] (9.516,6.094) -- (10.632,5.835);
+\draw[ge] (9.516,6.094) -- (8.988,5.326);
+\draw[ge] (9.516,6.094) -- (11.106,5.050);
+\draw[ge] (9.516,6.094) -- (7.982,6.207);
+\draw[ge] (9.516,6.094) -- (7.950,5.393);
+\draw[ge] (10.632,5.835) -- (8.988,5.326);
+\draw[ge] (10.632,5.835) -- (11.106,5.050);
+\draw[ge] (8.988,5.326) -- (11.106,5.050);
+\draw[ge] (8.988,5.326) -- (7.950,5.393);
+\draw[ge] (6.991,5.933) -- (7.950,5.393);
+\draw[ge] (6.991,5.933) -- (6.963,5.050);
+\draw[ge] (7.982,6.207) -- (7.950,5.393);
+\draw[ge] (7.950,5.393) -- (6.963,5.050);
+\node[ring] at (7.982,6.207) {};
+\node[gn, fill=pc0, text=white] (P2n1) at (11.094,6.568) {1};
+\node[gn, fill=pc0, text=white] (P2n2) at (9.923,7.385) {2};
+\node[gn, fill=pc0, text=white] (P2n3) at (8.128,7.013) {3};
+\node[gn, fill=pc0, text=white] (P2n4) at (9.155,6.836) {4};
+\node[gn, fill=pc0, text=white] (P2n5) at (9.516,6.094) {5};
+\node[gn, fill=pc0, text=white] (P2n6) at (10.632,5.835) {6};
+\node[gn, fill=pc0, text=white] (P2n7) at (8.988,5.326) {7};
+\node[gn, fill=pc0, text=white] (P2n8) at (11.106,5.050) {8};
+\node[gn, fill=pc1, text=white] (P2n9) at (6.991,5.933) {9};
+\node[gn, fill=pc0, text=white] (P2n10) at (7.982,6.207) {10};
+\node[gn, fill=pc1, text=white] (P2n11) at (7.950,5.393) {11};
+\node[gn, fill=pc1, text=white] (P2n12) at (6.963,5.050) {12};
+\node[ptitle] at (9.050,8.000) {(b) after round 1};
+\node[pstat] at (9.050,4.800) {2 comm., $Q{=}0.167$, NMI 0.625};
+\node[barrow, rotate=0, minimum height=9mm] at (12.283,6.400) {};
+\node[note, anchor=south] at (12.283,6.680) {9, 11, 12};
+\draw[ge] (17.560,6.568) -- (16.389,7.385);
+\draw[ge] (17.560,6.568) -- (15.622,6.836);
+\draw[ge] (17.560,6.568) -- (15.983,6.094);
+\draw[ge] (17.560,6.568) -- (15.455,5.326);
+\draw[ge] (17.560,6.568) -- (17.573,5.050);
+\draw[ge] (16.389,7.385) -- (14.595,7.013);
+\draw[ge] (16.389,7.385) -- (15.983,6.094);
+\draw[ge] (16.389,7.385) -- (17.099,5.835);
+\draw[ge] (14.595,7.013) -- (15.622,6.836);
+\draw[ge] (14.595,7.013) -- (15.983,6.094);
+\draw[ge] (14.595,7.013) -- (15.455,5.326);
+\draw[ge] (15.622,6.836) -- (15.983,6.094);
+\draw[ge] (15.622,6.836) -- (17.099,5.835);
+\draw[ge] (15.622,6.836) -- (15.455,5.326);
+\draw[ge] (15.983,6.094) -- (17.099,5.835);
+\draw[ge] (15.983,6.094) -- (15.455,5.326);
+\draw[ge] (15.983,6.094) -- (17.573,5.050);
+\draw[ge] (15.983,6.094) -- (14.448,6.207);
+\draw[ge] (15.983,6.094) -- (14.417,5.393);
+\draw[ge] (17.099,5.835) -- (15.455,5.326);
+\draw[ge] (17.099,5.835) -- (17.573,5.050);
+\draw[ge] (15.455,5.326) -- (17.573,5.050);
+\draw[ge] (15.455,5.326) -- (14.417,5.393);
+\draw[ge] (13.457,5.933) -- (14.417,5.393);
+\draw[ge] (13.457,5.933) -- (13.430,5.050);
+\draw[ge] (14.448,6.207) -- (14.417,5.393);
+\draw[ge] (14.417,5.393) -- (13.430,5.050);
+\node[ring] at (13.457,5.933) {};
+\node[ring] at (14.417,5.393) {};
+\node[ring] at (13.430,5.050) {};
+\node[gn, fill=pc0, text=white] (P3n1) at (17.560,6.568) {1};
+\node[gn, fill=pc0, text=white] (P3n2) at (16.389,7.385) {2};
+\node[gn, fill=pc0, text=white] (P3n3) at (14.595,7.013) {3};
+\node[gn, fill=pc0, text=white] (P3n4) at (15.622,6.836) {4};
+\node[gn, fill=pc0, text=white] (P3n5) at (15.983,6.094) {5};
+\node[gn, fill=pc0, text=white] (P3n6) at (17.099,5.835) {6};
+\node[gn, fill=pc0, text=white] (P3n7) at (15.455,5.326) {7};
+\node[gn, fill=pc0, text=white] (P3n8) at (17.573,5.050) {8};
+\node[gn, fill=pc0, text=white] (P3n9) at (13.457,5.933) {9};
+\node[gn, fill=pc0, text=white] (P3n10) at (14.448,6.207) {10};
+\node[gn, fill=pc0, text=white] (P3n11) at (14.417,5.393) {11};
+\node[gn, fill=pc0, text=white] (P3n12) at (13.430,5.050) {12};
+\node[ptitle] at (15.517,8.000) {(c) after round 2};
+\node[pstat] at (15.517,4.800) {1 comm., $Q{=}0.000$, NMI 0.000};
+\node[font=\footnotesize\bfseries, anchor=west] at (3.233,4.000) {SN-LPA: size-normalised gain ($\gamma{=}1$)};
+\draw[ge] (7.860,1.768) -- (6.689,2.585);
+\draw[ge] (7.860,1.768) -- (5.922,2.036);
+\draw[ge] (7.860,1.768) -- (6.283,1.294);
+\draw[ge] (7.860,1.768) -- (5.755,0.526);
+\draw[ge] (7.860,1.768) -- (7.873,0.250);
+\draw[ge] (6.689,2.585) -- (4.895,2.213);
+\draw[ge] (6.689,2.585) -- (6.283,1.294);
+\draw[ge] (6.689,2.585) -- (7.399,1.035);
+\draw[ge] (4.895,2.213) -- (5.922,2.036);
+\draw[ge] (4.895,2.213) -- (6.283,1.294);
+\draw[ge] (4.895,2.213) -- (5.755,0.526);
+\draw[ge] (5.922,2.036) -- (6.283,1.294);
+\draw[ge] (5.922,2.036) -- (7.399,1.035);
+\draw[ge] (5.922,2.036) -- (5.755,0.526);
+\draw[ge] (6.283,1.294) -- (7.399,1.035);
+\draw[ge] (6.283,1.294) -- (5.755,0.526);
+\draw[ge] (6.283,1.294) -- (7.873,0.250);
+\draw[ge] (6.283,1.294) -- (4.748,1.407);
+\draw[ge] (6.283,1.294) -- (4.717,0.593);
+\draw[ge] (7.399,1.035) -- (5.755,0.526);
+\draw[ge] (7.399,1.035) -- (7.873,0.250);
+\draw[ge] (5.755,0.526) -- (7.873,0.250);
+\draw[ge] (5.755,0.526) -- (4.717,0.593);
+\draw[ge] (3.757,1.133) -- (4.717,0.593);
+\draw[ge] (3.757,1.133) -- (3.730,0.250);
+\draw[ge] (4.748,1.407) -- (4.717,0.593);
+\draw[ge] (4.717,0.593) -- (3.730,0.250);
+\node[ring] at (4.748,1.407) {};
+\node[gn, fill=pc0, text=white] (P4n1) at (7.860,1.768) {1};
+\node[gn, fill=pc0, text=white] (P4n2) at (6.689,2.585) {2};
+\node[gn, fill=pc0, text=white] (P4n3) at (4.895,2.213) {3};
+\node[gn, fill=pc0, text=white] (P4n4) at (5.922,2.036) {4};
+\node[gn, fill=pc0, text=white] (P4n5) at (6.283,1.294) {5};
+\node[gn, fill=pc0, text=white] (P4n6) at (7.399,1.035) {6};
+\node[gn, fill=pc0, text=white] (P4n7) at (5.755,0.526) {7};
+\node[gn, fill=pc0, text=white] (P4n8) at (7.873,0.250) {8};
+\node[gn, fill=pc1, text=white] (P4n9) at (3.757,1.133) {9};
+\node[gn, fill=pc1, text=white] (P4n10) at (4.748,1.407) {10};
+\node[gn, fill=pc1, text=white] (P4n11) at (4.717,0.593) {11};
+\node[gn, fill=pc1, text=white] (P4n12) at (3.730,0.250) {12};
+\node[ptitle] at (5.817,3.200) {(d) Stage 1 (= ground truth)};
+\node[pstat] at (5.817,0.000) {2 comm., $Q{=}0.213$, NMI 1.000};
+\node[barrow, rotate=0, minimum height=9mm] at (9.050,1.600) {};
+\node[note, anchor=south] at (9.050,1.880) {round 1};
+\draw[goodc, line width=1.1pt, rounded corners=2pt] (9.700,0.000) rectangle (14.867,3.200);
+\draw[ge] (14.327,1.768) -- (13.156,2.585);
+\draw[ge] (14.327,1.768) -- (12.388,2.036);
+\draw[ge] (14.327,1.768) -- (12.750,1.294);
+\draw[ge] (14.327,1.768) -- (12.222,0.526);
+\draw[ge] (14.327,1.768) -- (14.339,0.250);
+\draw[ge] (13.156,2.585) -- (11.361,2.213);
+\draw[ge] (13.156,2.585) -- (12.750,1.294);
+\draw[ge] (13.156,2.585) -- (13.866,1.035);
+\draw[ge] (11.361,2.213) -- (12.388,2.036);
+\draw[ge] (11.361,2.213) -- (12.750,1.294);
+\draw[ge] (11.361,2.213) -- (12.222,0.526);
+\draw[ge] (12.388,2.036) -- (12.750,1.294);
+\draw[ge] (12.388,2.036) -- (13.866,1.035);
+\draw[ge] (12.388,2.036) -- (12.222,0.526);
+\draw[ge] (12.750,1.294) -- (13.866,1.035);
+\draw[ge] (12.750,1.294) -- (12.222,0.526);
+\draw[ge] (12.750,1.294) -- (14.339,0.250);
+\draw[ge] (12.750,1.294) -- (11.215,1.407);
+\draw[ge] (12.750,1.294) -- (11.184,0.593);
+\draw[ge] (13.866,1.035) -- (12.222,0.526);
+\draw[ge] (13.866,1.035) -- (14.339,0.250);
+\draw[ge] (12.222,0.526) -- (14.339,0.250);
+\draw[ge] (12.222,0.526) -- (11.184,0.593);
+\draw[ge] (10.224,1.133) -- (11.184,0.593);
+\draw[ge] (10.224,1.133) -- (10.196,0.250);
+\draw[ge] (11.215,1.407) -- (11.184,0.593);
+\draw[ge] (11.184,0.593) -- (10.196,0.250);
+\node[ring] at (11.215,1.407) {};
+\node[gn, fill=pc0, text=white] (P5n1) at (14.327,1.768) {1};
+\node[gn, fill=pc0, text=white] (P5n2) at (13.156,2.585) {2};
+\node[gn, fill=pc0, text=white] (P5n3) at (11.361,2.213) {3};
+\node[gn, fill=pc0, text=white] (P5n4) at (12.388,2.036) {4};
+\node[gn, fill=pc0, text=white] (P5n5) at (12.750,1.294) {5};
+\node[gn, fill=pc0, text=white] (P5n6) at (13.866,1.035) {6};
+\node[gn, fill=pc0, text=white] (P5n7) at (12.222,0.526) {7};
+\node[gn, fill=pc0, text=white] (P5n8) at (14.339,0.250) {8};
+\node[gn, fill=pc1, text=white] (P5n9) at (10.224,1.133) {9};
+\node[gn, fill=pc1, text=white] (P5n10) at (11.215,1.407) {10};
+\node[gn, fill=pc1, text=white] (P5n11) at (11.184,0.593) {11};
+\node[gn, fill=pc1, text=white] (P5n12) at (10.196,0.250) {12};
+\node[ptitle] at (12.283,3.200) {(e) after round 1: no node moves};
+\node[pstat] at (12.283,0.000) {2 comm., $Q{=}0.213$, NMI 1.000};
+\end{tikzpicture}
+\caption{Plain-sum Stage~2 of TPOC-LPA (top) and the size-normalised gain of SN-LPA (bottom), from the same Stage~1 partition of a planted graph (nodes 1--8 and 9--12).}
+\label{fig:m3}
+\end{figure*}
+
+
+\textbf{Size-normalised gain.} Stage~2 scores a candidate community by Eq.~\eqref{eq:gain} with $\gamma=1$. This is LPAm with importance-weighted edges; used alone it fragments graphs whose labels are coarse (Karate, Dolphin, Polbooks), hence the granularity rule. Fig.~\ref{fig:m3} shows the size effect and how the correction removes it. Stage~1 finds both planted communities, of 8 and 4 nodes. Node~10 has one link into each; its neighbour in the large community is the hub (node~5, degree 9), whose importance is high, so the plain sum prefers the large community (0.616 against 0.535). Once node~10 has left, the small community holds fewer links, and in round~2 nodes 9, 11 and 12 follow: Stage~2 ends with a single community (Fig.~\ref{fig:m3}a--c). The size-normalised gain subtracts the attraction expected by chance, which grows with the community: 0.989 for the large community and 0.128 for the small one. The gains become $-0.373$ and $0.407$, node~10 stays, and no node moves (Fig.~\ref{fig:m3}d--e).
+
+\begin{figure*}[b]
+\centering
+\begin{tikzpicture}
+\draw[goodc, line width=1.1pt, rounded corners=2pt] (0.000,4.300) rectangle (5.167,7.400);
+\draw[ge] (1.641,6.125) -- (2.566,6.048);
+\draw[ge] (1.641,6.125) -- (2.262,5.331);
+\draw[ge] (1.641,6.125) -- (1.203,5.831);
+\draw[ge] (1.641,6.125) -- (1.094,6.410);
+\draw[ge] (1.641,6.125) -- (2.106,6.907);
+\draw[ge] (1.641,6.125) -- (1.135,6.890);
+\draw[ge] (1.641,6.125) -- (1.206,5.424);
+\draw[ge] (1.641,6.125) -- (3.067,5.523);
+\draw[ge] (1.641,6.125) -- (1.632,6.614);
+\draw[ge] (1.641,6.125) -- (0.500,6.296);
+\draw[ge] (1.641,6.125) -- (0.627,5.870);
+\draw[ge] (1.641,6.125) -- (2.200,5.700);
+\draw[ge] (1.641,6.125) -- (2.990,6.354);
+\draw[ge] (1.641,6.125) -- (3.040,7.090);
+\draw[ge] (1.641,6.125) -- (2.441,6.449);
+\draw[ge] (1.641,6.125) -- (1.628,5.117);
+\draw[ge] (2.566,6.048) -- (2.262,5.331);
+\draw[ge] (2.566,6.048) -- (1.203,5.831);
+\draw[ge] (2.566,6.048) -- (1.206,5.424);
+\draw[ge] (2.566,6.048) -- (2.200,5.700);
+\draw[ge] (2.566,6.048) -- (2.990,6.354);
+\draw[ge] (2.566,6.048) -- (3.040,7.090);
+\draw[ge] (2.566,6.048) -- (2.441,6.449);
+\draw[ge] (2.566,6.048) -- (3.111,5.916);
+\draw[ge] (2.262,5.331) -- (1.203,5.831);
+\draw[ge] (2.262,5.331) -- (1.206,5.424);
+\draw[ge] (2.262,5.331) -- (3.067,5.523);
+\draw[ge] (2.262,5.331) -- (3.201,4.792);
+\draw[ge] (2.262,5.331) -- (2.200,5.700);
+\draw[ge] (2.262,5.331) -- (2.635,4.781);
+\draw[ge] (2.262,5.331) -- (2.102,4.925);
+\draw[ge] (2.262,5.331) -- (4.119,5.301);
+\draw[ge] (1.203,5.831) -- (1.206,5.424);
+\draw[ge] (1.203,5.831) -- (0.627,5.870);
+\draw[ge] (1.203,5.831) -- (2.200,5.700);
+\draw[ge] (1.094,6.410) -- (1.135,6.890);
+\draw[ge] (1.094,6.410) -- (1.632,6.614);
+\draw[ge] (2.106,6.907) -- (1.135,6.890);
+\draw[ge] (2.106,6.907) -- (1.632,6.614);
+\draw[ge] (2.106,6.907) -- (1.587,7.180);
+\draw[ge] (1.135,6.890) -- (1.587,7.180);
+\draw[ge] (3.067,5.523) -- (3.111,5.916);
+\draw[ge] (3.067,5.523) -- (4.119,5.301);
+\draw[ge] (3.067,5.523) -- (3.567,5.092);
+\draw[ge] (3.201,4.792) -- (3.567,5.092);
+\draw[ge] (2.200,5.700) -- (3.567,5.092);
+\draw[ge] (3.691,5.832) -- (4.119,5.301);
+\draw[ge] (3.691,5.832) -- (3.567,5.092);
+\draw[ge] (4.130,6.148) -- (4.119,5.301);
+\draw[ge] (4.130,6.148) -- (3.567,5.092);
+\draw[ge] (4.396,4.912) -- (4.119,5.301);
+\draw[ge] (4.396,4.912) -- (3.567,5.092);
+\draw[ge] (3.040,7.090) -- (3.567,5.092);
+\draw[ge] (4.874,5.160) -- (4.119,5.301);
+\draw[ge] (4.874,5.160) -- (3.567,5.092);
+\draw[ge] (4.361,5.752) -- (4.119,5.301);
+\draw[ge] (4.361,5.752) -- (3.567,5.092);
+\draw[ge] (3.577,4.520) -- (2.164,4.520);
+\draw[ge] (3.577,4.520) -- (2.635,4.781);
+\draw[ge] (3.577,4.520) -- (4.148,4.520);
+\draw[ge] (3.577,4.520) -- (4.119,5.301);
+\draw[ge] (3.577,4.520) -- (3.567,5.092);
+\draw[ge] (1.584,4.628) -- (2.164,4.520);
+\draw[ge] (1.584,4.628) -- (2.635,4.781);
+\draw[ge] (1.584,4.628) -- (1.628,5.117);
+\draw[ge] (2.164,4.520) -- (1.628,5.117);
+\draw[ge] (4.743,4.520) -- (4.148,4.520);
+\draw[ge] (4.743,4.520) -- (3.567,5.092);
+\draw[ge] (2.635,4.781) -- (3.567,5.092);
+\draw[ge] (2.102,4.925) -- (1.628,5.117);
+\draw[ge] (2.102,4.925) -- (3.567,5.092);
+\draw[ge] (4.148,4.520) -- (4.119,5.301);
+\draw[ge] (4.148,4.520) -- (3.567,5.092);
+\draw[ge] (3.111,5.916) -- (4.119,5.301);
+\draw[ge] (3.111,5.916) -- (3.567,5.092);
+\draw[ge] (1.628,5.117) -- (4.119,5.301);
+\draw[ge] (1.628,5.117) -- (3.567,5.092);
+\draw[ge] (4.119,5.301) -- (3.567,5.092);
+\node[gns, fill=pc0, text=white] (P1n0) at (1.641,6.125) {};
+\node[gns, fill=pc0, text=white] (P1n1) at (2.566,6.048) {};
+\node[gns, fill=pc0, text=white] (P1n2) at (2.262,5.331) {};
+\node[gns, fill=pc0, text=white] (P1n3) at (1.203,5.831) {};
+\node[gns, fill=pc0, text=white] (P1n4) at (1.094,6.410) {};
+\node[gns, fill=pc0, text=white] (P1n5) at (2.106,6.907) {};
+\node[gns, fill=pc0, text=white] (P1n6) at (1.135,6.890) {};
+\node[gns, fill=pc0, text=white] (P1n7) at (1.206,5.424) {};
+\node[gns, fill=pc1, text=white] (P1n8) at (3.067,5.523) {};
+\node[gns, fill=pc1, text=white] (P1n9) at (3.201,4.792) {};
+\node[gns, fill=pc0, text=white] (P1n10) at (1.632,6.614) {};
+\node[gns, fill=pc0, text=white] (P1n11) at (0.500,6.296) {};
+\node[gns, fill=pc0, text=white] (P1n12) at (0.627,5.870) {};
+\node[gns, fill=pc0, text=white] (P1n13) at (2.200,5.700) {};
+\node[gns, fill=pc1, text=white] (P1n14) at (3.691,5.832) {};
+\node[gns, fill=pc1, text=white] (P1n15) at (4.130,6.148) {};
+\node[gns, fill=pc0, text=white] (P1n16) at (1.587,7.180) {};
+\node[gns, fill=pc0, text=white] (P1n17) at (2.990,6.354) {};
+\node[gns, fill=pc1, text=white] (P1n18) at (4.396,4.912) {};
+\node[gns, fill=pc0, text=white] (P1n19) at (3.040,7.090) {};
+\node[gns, fill=pc1, text=white] (P1n20) at (4.874,5.160) {};
+\node[gns, fill=pc0, text=white] (P1n21) at (2.441,6.449) {};
+\node[gns, fill=pc1, text=white] (P1n22) at (4.361,5.752) {};
+\node[gns, fill=pc1, text=white] (P1n23) at (3.577,4.520) {};
+\node[gns, fill=pc1, text=white] (P1n24) at (1.584,4.628) {};
+\node[gns, fill=pc1, text=white] (P1n25) at (2.164,4.520) {};
+\node[gns, fill=pc1, text=white] (P1n26) at (4.743,4.520) {};
+\node[gns, fill=pc1, text=white] (P1n27) at (2.635,4.781) {};
+\node[gns, fill=pc1, text=white] (P1n28) at (2.102,4.925) {};
+\node[gns, fill=pc1, text=white] (P1n29) at (4.148,4.520) {};
+\node[gns, fill=pc1, text=white] (P1n30) at (3.111,5.916) {};
+\node[gns, fill=pc1, text=white] (P1n31) at (1.628,5.117) {};
+\node[gns, fill=pc1, text=white] (P1n32) at (4.119,5.301) {};
+\node[gns, fill=pc1, text=white] (P1n33) at (3.567,5.092) {};
+\node[ptitle] at (2.583,7.400) {(b) Karate, $\gamma{=}0$: kept};
+\node[pstat] at (2.583,4.300) {2 comm., NMI 0.837};
+\node[barrow, rotate=180, minimum height=9mm] at (5.817,5.850) {};
+\node[note, anchor=south] at (5.817,6.130) {$\gamma{=}0$};
+\draw[ge] (8.108,6.125) -- (9.033,6.048);
+\draw[ge] (8.108,6.125) -- (8.728,5.331);
+\draw[ge] (8.108,6.125) -- (7.669,5.831);
+\draw[ge] (8.108,6.125) -- (7.560,6.410);
+\draw[ge] (8.108,6.125) -- (8.572,6.907);
+\draw[ge] (8.108,6.125) -- (7.601,6.890);
+\draw[ge] (8.108,6.125) -- (7.672,5.424);
+\draw[ge] (8.108,6.125) -- (9.534,5.523);
+\draw[ge] (8.108,6.125) -- (8.099,6.614);
+\draw[ge] (8.108,6.125) -- (6.966,6.296);
+\draw[ge] (8.108,6.125) -- (7.093,5.870);
+\draw[ge] (8.108,6.125) -- (8.666,5.700);
+\draw[ge] (8.108,6.125) -- (9.457,6.354);
+\draw[ge] (8.108,6.125) -- (9.507,7.090);
+\draw[ge] (8.108,6.125) -- (8.907,6.449);
+\draw[ge] (8.108,6.125) -- (8.095,5.117);
+\draw[ge] (9.033,6.048) -- (8.728,5.331);
+\draw[ge] (9.033,6.048) -- (7.669,5.831);
+\draw[ge] (9.033,6.048) -- (7.672,5.424);
+\draw[ge] (9.033,6.048) -- (8.666,5.700);
+\draw[ge] (9.033,6.048) -- (9.457,6.354);
+\draw[ge] (9.033,6.048) -- (9.507,7.090);
+\draw[ge] (9.033,6.048) -- (8.907,6.449);
+\draw[ge] (9.033,6.048) -- (9.578,5.916);
+\draw[ge] (8.728,5.331) -- (7.669,5.831);
+\draw[ge] (8.728,5.331) -- (7.672,5.424);
+\draw[ge] (8.728,5.331) -- (9.534,5.523);
+\draw[ge] (8.728,5.331) -- (9.667,4.792);
+\draw[ge] (8.728,5.331) -- (8.666,5.700);
+\draw[ge] (8.728,5.331) -- (9.102,4.781);
+\draw[ge] (8.728,5.331) -- (8.569,4.925);
+\draw[ge] (8.728,5.331) -- (10.586,5.301);
+\draw[ge] (7.669,5.831) -- (7.672,5.424);
+\draw[ge] (7.669,5.831) -- (7.093,5.870);
+\draw[ge] (7.669,5.831) -- (8.666,5.700);
+\draw[ge] (7.560,6.410) -- (7.601,6.890);
+\draw[ge] (7.560,6.410) -- (8.099,6.614);
+\draw[ge] (8.572,6.907) -- (7.601,6.890);
+\draw[ge] (8.572,6.907) -- (8.099,6.614);
+\draw[ge] (8.572,6.907) -- (8.053,7.180);
+\draw[ge] (7.601,6.890) -- (8.053,7.180);
+\draw[ge] (9.534,5.523) -- (9.578,5.916);
+\draw[ge] (9.534,5.523) -- (10.586,5.301);
+\draw[ge] (9.534,5.523) -- (10.033,5.092);
+\draw[ge] (9.667,4.792) -- (10.033,5.092);
+\draw[ge] (8.666,5.700) -- (10.033,5.092);
+\draw[ge] (10.157,5.832) -- (10.586,5.301);
+\draw[ge] (10.157,5.832) -- (10.033,5.092);
+\draw[ge] (10.597,6.148) -- (10.586,5.301);
+\draw[ge] (10.597,6.148) -- (10.033,5.092);
+\draw[ge] (10.862,4.912) -- (10.586,5.301);
+\draw[ge] (10.862,4.912) -- (10.033,5.092);
+\draw[ge] (9.507,7.090) -- (10.033,5.092);
+\draw[ge] (11.341,5.160) -- (10.586,5.301);
+\draw[ge] (11.341,5.160) -- (10.033,5.092);
+\draw[ge] (10.828,5.752) -- (10.586,5.301);
+\draw[ge] (10.828,5.752) -- (10.033,5.092);
+\draw[ge] (10.044,4.520) -- (8.630,4.520);
+\draw[ge] (10.044,4.520) -- (9.102,4.781);
+\draw[ge] (10.044,4.520) -- (10.615,4.520);
+\draw[ge] (10.044,4.520) -- (10.586,5.301);
+\draw[ge] (10.044,4.520) -- (10.033,5.092);
+\draw[ge] (8.051,4.628) -- (8.630,4.520);
+\draw[ge] (8.051,4.628) -- (9.102,4.781);
+\draw[ge] (8.051,4.628) -- (8.095,5.117);
+\draw[ge] (8.630,4.520) -- (8.095,5.117);
+\draw[ge] (11.210,4.520) -- (10.615,4.520);
+\draw[ge] (11.210,4.520) -- (10.033,5.092);
+\draw[ge] (9.102,4.781) -- (10.033,5.092);
+\draw[ge] (8.569,4.925) -- (8.095,5.117);
+\draw[ge] (8.569,4.925) -- (10.033,5.092);
+\draw[ge] (10.615,4.520) -- (10.586,5.301);
+\draw[ge] (10.615,4.520) -- (10.033,5.092);
+\draw[ge] (9.578,5.916) -- (10.586,5.301);
+\draw[ge] (9.578,5.916) -- (10.033,5.092);
+\draw[ge] (8.095,5.117) -- (10.586,5.301);
+\draw[ge] (8.095,5.117) -- (10.033,5.092);
+\draw[ge] (10.586,5.301) -- (10.033,5.092);
+\node[gns, fill=pc0, text=white] (P2n0) at (8.108,6.125) {};
+\node[gns, fill=pc0, text=white] (P2n1) at (9.033,6.048) {};
+\node[gns, fill=pc0, text=white] (P2n2) at (8.728,5.331) {};
+\node[gns, fill=pc0, text=white] (P2n3) at (7.669,5.831) {};
+\node[gns, fill=pc4, text=white] (P2n4) at (7.560,6.410) {};
+\node[gns, fill=pc4, text=white] (P2n5) at (8.572,6.907) {};
+\node[gns, fill=pc3, text=black] (P2n6) at (7.601,6.890) {};
+\node[gns, fill=pc0, text=white] (P2n7) at (7.672,5.424) {};
+\node[gns, fill=pc1, text=white] (P2n8) at (9.534,5.523) {};
+\node[gns, fill=pc5, text=black] (P2n9) at (9.667,4.792) {};
+\node[gns, fill=pc4, text=white] (P2n10) at (8.099,6.614) {};
+\node[gns, fill=pc0, text=white] (P2n11) at (6.966,6.296) {};
+\node[gns, fill=pc0, text=white] (P2n12) at (7.093,5.870) {};
+\node[gns, fill=pc1, text=white] (P2n13) at (8.666,5.700) {};
+\node[gns, fill=pc1, text=white] (P2n14) at (10.157,5.832) {};
+\node[gns, fill=pc1, text=white] (P2n15) at (10.597,6.148) {};
+\node[gns, fill=pc3, text=black] (P2n16) at (8.053,7.180) {};
+\node[gns, fill=pc0, text=white] (P2n17) at (9.457,6.354) {};
+\node[gns, fill=pc1, text=white] (P2n18) at (10.862,4.912) {};
+\node[gns, fill=pc1, text=white] (P2n19) at (9.507,7.090) {};
+\node[gns, fill=pc1, text=white] (P2n20) at (11.341,5.160) {};
+\node[gns, fill=pc0, text=white] (P2n21) at (8.907,6.449) {};
+\node[gns, fill=pc1, text=white] (P2n22) at (10.828,5.752) {};
+\node[gns, fill=pc1, text=white] (P2n23) at (10.044,4.520) {};
+\node[gns, fill=pc2, text=black] (P2n24) at (8.051,4.628) {};
+\node[gns, fill=pc2, text=black] (P2n25) at (8.630,4.520) {};
+\node[gns, fill=pc1, text=white] (P2n26) at (11.210,4.520) {};
+\node[gns, fill=pc1, text=white] (P2n27) at (9.102,4.781) {};
+\node[gns, fill=pc1, text=white] (P2n28) at (8.569,4.925) {};
+\node[gns, fill=pc1, text=white] (P2n29) at (10.615,4.520) {};
+\node[gns, fill=pc1, text=white] (P2n30) at (9.578,5.916) {};
+\node[gns, fill=pc1, text=white] (P2n31) at (8.095,5.117) {};
+\node[gns, fill=pc1, text=white] (P2n32) at (10.586,5.301) {};
+\node[gns, fill=pc1, text=white] (P2n33) at (10.033,5.092) {};
+\node[ptitle] at (9.050,7.400) {(a) Karate, Stage 1 result};
+\node[pstat] at (9.050,4.300) {6 fragments};
+\node[barrow, rotate=0, minimum height=9mm] at (12.283,5.850) {};
+\node[note, anchor=south] at (12.283,6.130) {$\gamma{=}1$};
+\draw[ge] (14.574,6.125) -- (15.499,6.048);
+\draw[ge] (14.574,6.125) -- (15.195,5.331);
+\draw[ge] (14.574,6.125) -- (14.136,5.831);
+\draw[ge] (14.574,6.125) -- (14.027,6.410);
+\draw[ge] (14.574,6.125) -- (15.039,6.907);
+\draw[ge] (14.574,6.125) -- (14.068,6.890);
+\draw[ge] (14.574,6.125) -- (14.139,5.424);
+\draw[ge] (14.574,6.125) -- (16.001,5.523);
+\draw[ge] (14.574,6.125) -- (14.566,6.614);
+\draw[ge] (14.574,6.125) -- (13.433,6.296);
+\draw[ge] (14.574,6.125) -- (13.560,5.870);
+\draw[ge] (14.574,6.125) -- (15.133,5.700);
+\draw[ge] (14.574,6.125) -- (15.924,6.354);
+\draw[ge] (14.574,6.125) -- (15.974,7.090);
+\draw[ge] (14.574,6.125) -- (15.374,6.449);
+\draw[ge] (14.574,6.125) -- (14.562,5.117);
+\draw[ge] (15.499,6.048) -- (15.195,5.331);
+\draw[ge] (15.499,6.048) -- (14.136,5.831);
+\draw[ge] (15.499,6.048) -- (14.139,5.424);
+\draw[ge] (15.499,6.048) -- (15.133,5.700);
+\draw[ge] (15.499,6.048) -- (15.924,6.354);
+\draw[ge] (15.499,6.048) -- (15.974,7.090);
+\draw[ge] (15.499,6.048) -- (15.374,6.449);
+\draw[ge] (15.499,6.048) -- (16.045,5.916);
+\draw[ge] (15.195,5.331) -- (14.136,5.831);
+\draw[ge] (15.195,5.331) -- (14.139,5.424);
+\draw[ge] (15.195,5.331) -- (16.001,5.523);
+\draw[ge] (15.195,5.331) -- (16.134,4.792);
+\draw[ge] (15.195,5.331) -- (15.133,5.700);
+\draw[ge] (15.195,5.331) -- (15.568,4.781);
+\draw[ge] (15.195,5.331) -- (15.035,4.925);
+\draw[ge] (15.195,5.331) -- (17.053,5.301);
+\draw[ge] (14.136,5.831) -- (14.139,5.424);
+\draw[ge] (14.136,5.831) -- (13.560,5.870);
+\draw[ge] (14.136,5.831) -- (15.133,5.700);
+\draw[ge] (14.027,6.410) -- (14.068,6.890);
+\draw[ge] (14.027,6.410) -- (14.566,6.614);
+\draw[ge] (15.039,6.907) -- (14.068,6.890);
+\draw[ge] (15.039,6.907) -- (14.566,6.614);
+\draw[ge] (15.039,6.907) -- (14.520,7.180);
+\draw[ge] (14.068,6.890) -- (14.520,7.180);
+\draw[ge] (16.001,5.523) -- (16.045,5.916);
+\draw[ge] (16.001,5.523) -- (17.053,5.301);
+\draw[ge] (16.001,5.523) -- (16.500,5.092);
+\draw[ge] (16.134,4.792) -- (16.500,5.092);
+\draw[ge] (15.133,5.700) -- (16.500,5.092);
+\draw[ge] (16.624,5.832) -- (17.053,5.301);
+\draw[ge] (16.624,5.832) -- (16.500,5.092);
+\draw[ge] (17.063,6.148) -- (17.053,5.301);
+\draw[ge] (17.063,6.148) -- (16.500,5.092);
+\draw[ge] (17.329,4.912) -- (17.053,5.301);
+\draw[ge] (17.329,4.912) -- (16.500,5.092);
+\draw[ge] (15.974,7.090) -- (16.500,5.092);
+\draw[ge] (17.807,5.160) -- (17.053,5.301);
+\draw[ge] (17.807,5.160) -- (16.500,5.092);
+\draw[ge] (17.294,5.752) -- (17.053,5.301);
+\draw[ge] (17.294,5.752) -- (16.500,5.092);
+\draw[ge] (16.510,4.520) -- (15.097,4.520);
+\draw[ge] (16.510,4.520) -- (15.568,4.781);
+\draw[ge] (16.510,4.520) -- (17.081,4.520);
+\draw[ge] (16.510,4.520) -- (17.053,5.301);
+\draw[ge] (16.510,4.520) -- (16.500,5.092);
+\draw[ge] (14.517,4.628) -- (15.097,4.520);
+\draw[ge] (14.517,4.628) -- (15.568,4.781);
+\draw[ge] (14.517,4.628) -- (14.562,5.117);
+\draw[ge] (15.097,4.520) -- (14.562,5.117);
+\draw[ge] (17.677,4.520) -- (17.081,4.520);
+\draw[ge] (17.677,4.520) -- (16.500,5.092);
+\draw[ge] (15.568,4.781) -- (16.500,5.092);
+\draw[ge] (15.035,4.925) -- (14.562,5.117);
+\draw[ge] (15.035,4.925) -- (16.500,5.092);
+\draw[ge] (17.081,4.520) -- (17.053,5.301);
+\draw[ge] (17.081,4.520) -- (16.500,5.092);
+\draw[ge] (16.045,5.916) -- (17.053,5.301);
+\draw[ge] (16.045,5.916) -- (16.500,5.092);
+\draw[ge] (14.562,5.117) -- (17.053,5.301);
+\draw[ge] (14.562,5.117) -- (16.500,5.092);
+\draw[ge] (17.053,5.301) -- (16.500,5.092);
+\node[gns, fill=pc0, text=white] (P3n0) at (14.574,6.125) {};
+\node[gns, fill=pc0, text=white] (P3n1) at (15.499,6.048) {};
+\node[gns, fill=pc0, text=white] (P3n2) at (15.195,5.331) {};
+\node[gns, fill=pc0, text=white] (P3n3) at (14.136,5.831) {};
+\node[gns, fill=pc3, text=black] (P3n4) at (14.027,6.410) {};
+\node[gns, fill=pc3, text=black] (P3n5) at (15.039,6.907) {};
+\node[gns, fill=pc3, text=black] (P3n6) at (14.068,6.890) {};
+\node[gns, fill=pc0, text=white] (P3n7) at (14.139,5.424) {};
+\node[gns, fill=pc1, text=white] (P3n8) at (16.001,5.523) {};
+\node[gns, fill=pc1, text=white] (P3n9) at (16.134,4.792) {};
+\node[gns, fill=pc3, text=black] (P3n10) at (14.566,6.614) {};
+\node[gns, fill=pc0, text=white] (P3n11) at (13.433,6.296) {};
+\node[gns, fill=pc0, text=white] (P3n12) at (13.560,5.870) {};
+\node[gns, fill=pc0, text=white] (P3n13) at (15.133,5.700) {};
+\node[gns, fill=pc1, text=white] (P3n14) at (16.624,5.832) {};
+\node[gns, fill=pc1, text=white] (P3n15) at (17.063,6.148) {};
+\node[gns, fill=pc3, text=black] (P3n16) at (14.520,7.180) {};
+\node[gns, fill=pc0, text=white] (P3n17) at (15.924,6.354) {};
+\node[gns, fill=pc1, text=white] (P3n18) at (17.329,4.912) {};
+\node[gns, fill=pc0, text=white] (P3n19) at (15.974,7.090) {};
+\node[gns, fill=pc1, text=white] (P3n20) at (17.807,5.160) {};
+\node[gns, fill=pc0, text=white] (P3n21) at (15.374,6.449) {};
+\node[gns, fill=pc1, text=white] (P3n22) at (17.294,5.752) {};
+\node[gns, fill=pc1, text=white] (P3n23) at (16.510,4.520) {};
+\node[gns, fill=pc2, text=black] (P3n24) at (14.517,4.628) {};
+\node[gns, fill=pc2, text=black] (P3n25) at (15.097,4.520) {};
+\node[gns, fill=pc1, text=white] (P3n26) at (17.677,4.520) {};
+\node[gns, fill=pc1, text=white] (P3n27) at (15.568,4.781) {};
+\node[gns, fill=pc2, text=black] (P3n28) at (15.035,4.925) {};
+\node[gns, fill=pc1, text=white] (P3n29) at (17.081,4.520) {};
+\node[gns, fill=pc1, text=white] (P3n30) at (16.045,5.916) {};
+\node[gns, fill=pc2, text=black] (P3n31) at (14.562,5.117) {};
+\node[gns, fill=pc1, text=white] (P3n32) at (17.053,5.301) {};
+\node[gns, fill=pc1, text=white] (P3n33) at (16.500,5.092) {};
+\node[ptitle] at (15.517,7.400) {(c) Karate, $\gamma{=}1$: $4/2=2.0>1.5$};
+\node[pstat] at (15.517,4.300) {4 comm., NMI 0.600};
+\draw[ge] (3.478,1.738) -- (1.816,1.608);
+\draw[ge] (3.478,1.738) -- (2.586,2.119);
+\draw[ge] (3.478,1.738) -- (4.439,1.408);
+\draw[ge] (2.264,2.850) -- (1.512,2.334);
+\draw[ge] (2.264,2.850) -- (0.513,2.535);
+\draw[ge] (2.264,2.850) -- (2.586,2.119);
+\draw[ge] (1.512,2.334) -- (1.816,1.608);
+\draw[ge] (1.512,2.334) -- (2.586,2.119);
+\draw[ge] (0.513,2.535) -- (1.816,1.608);
+\draw[ge] (1.816,1.608) -- (2.586,2.119);
+\draw[ge] (1.816,1.608) -- (2.340,0.929);
+\draw[ge] (2.586,2.119) -- (3.405,0.963);
+\draw[ge] (2.809,0.256) -- (2.340,0.929);
+\draw[ge] (2.809,0.256) -- (3.837,0.258);
+\draw[ge] (2.809,0.256) -- (3.405,0.963);
+\draw[ge] (4.735,0.660) -- (3.405,0.963);
+\draw[ge] (2.340,0.929) -- (3.837,0.258);
+\draw[ge] (2.340,0.929) -- (3.405,0.963);
+\draw[ge] (2.340,0.929) -- (0.778,1.622);
+\draw[ge] (0.778,1.622) -- (1.288,0.945);
+\draw[ge] (0.250,0.949) -- (1.288,0.945);
+\draw[ge] (1.763,0.250) -- (0.718,0.250);
+\draw[ge] (0.718,0.250) -- (1.288,0.945);
+\draw[ge] (4.353,2.197) -- (4.917,2.850);
+\draw[ge] (4.353,2.197) -- (4.439,1.408);
+\draw[ge] (4.353,2.197) -- (3.680,2.792);
+\node[gn, fill=pc0, text=white] (P4n1) at (3.478,1.738) {1};
+\node[gn, fill=pc0, text=white] (P4n2) at (2.264,2.850) {2};
+\node[gn, fill=pc0, text=white] (P4n3) at (1.512,2.334) {3};
+\node[gn, fill=pc0, text=white] (P4n4) at (0.513,2.535) {4};
+\node[gn, fill=pc0, text=white] (P4n5) at (1.816,1.608) {5};
+\node[gn, fill=pc0, text=white] (P4n6) at (2.586,2.119) {6};
+\node[gn, fill=pc1, text=white] (P4n7) at (2.809,0.256) {7};
+\node[gn, fill=pc1, text=white] (P4n8) at (4.735,0.660) {8};
+\node[gn, fill=pc1, text=white] (P4n9) at (2.340,0.929) {9};
+\node[gn, fill=pc1, text=white] (P4n10) at (3.837,0.258) {10};
+\node[gn, fill=pc1, text=white] (P4n11) at (3.405,0.963) {11};
+\node[gn, fill=pc1, text=white] (P4n12) at (0.778,1.622) {12};
+\node[gn, fill=pc2, text=black] (P4n13) at (0.250,0.949) {13};
+\node[gn, fill=pc2, text=black] (P4n14) at (1.763,0.250) {14};
+\node[gn, fill=pc2, text=black] (P4n15) at (0.718,0.250) {15};
+\node[gn, fill=pc2, text=black] (P4n16) at (1.288,0.945) {16};
+\node[gn, fill=pc0, text=white] (P4n17) at (4.353,2.197) {17};
+\node[gn, fill=pc0, text=white] (P4n18) at (4.917,2.850) {18};
+\node[gn, fill=pc0, text=white] (P4n19) at (4.439,1.408) {19};
+\node[gn, fill=pc0, text=white] (P4n20) at (3.680,2.792) {20};
+\node[ptitle] at (2.583,3.100) {(e) planted graph, $\gamma{=}0$};
+\node[pstat] at (2.583,0.000) {3 comm., NMI 0.752};
+\node[barrow, rotate=180, minimum height=9mm] at (5.817,1.550) {};
+\node[note, anchor=south] at (5.817,1.830) {$\gamma{=}0$};
+\draw[ge] (9.945,1.738) -- (8.283,1.608);
+\draw[ge] (9.945,1.738) -- (9.053,2.119);
+\draw[ge] (9.945,1.738) -- (10.905,1.408);
+\draw[ge] (8.730,2.850) -- (7.978,2.334);
+\draw[ge] (8.730,2.850) -- (6.979,2.535);
+\draw[ge] (8.730,2.850) -- (9.053,2.119);
+\draw[ge] (7.978,2.334) -- (8.283,1.608);
+\draw[ge] (7.978,2.334) -- (9.053,2.119);
+\draw[ge] (6.979,2.535) -- (8.283,1.608);
+\draw[ge] (8.283,1.608) -- (9.053,2.119);
+\draw[ge] (8.283,1.608) -- (8.807,0.929);
+\draw[ge] (9.053,2.119) -- (9.872,0.963);
+\draw[ge] (9.275,0.256) -- (8.807,0.929);
+\draw[ge] (9.275,0.256) -- (10.304,0.258);
+\draw[ge] (9.275,0.256) -- (9.872,0.963);
+\draw[ge] (11.201,0.660) -- (9.872,0.963);
+\draw[ge] (8.807,0.929) -- (10.304,0.258);
+\draw[ge] (8.807,0.929) -- (9.872,0.963);
+\draw[ge] (8.807,0.929) -- (7.245,1.622);
+\draw[ge] (7.245,1.622) -- (7.755,0.945);
+\draw[ge] (6.717,0.949) -- (7.755,0.945);
+\draw[ge] (8.230,0.250) -- (7.185,0.250);
+\draw[ge] (7.185,0.250) -- (7.755,0.945);
+\draw[ge] (10.820,2.197) -- (11.383,2.850);
+\draw[ge] (10.820,2.197) -- (10.905,1.408);
+\draw[ge] (10.820,2.197) -- (10.147,2.792);
+\node[gn, fill=pc0, text=white] (P5n1) at (9.945,1.738) {1};
+\node[gn, fill=pc0, text=white] (P5n2) at (8.730,2.850) {2};
+\node[gn, fill=pc0, text=white] (P5n3) at (7.978,2.334) {3};
+\node[gn, fill=pc7, text=white] (P5n4) at (6.979,2.535) {4};
+\node[gn, fill=pc0, text=white] (P5n5) at (8.283,1.608) {5};
+\node[gn, fill=pc0, text=white] (P5n6) at (9.053,2.119) {6};
+\node[gn, fill=pc1, text=white] (P5n7) at (9.275,0.256) {7};
+\node[gn, fill=pc8, text=white] (P5n8) at (11.201,0.660) {8};
+\node[gn, fill=pc1, text=white] (P5n9) at (8.807,0.929) {9};
+\node[gn, fill=pc1, text=white] (P5n10) at (10.304,0.258) {10};
+\node[gn, fill=pc0, text=white] (P5n11) at (9.872,0.963) {11};
+\node[gn, fill=pc1, text=white] (P5n12) at (7.245,1.622) {12};
+\node[gn, fill=pc2, text=black] (P5n13) at (6.717,0.949) {13};
+\node[gn, fill=pc4, text=white] (P5n14) at (8.230,0.250) {14};
+\node[gn, fill=pc2, text=black] (P5n15) at (7.185,0.250) {15};
+\node[gn, fill=pc2, text=black] (P5n16) at (7.755,0.945) {16};
+\node[gn, fill=pc3, text=black] (P5n17) at (10.820,2.197) {17};
+\node[gn, fill=pc5, text=black] (P5n18) at (11.383,2.850) {18};
+\node[gn, fill=pc3, text=black] (P5n19) at (10.905,1.408) {19};
+\node[gn, fill=pc6, text=white] (P5n20) at (10.147,2.792) {20};
+\node[ptitle] at (9.050,3.100) {(d) planted graph, Stage 1 result};
+\node[pstat] at (9.050,0.000) {9 fragments};
+\node[barrow, rotate=0, minimum height=9mm] at (12.283,1.550) {};
+\node[note, anchor=south] at (12.283,1.830) {$\gamma{=}1$};
+\draw[goodc, line width=1.1pt, rounded corners=2pt] (12.933,0.000) rectangle (18.100,3.100);
+\draw[ge] (16.411,1.738) -- (14.750,1.608);
+\draw[ge] (16.411,1.738) -- (15.520,2.119);
+\draw[ge] (16.411,1.738) -- (17.372,1.408);
+\draw[ge] (15.197,2.850) -- (14.445,2.334);
+\draw[ge] (15.197,2.850) -- (13.446,2.535);
+\draw[ge] (15.197,2.850) -- (15.520,2.119);
+\draw[ge] (14.445,2.334) -- (14.750,1.608);
+\draw[ge] (14.445,2.334) -- (15.520,2.119);
+\draw[ge] (13.446,2.535) -- (14.750,1.608);
+\draw[ge] (14.750,1.608) -- (15.520,2.119);
+\draw[ge] (14.750,1.608) -- (15.273,0.929);
+\draw[ge] (15.520,2.119) -- (16.339,0.963);
+\draw[ge] (15.742,0.256) -- (15.273,0.929);
+\draw[ge] (15.742,0.256) -- (16.770,0.258);
+\draw[ge] (15.742,0.256) -- (16.339,0.963);
+\draw[ge] (17.668,0.660) -- (16.339,0.963);
+\draw[ge] (15.273,0.929) -- (16.770,0.258);
+\draw[ge] (15.273,0.929) -- (16.339,0.963);
+\draw[ge] (15.273,0.929) -- (13.712,1.622);
+\draw[ge] (13.712,1.622) -- (14.221,0.945);
+\draw[ge] (13.183,0.949) -- (14.221,0.945);
+\draw[ge] (14.696,0.250) -- (13.652,0.250);
+\draw[ge] (13.652,0.250) -- (14.221,0.945);
+\draw[ge] (17.286,2.197) -- (17.850,2.850);
+\draw[ge] (17.286,2.197) -- (17.372,1.408);
+\draw[ge] (17.286,2.197) -- (16.614,2.792);
+\node[gn, fill=pc0, text=white] (P6n1) at (16.411,1.738) {1};
+\node[gn, fill=pc0, text=white] (P6n2) at (15.197,2.850) {2};
+\node[gn, fill=pc0, text=white] (P6n3) at (14.445,2.334) {3};
+\node[gn, fill=pc0, text=white] (P6n4) at (13.446,2.535) {4};
+\node[gn, fill=pc0, text=white] (P6n5) at (14.750,1.608) {5};
+\node[gn, fill=pc0, text=white] (P6n6) at (15.520,2.119) {6};
+\node[gn, fill=pc1, text=white] (P6n7) at (15.742,0.256) {7};
+\node[gn, fill=pc1, text=white] (P6n8) at (17.668,0.660) {8};
+\node[gn, fill=pc1, text=white] (P6n9) at (15.273,0.929) {9};
+\node[gn, fill=pc1, text=white] (P6n10) at (16.770,0.258) {10};
+\node[gn, fill=pc1, text=white] (P6n11) at (16.339,0.963) {11};
+\node[gn, fill=pc2, text=black] (P6n12) at (13.712,1.622) {12};
+\node[gn, fill=pc2, text=black] (P6n13) at (13.183,0.949) {13};
+\node[gn, fill=pc2, text=black] (P6n14) at (14.696,0.250) {14};
+\node[gn, fill=pc2, text=black] (P6n15) at (13.652,0.250) {15};
+\node[gn, fill=pc2, text=black] (P6n16) at (14.221,0.945) {16};
+\node[gn, fill=pc3, text=black] (P6n17) at (17.286,2.197) {17};
+\node[gn, fill=pc3, text=black] (P6n18) at (17.850,2.850) {18};
+\node[gn, fill=pc3, text=black] (P6n19) at (17.372,1.408) {19};
+\node[gn, fill=pc3, text=black] (P6n20) at (16.614,2.792) {20};
+\node[ptitle] at (15.517,3.100) {(f) $\gamma{=}1$: $4/3=1.33\le1.5$, kept};
+\node[pstat] at (15.517,0.000) {4 comm., NMI 1.000};
+\end{tikzpicture}
+\caption{Granularity rule on Karate (top) and on a planted graph with four communities (bottom): both Stage~2 runs start from the Stage~1 result; the green frame marks the run the rule keeps.}
+\label{fig:m4}
+\end{figure*}
+
+
+\textbf{Granularity rule (selector).} Starting from the same Stage~1 partition we run the paper-style Stage~2 ($\gamma=0$, with the motif similarity and the guard) giving $L^{(0)}$, and the corrected one ($\gamma=1$, with the motif similarity) giving $L^{(1)}$. With $|L|$ the number of communities,
 \begin{equation}
 L=\begin{cases}L^{(1)}&\text{if }|L^{(1)}|\le\rho\,|L^{(0)}|,\\ L^{(0)}&\text{otherwise,}\end{cases}\qquad\rho=1.5.\label{eq:gran}
 \end{equation}
-When both agree on the scale, $\gamma=1$ only fine-tunes boundaries; when it shatters the graph (we measured $|L^{(1)}|/|L^{(0)}|$ of 2.0 for Karate and Dolphin, 2.3 for Polbooks, 5.0 for Polblogs, against $\le1.4$ on Football, Citeseer, Cora and LFR) we are in the coarse-truth case and keep $L^{(0)}$. The test uses no labels. The value $\rho=1.5$ was chosen by leave-one-dataset-out on our development graphs.
+When both agree on the scale, $\gamma=1$ only fine-tunes boundaries; when it shatters the graph (we measured $|L^{(1)}|/|L^{(0)}|$ of 2.0 for Karate and Dolphin, 2.3 for Polbooks, 5.0 for Polblogs, against $\le1.4$ on Football, Citeseer, Cora and LFR) we are in the coarse-truth case and keep $L^{(0)}$. The test uses no labels. The value $\rho=1.5$ was chosen by leave-one-dataset-out on our development graphs. Fig.~\ref{fig:m4} shows one case of each kind; in both rows the two runs start from the same Stage~1 result in the middle. On Karate (top), $\gamma=1$ splits the two true factions into 4 communities (c, NMI 0.600), while $\gamma=0$ gives 2 (b, NMI 0.837). The ratio $4/2=2.0$ exceeds $\rho$: the size-normalised run breaks the graph into a finer scale than the plain sum, which is the coarse-truth case, so the rule keeps $\gamma=0$. On a planted graph with four communities (bottom), $\gamma=0$ merges two of them, nodes 1--6 and 17--20 (e, 3 communities, NMI 0.752), while $\gamma=1$ finds all four (f, NMI 1.000). The ratio $4/3$ is below $\rho$, so the two runs agree on the scale and the rule keeps $\gamma=1$. The rule uses no labels.
 
-\textbf{M5: map-equation merge.} After Stage~2, adjacent communities $a,b$ are merged greedily by the modularity gain
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}
+\draw[ge] (4.917,2.297) -- (4.335,0.886);
+\draw[ge] (4.917,2.297) -- (3.738,2.659);
+\draw[ge] (4.917,2.297) -- (4.422,3.350);
+\draw[ge] (4.917,2.297) -- (4.054,1.780);
+\draw[ge] (2.718,2.836) -- (3.003,1.824);
+\draw[ge] (2.718,2.836) -- (3.738,2.659);
+\draw[ge] (2.718,2.836) -- (4.422,3.350);
+\draw[ge] (2.718,2.836) -- (4.054,1.780);
+\draw[ge] (2.718,2.836) -- (1.997,2.076);
+\draw[ge] (3.003,1.824) -- (4.335,0.886);
+\draw[ge] (3.003,1.824) -- (3.738,2.659);
+\draw[ge] (3.003,1.824) -- (4.054,1.780);
+\draw[ge] (3.003,1.824) -- (3.285,0.894);
+\draw[ge] (4.335,0.886) -- (4.054,1.780);
+\draw[ge] (3.738,2.659) -- (4.422,3.350);
+\draw[ge] (3.738,2.659) -- (4.054,1.780);
+\draw[ge] (4.422,3.350) -- (4.054,1.780);
+\draw[ge] (4.054,1.780) -- (3.285,0.894);
+\draw[ge] (3.285,0.894) -- (2.049,1.109);
+\draw[ge] (2.049,1.109) -- (1.997,2.076);
+\draw[ge] (2.049,1.109) -- (0.937,1.503);
+\draw[ge] (1.997,2.076) -- (1.403,2.888);
+\node[gn, fill=pc0, text=white] (P1n1) at (4.917,2.297) {1};
+\node[gn, fill=pc0, text=white] (P1n2) at (2.718,2.836) {2};
+\node[gn, fill=pc0, text=white] (P1n3) at (3.003,1.824) {3};
+\node[gn, fill=pc0, text=white] (P1n4) at (4.335,0.886) {4};
+\node[gn, fill=pc0, text=white] (P1n5) at (3.738,2.659) {5};
+\node[gn, fill=pc0, text=white] (P1n6) at (4.422,3.350) {6};
+\node[gn, fill=pc0, text=white] (P1n7) at (4.054,1.780) {7};
+\node[gn, fill=pc0, text=white] (P1n8) at (3.285,0.894) {8};
+\node[gn, fill=pc1, text=white] (P1n9) at (2.049,1.109) {9};
+\node[gn, fill=pc1, text=white] (P1n10) at (1.997,2.076) {10};
+\node[gn, fill=pc1, text=white] (P1n11) at (1.403,2.888) {11};
+\node[gn, fill=pc2, text=black] (P1n12) at (0.937,1.503) {12};
+\node[ptitle] at (2.583,3.600) {(a) Stage 1 result};
+\node[pstat] at (2.583,0.000) {3 comm., $Q{=}0.168$, NMI 0.872};
+\node[barrow, rotate=0, minimum height=9mm] at (5.817,1.800) {};
+\node[note, anchor=south] at (5.817,2.080) {Stage 2};
+\draw[ge] (11.383,2.297) -- (10.802,0.886);
+\draw[ge] (11.383,2.297) -- (10.204,2.659);
+\draw[ge] (11.383,2.297) -- (10.889,3.350);
+\draw[ge] (11.383,2.297) -- (10.521,1.780);
+\draw[ge] (9.185,2.836) -- (9.470,1.824);
+\draw[ge] (9.185,2.836) -- (10.204,2.659);
+\draw[ge] (9.185,2.836) -- (10.889,3.350);
+\draw[ge] (9.185,2.836) -- (10.521,1.780);
+\draw[ge] (9.185,2.836) -- (8.464,2.076);
+\draw[ge] (9.470,1.824) -- (10.802,0.886);
+\draw[ge] (9.470,1.824) -- (10.204,2.659);
+\draw[ge] (9.470,1.824) -- (10.521,1.780);
+\draw[ge] (9.470,1.824) -- (9.751,0.894);
+\draw[ge] (10.802,0.886) -- (10.521,1.780);
+\draw[ge] (10.204,2.659) -- (10.889,3.350);
+\draw[ge] (10.204,2.659) -- (10.521,1.780);
+\draw[ge] (10.889,3.350) -- (10.521,1.780);
+\draw[ge] (10.521,1.780) -- (9.751,0.894);
+\draw[ge] (9.751,0.894) -- (8.515,1.109);
+\draw[ge] (8.515,1.109) -- (8.464,2.076);
+\draw[ge] (8.515,1.109) -- (7.404,1.503);
+\draw[ge] (8.464,2.076) -- (7.869,2.888);
+\node[ring] at (9.751,0.894) {};
+\node[gn, fill=pc0, text=white] (P2n1) at (11.383,2.297) {1};
+\node[gn, fill=pc0, text=white] (P2n2) at (9.185,2.836) {2};
+\node[gn, fill=pc0, text=white] (P2n3) at (9.470,1.824) {3};
+\node[gn, fill=pc0, text=white] (P2n4) at (10.802,0.886) {4};
+\node[gn, fill=pc0, text=white] (P2n5) at (10.204,2.659) {5};
+\node[gn, fill=pc0, text=white] (P2n6) at (10.889,3.350) {6};
+\node[gn, fill=pc0, text=white] (P2n7) at (10.521,1.780) {7};
+\node[gn, fill=pc1, text=white] (P2n8) at (9.751,0.894) {8};
+\node[gn, fill=pc1, text=white] (P2n9) at (8.515,1.109) {9};
+\node[gn, fill=pc1, text=white] (P2n10) at (8.464,2.076) {10};
+\node[gn, fill=pc1, text=white] (P2n11) at (7.869,2.888) {11};
+\node[gn, fill=pc1, text=white] (P2n12) at (7.404,1.503) {12};
+\node[ptitle] at (9.050,3.600) {(b) Stage 2, before the moves};
+\node[pstat] at (9.050,0.000) {2 comm., $Q{=}0.239$, NMI 0.651};
+\node[barrow, rotate=0, minimum height=9mm] at (12.283,1.800) {};
+\node[note, anchor=south] at (12.283,2.080) {move 8};
+\draw[goodc, line width=1.1pt, rounded corners=2pt] (12.933,0.000) rectangle (18.100,3.600);
+\draw[ge] (17.850,2.297) -- (17.268,0.886);
+\draw[ge] (17.850,2.297) -- (16.671,2.659);
+\draw[ge] (17.850,2.297) -- (17.356,3.350);
+\draw[ge] (17.850,2.297) -- (16.988,1.780);
+\draw[ge] (15.652,2.836) -- (15.937,1.824);
+\draw[ge] (15.652,2.836) -- (16.671,2.659);
+\draw[ge] (15.652,2.836) -- (17.356,3.350);
+\draw[ge] (15.652,2.836) -- (16.988,1.780);
+\draw[ge] (15.652,2.836) -- (14.931,2.076);
+\draw[ge] (15.937,1.824) -- (17.268,0.886);
+\draw[ge] (15.937,1.824) -- (16.671,2.659);
+\draw[ge] (15.937,1.824) -- (16.988,1.780);
+\draw[ge] (15.937,1.824) -- (16.218,0.894);
+\draw[ge] (17.268,0.886) -- (16.988,1.780);
+\draw[ge] (16.671,2.659) -- (17.356,3.350);
+\draw[ge] (16.671,2.659) -- (16.988,1.780);
+\draw[ge] (17.356,3.350) -- (16.988,1.780);
+\draw[ge] (16.988,1.780) -- (16.218,0.894);
+\draw[ge] (16.218,0.894) -- (14.982,1.109);
+\draw[ge] (14.982,1.109) -- (14.931,2.076);
+\draw[ge] (14.982,1.109) -- (13.870,1.503);
+\draw[ge] (14.931,2.076) -- (14.336,2.888);
+\node[ring] at (16.218,0.894) {};
+\node[gn, fill=pc0, text=white] (P3n1) at (17.850,2.297) {1};
+\node[gn, fill=pc0, text=white] (P3n2) at (15.652,2.836) {2};
+\node[gn, fill=pc0, text=white] (P3n3) at (15.937,1.824) {3};
+\node[gn, fill=pc0, text=white] (P3n4) at (17.268,0.886) {4};
+\node[gn, fill=pc0, text=white] (P3n5) at (16.671,2.659) {5};
+\node[gn, fill=pc0, text=white] (P3n6) at (17.356,3.350) {6};
+\node[gn, fill=pc0, text=white] (P3n7) at (16.988,1.780) {7};
+\node[gn, fill=pc0, text=white] (P3n8) at (16.218,0.894) {8};
+\node[gn, fill=pc1, text=white] (P3n9) at (14.982,1.109) {9};
+\node[gn, fill=pc1, text=white] (P3n10) at (14.931,2.076) {10};
+\node[gn, fill=pc1, text=white] (P3n11) at (14.336,2.888) {11};
+\node[gn, fill=pc1, text=white] (P3n12) at (13.870,1.503) {12};
+\node[ptitle] at (15.517,3.600) {(c) Synwalk move of node 8};
+\node[pstat] at (15.517,0.000) {2 comm., $Q{=}0.207$, NMI 1.000};
+\end{tikzpicture}
+\caption{A Synwalk boundary move on a planted graph (nodes 1--8 and 9--12).}
+\label{fig:m6}
+\end{figure*}
+
+
+\textbf{Map-equation merge (Algorithm~\ref{alg:merge}).} After Stage~2, adjacent communities $a,b$ are merged greedily by the modularity gain
 \begin{equation}
 \Delta Q(a,b)=\frac{e_{ab}}{m}-\frac{d_ad_b}{2m^2},\label{eq:dq}
 \end{equation}
 ($e_{ab}$: edges between them, $d_a$: volume), using a heap with lazy deletion (stale or outdated entries are skipped or refreshed when popped). The earlier version kept all merges if $\sum\Delta Q\ge0.03$; on SNAP-DBLP it merged 9{,}803 communities into 807 and cut NMI from 0.7667 to 0.6197 because modularity favours merging at the wrong scale. We keep the merge order but evaluate the codelength $L$ (Eq.~\eqref{eq:L}) after every merge (updating only the terms of the two communities, in $O(1)$) and return the \emph{prefix} of merges at which $L$ was lowest; if no prefix lowers $L$, nothing is merged. The map equation is used because its resolution limit depends on the links between modules and not on the size of the graph.
 
-\textbf{M6: boundary moves with a Synwalk score.} The Synwalk objective~\cite{toth2022} is a sum over modules of
-\begin{equation}
-j(\mathrm{vol},\mathrm{cut})=\frac{\mathrm{vol}-\mathrm{cut}}{2m}\ln\frac{1-\mathrm{cut}/\mathrm{vol}}{\mathrm{vol}/2m}+\frac{\mathrm{cut}}{2m}\ln\frac{\mathrm{cut}/\mathrm{vol}}{1-\mathrm{vol}/2m},\label{eq:synwalk}
-\end{equation}
-which is the KL divergence between a module's stay/leave probabilities and those of a walker placed at random, weighted by the module's visit rate. Node $i$ of degree $k_i$ in module $a$, with $k_{ia}$ links into $a$ and $k_{ib}$ into a neighbouring module $b$, moving $a\to b$ changes the modules to
+\textbf{Synwalk boundary moves.} This step uses the Synwalk objective $J=\sum j(\mathrm{vol},\mathrm{cut})$ of Eq.~\eqref{eq:synwalk} (Sec.~\ref{sec:related}) and Algorithm~\ref{alg:moves}. Node $i$ of degree $k_i$ in module $a$, with $k_{ia}$ links into $a$ and $k_{ib}$ into a neighbouring module $b$, moving $a\to b$ changes the modules to
 \begin{align}
 &(\mathrm{vol}_a',\mathrm{cut}_a')=(\mathrm{vol}_a-k_i,\;\mathrm{cut}_a-(k_i-k_{ia})+k_{ia}),\notag\\
 &(\mathrm{vol}_b',\mathrm{cut}_b')=(\mathrm{vol}_b+k_i,\;\mathrm{cut}_b+(k_i-k_{ib})-k_{ib}),\label{eq:move}
 \end{align}
-so a move is scored by recomputing two terms: $\Delta J=j(a')+j(b')-j(a)-j(b)$. Nodes are visited in decreasing $NI$ and each moves to the neighbouring module with the largest positive $\Delta J$; sweeps repeat until no node moves (at most $S=20$). There is no aggregation step, so communities are never joined wholesale. The whole pass is accepted only if the regularised codelength $L_{\mathrm{reg}}$ also falls; otherwise all moves are discarded. The gate exists because the plain map equation over-fits small graphs: one move costs 0.16 NMI on Karate. It was designed after seeing that failure, so it is a post-hoc choice.
+so a move is scored by recomputing two terms: $\Delta J=j(a')+j(b')-j(a)-j(b)$. Nodes are visited in decreasing $NI$ and each moves to the neighbouring module with the largest positive $\Delta J$; sweeps repeat until no node moves (at most $S=20$). There is no aggregation step, so communities are never joined wholesale. The whole pass is accepted only if the regularised codelength $L_{\mathrm{reg}}$ also falls; otherwise all moves are discarded. The gate exists because the plain map equation over-fits small graphs: one move costs 0.16 NMI on Karate. It was designed after seeing that failure, so it is a post-hoc choice. Fig.~\ref{fig:m6} shows one move. In the Stage~1 result (a) node~8 is in the large community, but the size-normalised Stage~2 moves it to the small one (b), although two of its three links go to the large one, because the correction term penalises joining the large community. Moving node~8 raises the Synwalk objective from 0.1874 to 0.1963 and lowers the regularised codelength from 3.851 to 3.789 bits, so the gate accepts the pass, and the result is the planted partition (c). Modularity falls from 0.239 to 0.207 with this move, so a modularity-based refinement would not make it.
 
 \textbf{Stage 3.} Unchanged (Eq.~\eqref{eq:was}), applied to the final partition.
 
-\textbf{Complexity.} Per Stage~2 round, similarities are computed once per edge, and one round scans each edge a constant number of times; the granularity rule runs Stage~2 twice. The merge pass is a heap-driven procedure whose cost is dominated by heap operations over adjacent community pairs; the moves cost $O(S\cdot m)$ at most, since a move scores one candidate per neighbouring module. We have not proved tighter bounds; Table~\ref{tab:time} gives measured times.
+
+
+\textbf{Complexity.} Per Stage~2 round, similarities are computed once per edge, and one round scans each edge a constant number of times; the granularity rule runs Stage~2 twice. The merge pass is a heap-driven procedure whose cost is dominated by heap operations over adjacent community pairs; the moves cost $O(S\cdot m)$ at most, since a move scores one candidate per neighbouring module. We have not proved tighter bounds; Tables~\ref{tab:lat} and~\ref{tab:latreal} give measured times.
+
+SN-LPA keeps the structure of TPOC-LPA and changes only what happens between Stage~1 and Stage~3. The motif similarity and the size-normalised gain change how a node scores a community, the best-iterate guard and the granularity rule decide which Stage~2 result is kept, and the map-equation merge and the Synwalk boundary moves repair the scale and the boundaries of that result. Every step either keeps the partition it receives or replaces it only when a label-free criterion improves, so on graphs where TPOC-LPA already works well the pipeline returns the same or a very similar partition. The next section measures how often each of these steps helps or hurts on real and synthetic networks.
 
 
 
 %=====================================================================
 \section{Experimental Results}\label{sec:results}
 \subsection{Setup and Protocol}\label{sec:setup}
-\textbf{Methods compared.} Fastgreedy~\cite{clauset2004}, LPA~\cite{raghavan2007}, Louvain~\cite{blondel2008} and Walktrap~\cite{pons2006} (all through the igraph C library), the baseline TPOC-LPA as we re-implemented it (TPOC$^{\dagger}$), and our pipeline (M1--M6). Infomap~\cite{rosvall2008} is not in~\cite{kong2026}; we add it because M5 and M6 borrow from it, so it is the strongest reference. For overlap we compare with SLPA~\cite{xie2011} ($T{=}100$), implemented by us, with $r$ tuned per graph as the paper tunes it. NSA, SimCMR, WLC, UMSTMO, GREESE and MDPA have no public code that we could find, and we did not re-implement them from a paragraph of description; their published numbers are quoted in Table~\ref{tab:paper} and marked as such.
+\textbf{Methods compared.} Fastgreedy~\cite{clauset2004}, LPA~\cite{raghavan2007}, Louvain~\cite{blondel2008} and Walktrap~\cite{pons2006} (all through the igraph C library), the baseline TPOC-LPA as we re-implemented it (TPOC$^{\dagger}$), and our pipeline (SN-LPA). Infomap~\cite{rosvall2008} is not in~\cite{kong2026}; we add it because the map-equation merge and the boundary moves borrow from it, so it is the strongest reference. For overlap we compare with SLPA~\cite{xie2011} ($T{=}100$), implemented by us, with $r$ tuned per graph as the paper tunes it. NSA, SimCMR, WLC, UMSTMO, GREESE and MDPA have no public code that we could find, and we did not re-implement them from a paragraph of description; their published numbers are quoted in Table~\ref{tab:paper} and marked as such.
 
 \textbf{Conventions in the tables.} FG = Fastgreedy, Louv. = Louvain, Walk. = Walktrap, Info.$^{*}$ = Infomap (extra baseline) and TPOC$^{\dagger}$ = our re-implementation of TPOC-LPA. Stochastic methods are the mean of 10 runs (3 on the SNAP and LFR graphs); the best value of each row is in bold; ``Mean'' and ``Mean rank'' are taken over the rows shown. SNAP$^{*}$ rows are our own induced subgraphs, with the first listed community as truth. Table~\ref{tab:lfr} uses the settings of Table~\ref{tab:lfrparam} (mean of 5 graphs per row, with $c_{\min}{=}15$ instead of 10 for $n{=}1000$), and Table~\ref{tab:ov} averages $om=2$ to 8 over two generator seeds, with $r$ of SLPA tuned per graph by LFK-NMI, which favours SLPA.
 
@@ -580,12 +2490,12 @@ so a move is scored by recomputing two terms: $\Delta J=j(a')+j(b')-j(a)-j(b)$. 
 \textbf{NMI normalisation.} The normalisation used in~\cite{kong2026} is not clear to us: for the same Fastgreedy partition of Karate it reports 0.7069 while we obtain 0.5646, and no standard variant reproduces its value. We use one metric implementation for all our columns, so only differences \emph{within} our tables are meaningful.
 
 \subsection{Real Networks}
-\begin{table*}[t]
+\begin{table*}[!tp]
 \centering
 \caption{NMI of different algorithms on real networks.}
 \label{tab:real}
-\scriptsize
-\begin{tabular}{lrrrrrrr}
+\footnotesize
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lrrrrrrr}
 \toprule
 Network & FG & LPA & Louv. & Walk. & Info.$^{*}$ & TPOC$^{\dagger}$ & SN-LPA \\
 \midrule
@@ -604,19 +2514,19 @@ SNAP-DBLP$^{*}$ & 0.6040 & 0.7657 & 0.6068 & 0.7497 & 0.7631 & 0.7626 & \textbf{
 Mean & 0.5914 & 0.5892 & 0.6298 & 0.6374 & 0.6585 & 0.6258 & 0.7031 \\
 Mean rank & 4.64 & 4.73 & 4.09 & 4.09 & 4.18 & 4.18 & 2.00 \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{table*}
 Table~\ref{tab:real} gives the main result. The pipeline has the best mean rank (2.00 against 4.09--4.73 for every other column) and the highest mean NMI (0.7031 against 0.6585 for Infomap). Part of this margin comes from email-Eu, where the baseline collapses (0.0000) and our pipeline reaches 0.6677, above Louvain (0.5806) and Infomap (0.5873). On the three graphs shared with~\cite{kong2026} (Karate, Dolphin, Football) it scores 0.8372, 0.9495 and 0.9242, above Infomap (0.5805, 0.8993, 0.8683). On SNAP-DBLP it is marginally ahead (0.7676 against 0.7657 for LPA and 0.7631 for Infomap).
 
 It is not best everywhere. On Cora, Fastgreedy is higher (0.4647 against 0.4192); on SNAP-Amazon, Louvain is (0.9825 against 0.9731); and on \textbf{SNAP-Youtube Infomap (0.7486) and Walktrap (0.7222) are far ahead of our 0.5745}, which is itself better than the baseline's 0.5195.
 
 \subsection{LFR Benchmarks and Ablation}
-\begin{table*}[t]
+\begin{table*}[!tp]
 \centering
 \caption{NMI of different algorithms on synthetic networks.}
 \label{tab:lfr}
-\scriptsize
-\begin{tabular}{lrrrrrrr}
+\footnotesize
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lrrrrrrr}
 \toprule
 Network & FG & LPA & Louv. & Walk. & Info.$^{*}$ & TPOC$^{\dagger}$ & SN-LPA \\
 \midrule
@@ -630,10 +2540,10 @@ N6 ($n{=}10000$, $\mu{=}0.6$) & 0.3825 & 0.9773 & 0.9101 & 0.9178 & \textbf{0.99
 Mean & 0.6414 & 0.8954 & 0.9515 & 0.9718 & 0.9905 & 0.9805 & 0.9941 \\
 Mean rank & 6.83 & 3.33 & 5.83 & 2.83 & 2.17 & 3.00 & 1.33 \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{table*}
-Table~\ref{tab:lfr} shows that the mean NMI of our pipeline over the six settings is 0.9941, against 0.9905 for Infomap and 0.9805 for TPOC$^{\dagger}$. At $\mu{=}0.6$ the mean is 0.9883 against 0.9827 for Infomap and 0.9629 for TPOC$^{\dagger}$. Infomap is slightly higher on $n{=}5000$ and $n{=}10000$ at $\mu{=}0.6$ (0.9945 against 0.9940 and 0.9900 against 0.9895), which is within seed noise. The published baseline reports 0.9869 on its own $n{=}1000$, $\mu{=}0.6$ graphs; on our five graphs of that setting TPOC$^{\dagger}$ reaches 0.9317 and our pipeline 0.9815. Table~\ref{tab:abl} shows where the gain comes from; its rows are development runs (15 graphs for each LFR column, one graph for email-Eu) with the merge pass M5 switched off.
-\begin{table}[H]
+Table~\ref{tab:lfr} shows that the mean NMI of our pipeline over the six settings is 0.9941, against 0.9905 for Infomap and 0.9805 for TPOC$^{\dagger}$. At $\mu{=}0.6$ the mean is 0.9883 against 0.9827 for Infomap and 0.9629 for TPOC$^{\dagger}$. Infomap is slightly higher on $n{=}5000$ and $n{=}10000$ at $\mu{=}0.6$ (0.9945 against 0.9940 and 0.9900 against 0.9895), which is within seed noise. The published baseline reports 0.9869 on its own $n{=}1000$, $\mu{=}0.6$ graphs; on our five graphs of that setting TPOC$^{\dagger}$ reaches 0.9317 and our pipeline 0.9815. Table~\ref{tab:abl} shows where the gain comes from; its rows are development runs (15 graphs for each LFR column, one graph for email-Eu) with the map-equation merge switched off.
+\begin{table}[!htbp]
 \centering
 \caption{Effect of the modifications on NMI.}
 \label{tab:abl}
@@ -643,21 +2553,21 @@ Table~\ref{tab:lfr} shows that the mean NMI of our pipeline over the six setting
 Configuration & $\mu{=}0.6$ & $\mu{=}0.7$ & email-Eu \\
 \midrule
 TPOC-LPA (re-implemented baseline) & 0.9311 & 0.0513 & 0.0000 \\
-+ M1--M4 (motif, guard, size-corr., granularity) & 0.9637 & 0.8534 & 0.6381 \\
-+ M6, map-equation move score & 0.9776 & 0.8759 & 0.6554 \\
-+ M6, Synwalk move score & 0.9830 & 0.8917 & 0.6717 \\
++ motif, guard, size-norm.\ gain, granularity & 0.9637 & 0.8534 & 0.6381 \\
++ boundary moves, map-equation score & 0.9776 & 0.8759 & 0.6554 \\
++ boundary moves, Synwalk score & 0.9830 & 0.8917 & 0.6717 \\
 \bottomrule
 \end{tabular}
 \end{table}
-On the 72 held-out synthetic graphs, the configuration with M1--M4 averaged 0.7814 and the final pipeline with M5 and M6 averaged 0.8069, better on 65, equal on 7 and worse on 3 graphs (worst $-0.010$).
+On the 72 held-out synthetic graphs, the configuration with the first four modifications averaged 0.7814 and the final pipeline with the merge and the boundary moves averaged 0.8069, better on 65, equal on 7 and worse on 3 graphs (worst $-0.010$).
 
 \subsection{Overlapping Communities}
-\begin{table*}[t]
+\begin{table*}[!tp]
 \centering
 \caption{Average LFK-NMI, $\mathrm{NMI}_{\max}$ and Omega values of different algorithms on overlapping networks, $om$ from 2 to 8.}
 \label{tab:ov}
-\scriptsize
-\begin{tabular}{lccc|ccc|ccc}
+\footnotesize
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lccc|ccc|ccc}
 \toprule
  & \multicolumn{3}{c|}{LFK-NMI} & \multicolumn{3}{c|}{$\mathrm{NMI}_{\max}$} & \multicolumn{3}{c}{Omega} \\
 Family & SLPA & TPOC$^{\dagger}$ & SN-LPA & SLPA & TPOC$^{\dagger}$ & SN-LPA & SLPA & TPOC$^{\dagger}$ & SN-LPA \\
@@ -671,17 +2581,17 @@ R6 ($n{=}10^4,\mu{=}0.3$) & \textbf{0.7362} & 0.7028 & 0.6822 & \textbf{0.7029} 
 \midrule
 Mean & 0.7578 & 0.7600 & 0.7673 & 0.7281 & 0.7041 & 0.7366 & 0.7571 & 0.6436 & 0.7418 \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{table*}
 Table~\ref{tab:ov} reports overlap quality. With the paper's own WAS Stage~3 on top of our Stage~2, the pipeline has the highest mean LFK-NMI (0.7673 against 0.7578 for tuned SLPA and 0.7600 for TPOC$^{\dagger}$), and it wins R1--R4. It loses R5 and R6 (the 10{,}000-node families) to SLPA, and on the Omega mean SLPA is ahead (0.7571 against 0.7418).
 
 \subsection{Extended Modularity (EQ)}
-\begin{table}[H]
+\begin{table}[!htbp]
 \centering
 \caption{EQ of different algorithms on real networks.}
 \label{tab:eq}
 \scriptsize
-\begin{tabular}{lrrr}
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lrrr}
 \toprule
 Network & SLPA & TPOC$^{\dagger}$ & SN-LPA \\
 \midrule
@@ -701,19 +2611,19 @@ Deezer ($n{=}28281$) & \textbf{0.5461} & 0.4321 & 0.4145 \\
 Mean & 0.6013 & 0.5750 & 0.5920 \\
 Mean rank & 1.67 & 2.50 & 1.75 \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{table}
 Table~\ref{tab:eq}: our pipeline is best on 5 of 12 networks (Jazz, Lesmis, Power, Facebook, LastFM), and SLPA on the other 7; for SLPA the threshold $r$ was scanned from 0.05 to 0.5 and the best EQ kept, so it is tuned on EQ itself. The mean EQ is 0.5920 for ours against 0.6013 for SLPA and 0.5750 for TPOC$^{\dagger}$.
 
 \subsection{Latency and Scalability}\label{sec:latency}
 We repeat the scalability experiment of Sec.~5.3 of~\cite{kong2026}: overlapping LFR graphs with average degree 5, maximum degree 10, $\mu{=}0.1$, community sizes 10 to 20, $om{=}2$, $on{=}10$ and $N$ from 400 to 25,600 nodes, doubling each time. Every algorithm runs on the same graph, one after the other, on an otherwise idle machine; the time is the wall-clock time of the call (including, for the igraph methods, the conversion of the graph), and we report the median of 3 runs. Table~\ref{tab:lat} and Fig.~\ref{fig:lat} show the result; the last column is the slope of a least-squares line on the logarithms of $N$ and time, that is the empirical growth exponent (1 means linear growth).
 
-\begin{table*}[t]
+\begin{table*}[!tp]
 \centering
 \caption{Execution time (s) of different algorithms for different $N$.}
 \label{tab:lat}
-\scriptsize
-\begin{tabular}{lrrrrrrrr}
+\footnotesize
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lrrrrrrrr}
 \toprule
 Algorithm & 400 & 800 & 1{,}600 & 3{,}200 & 6{,}400 & 12{,}800 & 25{,}600 & Slope \\
 \midrule
@@ -728,10 +2638,10 @@ SN-LPA & 0.026 & 0.045 & 0.098 & 0.241 & 0.661 & 1.67 & 5.87 & 1.31 \\
 \midrule
 TPOC-LPA~\cite{kong2026} (published) & 0.281 & 0.505 & 0.965 & 2.39 & 5.97 & 13.61 & 24.33 & 1.12 \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{table*}
 
-\begin{figure}[t]
+\begin{figure}[!hb]
 \centering
 \begin{tikzpicture}
 \begin{loglogaxis}[width=0.98\columnwidth,height=5.6cm,xlabel={Number of nodes $N$},ylabel={Time (s)},
@@ -764,14 +2674,14 @@ At $N=25,600$ our pipeline needs 5.87\,s, which is 24\% more than our re-impleme
 
 Table~\ref{tab:stage} explains where the time goes. Stage~1 takes 62\% of the total at $N=25,600$ and only 9\% at $N=400$. In our literal reading of Stage~1 the tightness--sparsity value of the growing community is recomputed from its members for every candidate neighbour, so a cost that depends on the community size appears inside the loop and makes this stage grow faster than linearly. The modifications themselves (the second Stage~2 run of the granularity rule, the merge pass and the moves) add 0.90\,s at the largest size, and none of them dominates. An incremental update of the community's tightness would reduce the Stage~1 cost; we have not done this.
 
-\begin{table}[t]
+\begin{table}[!htbp]
 \centering
 \caption{Execution time (s) of each stage of the proposed pipeline.}
 \label{tab:stage}
 \scriptsize\setlength{\tabcolsep}{3pt}
 \begin{tabular}{rrrrrrrr}
 \toprule
-$N$ & $NI$ & Stage 1 & Stage 2 & M4 & M5+M6 & Stage 3 & Total \\
+$N$ & $NI$ & Stage 1 & Stage 2 & Gran.\ rule & Merge+moves & Stage 3 & Total \\
 \midrule
 400 & 0.001 & 0.002 & 0.013 & 0.005 & 0.003 & 0.001 & 0.025 \\
 800 & 0.002 & 0.006 & 0.019 & 0.008 & 0.009 & 0.001 & 0.045 \\
@@ -786,7 +2696,7 @@ $N$ & $NI$ & Stage 1 & Stage 2 & M4 & M5+M6 & Stage 3 & Total \\
 
 Table~\ref{tab:latreal} gives the time on the real networks, with the same protocol (3 runs, median; one run for the cases that take longer than 20\,s). Our pipeline needs about the same time as the baseline re-implementation, from 1\,ms on Karate to 83\,s on SNAP-DBLP (93,432 nodes), where the baseline needs 77\,s. The C implementations of LPA, Louvain and Infomap need at most 2.1\,s on any of these graphs and Fastgreedy at most 12\,s; Walktrap needs 76\,s on SNAP-DBLP and 243\,s on SNAP-Youtube. On the largest graphs a run of our pipeline is therefore of the order of a minute, which is acceptable for offline analysis but far from the speed of the C methods.
 
-\begin{table}[t]
+\begin{table}[!htbp]
 \centering
 \caption{Execution time (s) of different algorithms on real networks.}
 \label{tab:latreal}
@@ -810,12 +2720,12 @@ SNAP-DBLP & 12.07 & 0.74 & 0.42 & 75.72 & 2.11 & 77.15 & 82.69 \\
 \end{table}
 
 \subsection{Published Numbers of the Baselines Without Public Code}
-\begin{table}[H]
+\begin{table}[!htbp]
 \centering
 \caption{NMI as published in~\cite{kong2026} (not re-run).}
 \label{tab:paper}
 \scriptsize\setlength{\tabcolsep}{2.4pt}
-\begin{tabular}{lrrrrrrr}
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lrrrrrrr}
 \toprule
 Network & FG & LPA & Louv. & Walk. & NSA & SimCMR & TPOC-LPA \\
 \midrule
@@ -829,14 +2739,14 @@ N4 & 0.3515 & 0.9899 & 0.9234 & 0.9397 & 0.4179 & 0.9146 & \textbf{0.9974} \\
 N5 & 0.9109 & \textbf{1.0000} & 0.9910 & \textbf{1.0000} & 0.9114 & 0.9905 & \textbf{1.0000} \\
 N6 & 0.3786 & 0.9925 & 0.9169 & 0.7070 & 0.2087 & 0.8861 & \textbf{0.9935} \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{table}
 Table~\ref{tab:paper} lists the values published in~\cite{kong2026}, including the two baselines (NSA and SimCMR) for which we found no implementation. They are not comparable with Tables~\ref{tab:real} and~\ref{tab:lfr}, because the NMI normalisation and the graph instances differ.
 
 %=====================================================================
 \section{Discussion}\label{sec:discussion}
 \subsection{What Drives the Gains}
-The gains come from different modifications on different graphs (Table~\ref{tab:abl}). M1--M4 remove the collapse: email-Eu goes from 0.0000 to 0.6381 and LFR $\mu{=}0.7$ from 0.0513 to 0.8534. M6 adds a second, smaller gain on the high-mixing LFR graphs and on email-Eu (LFR $\mu{=}0.6$: $0.9637\to0.9830$), consistent with its role of repairing boundary nodes, which is the error that remains after Stage~2. The Synwalk score beats the map-equation score on these graphs (0.9830 against 0.9776 at $\mu{=}0.6$, 0.8917 against 0.8759 at $\mu{=}0.7$), in line with the reported advantage of Synwalk at high mixing, but it is slightly worse on coarse and sparse real graphs. M5 matters on large sparse graphs: the modularity merge reduced NMI on SNAP-DBLP by 0.147 and on fresh sparse LFR graphs by 0.12--0.23, while the map-equation stop changed it by between $-0.008$ and $+0.005$.
+The gains come from different modifications on different graphs (Table~\ref{tab:abl}). The first four modifications (motif similarity, guard, size-normalised gain and granularity rule) remove the collapse: email-Eu goes from 0.0000 to 0.6381 and LFR $\mu{=}0.7$ from 0.0513 to 0.8534. The Synwalk boundary moves add a second, smaller gain on the high-mixing LFR graphs and on email-Eu (LFR $\mu{=}0.6$: $0.9637\to0.9830$), consistent with its role of repairing boundary nodes, which is the error that remains after Stage~2. The Synwalk score beats the map-equation score on these graphs (0.9830 against 0.9776 at $\mu{=}0.6$, 0.8917 against 0.8759 at $\mu{=}0.7$), in line with the reported advantage of Synwalk at high mixing, but it is slightly worse on coarse and sparse real graphs. The map-equation merge matters on large sparse graphs: the modularity merge reduced NMI on SNAP-DBLP by 0.147 and on fresh sparse LFR graphs by 0.12--0.23, while the map-equation stop changed it by between $-0.008$ and $+0.005$.
 
 \subsection{Where the Pipeline Loses}
 \textbf{SNAP-Youtube.} The ground truth has 4{,}447 communities. The two methods that return many communities are far ahead: Infomap returns about 2{,}345 (NMI 0.7486) and Walktrap 4{,}567 (0.7222). Every method that returns 955 to 1{,}389 communities scores between 0.50 and 0.57: Louvain about 955 (0.5410), LPA about 1{,}202 (0.5040), our pipeline 1{,}209 (0.5745), Fastgreedy 1{,}262 (0.5212) and TPOC$^{\dagger}$ 1{,}389 (0.5195). Our pipeline returns fewer communities than TPOC$^{\dagger}$, so the merge and move steps reduce the count further. This is consistent with Youtube having many small communities that a coarser partition combines, but we have not tested it; it remains an open problem.
@@ -852,7 +2762,7 @@ The overlap result is the weakest part. Our re-implemented baseline scores below
 These were tried and dropped; they remain in the code as ``explored, not adopted''.
 \begin{itemize}
 \item \emph{LLM correction of Stage~2} with local 3--8B models. Oracle headroom exists (Football $+0.059$), but a hard override with the measured accuracy of 0.817 gave NMI 0.7815 against 0.9095 structure-only.
-\item \emph{Map-equation guard in place of modularity (M2):} email-Eu fell from 0.64 to 0.00, because the map equation prefers one module when structure is weak.
+\item \emph{Map-equation criterion in the best-iterate guard:} email-Eu fell from 0.64 to 0.00, because the map equation prefers one module when structure is weak.
 \item \emph{Persona (ego-splitting) Stage~3:} it matched the published overlap numbers on our design graphs and helped on held-out synthetic ones, but lost on real graphs (SNAP-Amazon $-0.009$, SNAP-DBLP $-0.015$ $\mathrm{NMI}_{\max}$ against the best WAS).
 \item \emph{Near-tie and embedded-link overlap rules:} they help SNAP-DBLP only, or add nothing once WAS is applied.
 \item \emph{Selecting $\alpha$ by codelength,} link-majority polishing and consensus clustering did not pass the held-out test.
@@ -860,7 +2770,7 @@ These were tried and dropped; they remain in the code as ``explored, not adopted
 
 \subsection{Threats to Validity}\label{sec:limits}
 \begin{itemize}
-\item \textbf{Post-hoc choices.} $\rho=1.5$ (picked on development data), the regularised gate in M6, $s=3$ for personas, and $\beta=0.8$ taken from the paper. A choice made after seeing development data may not transfer.
+\item \textbf{Post-hoc choices.} $\rho=1.5$ (picked on development data), the regularised gate of the boundary moves, $s=3$ for personas, and $\beta=0.8$ taken from the paper. A choice made after seeing development data may not transfer.
 \item \textbf{No universal improvement.} All modifications remain opt-in; Coauthor-CS and Coauthor-Physics fail our adoption rule.
 \item \textbf{Different graphs and metric.} SNAP subgraphs and the NMI normalisation differ from those of~\cite{kong2026}; cross-paper numbers are indicative only, and we could not reproduce its overlapping-LFR and EQ values for our baseline implementation.
 \item \textbf{Baselines.} Six baselines of the paper are not re-run, Leiden is not included, and SLPA is tuned with the labels, which favours it. The overlap result rests on two generator seeds.
@@ -869,7 +2779,7 @@ These were tried and dropped; they remain in the code as ``explored, not adopted
 
 %=====================================================================
 \section{Conclusion}
-We re-implemented TPOC-LPA, identified an unnormalised size effect in its Stage~2 that explains its collapse on dense graphs and under-merging on sparse ones, and added six optional modifications that keep the published behaviour as the default: a triangle similarity, a best-iterate guard, a size-corrected gain with a label-free granularity rule, a merge pass stopped by the map equation, and boundary moves scored by the Synwalk objective and accepted through a regularised gate. Compared with baselines re-run on identical graphs, the pipeline has the best mean rank on real networks and the highest mean NMI on LFR, repairs the collapse on dense graphs, and is competitive on overlap, but it is far behind Infomap on SNAP-Youtube, behind SLPA on the largest overlapping benchmarks and below the published EQ values; it is about 25\% slower than our baseline re-implementation, and both are far slower than the C implementations of the other methods.
+We re-implemented TPOC-LPA, identified an unnormalised size effect in its Stage~2 that explains its collapse on dense graphs and under-merging on sparse ones, and added six optional modifications that keep the published behaviour as the default: a motif (triangle) similarity, a best-iterate guard, a size-corrected gain with a label-free granularity rule, a merge pass stopped by the map equation, and boundary moves scored by the Synwalk objective and accepted through a regularised gate. Compared with baselines re-run on identical graphs, the pipeline has the best mean rank on real networks and the highest mean NMI on LFR, repairs the collapse on dense graphs, and is competitive on overlap, but it is far behind Infomap on SNAP-Youtube, behind SLPA on the largest overlapping benchmarks and below the published EQ values; it is about 25\% slower than our baseline re-implementation, and both are far slower than the C implementations of the other methods.
 
 \textbf{Future work.} (i) Diagnose the Youtube gap, starting from the number of communities. (ii) Calibrate the overlap rate without labels. (iii) Add Leiden and, if code is released, the six baselines we could not run. (iv) Test the pipeline on more fresh graphs before proposing any of the changes as defaults.
 
