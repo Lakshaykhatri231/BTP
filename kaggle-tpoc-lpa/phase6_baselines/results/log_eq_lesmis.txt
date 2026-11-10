@@ -1,1 +1,0 @@
-lesmis {'TPOC-LPA (repro) b0.8': 0.4788, 'Ours b0.8': 0.4989, 'SLPA': 0.3419}

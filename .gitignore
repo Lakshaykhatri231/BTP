@@ -60,3 +60,21 @@ paper/*.fls
 # ---- Office / macOS document lock files ----
 ~$*
 *.pages
+
+# ---- Reports and slides (kept local) ----
+BTP_MidSem_Report.docx
+BTP_MidSem_Report_IEEE.docx
+SN-LPA_Progress_Talk.pptx
+btp_update_deck/BTP_MidSem_Report.docx
+
+# ---- Not part of the submission ----
+paper/old/
+paper/figures/preview.tex
+kaggle-tpoc-lpa/tpoc_lpa_phase4.py
+NSUT_logo.png
+kaggle-tpoc-lpa/kernel_collect/output_v1/
+kaggle-tpoc-lpa/kernel_gpu_diag/
+kaggle-tpoc-lpa/*.log
+kaggle-tpoc-lpa/phase5_overlap/*.log
+kaggle-tpoc-lpa/phase6_baselines/results/log_*.txt
+btp_update_deck/

@@ -1,1 +1,0 @@
-power {'TPOC-LPA (repro) b0.8': 0.7479, 'Ours b0.8': 0.803, 'SLPA': 0.652}

@@ -50,8 +50,6 @@ Every change is an option that defaults to off, so `tpoc_lpa(G)` runs the origin
 
 Other variants in the code: `moves=True` (map-equation boundary moves), `merge_min_gain=0.03` (ΔQ-gated merging), `overlap="near_tie"` (an alternative Stage 3).
 
-`diagrams/` holds flowcharts of both pipelines (`sn_lpa_architecture.pdf`, `tpoc_lpa_baseline_architecture.pdf`). The paper walks through all three stages on a 16-node example (Figs. 1–3) and illustrates each change on a small graph (Figs. 4–8).
-
 ## Results
 
 NMI, with all methods run on the same graphs using the same metric code (see `kaggle-tpoc-lpa/phase6_baselines/RESULTS.md`).

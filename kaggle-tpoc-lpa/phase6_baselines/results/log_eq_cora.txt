@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/lakshaykhatri/Downloads/BTP/kaggle-tpoc-lpa/phase6_baselines/run_eq.py", line 59, in <module>
-    name = sys.argv[1]; G = load(name); res = {"graph": name, "n": G.number_of_nodes(), "m": G.number_of_edges()}
-                            ^^^^^^^^^^
-  File "/Users/lakshaykhatri/Downloads/BTP/kaggle-tpoc-lpa/phase6_baselines/run_eq.py", line 53, in load
-    for l in open(f"{D}/cora/cora.cites"):
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: '/Users/lakshaykhatri/Downloads/BTP/kaggle-tpoc-lpa/data/cora/cora.cites'

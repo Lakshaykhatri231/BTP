@@ -1,1 +1,0 @@
-dolphin {'TPOC-LPA (repro) b0.8': 0.4778, 'TPOC-LPA (repro) b1.0': 0.5024, 'Ours b0.8': 0.4828, 'Ours b1.0': 0.5072, 'SLPA': 0.5199}
