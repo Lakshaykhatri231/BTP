@@ -95,90 +95,115 @@ On overlapping LFR graphs SN-LPA matches or beats SLPA on families R1–R4.
 - The best-iterate guard and the granularity rule cost NMI on Coauthor-Physics.
 - The boundary moves lose up to 0.008 NMI on some sparse citation and co-purchase graphs.
 
-## Repository structure
+## Getting started
+
+Requires Python 3.10 or newer.
 
 ```
-sn_lpa.py                   standalone final model: sn_lpa(G) runs SN-LPA (needs only networkx)
-diagrams/                   flowcharts of SN-LPA and TPOC-LPA (LaTeX source, PDF, PNG)
-kaggle-tpoc-lpa/
-  tpoc_lpa.py               core algorithm (TPOC-LPA and every SN-LPA option)
-  datasets.py, load_snap.py dataset loaders
-  lfr_sweep.py              LFR generator with realized-μ calibration
-  eq_metric.py              extended modularity (EQ)
-  evaluate_phase1.py        reproduction check on Karate / Football
-  test_stage3.py            Stage 3 unit test against the worked example of the original paper
-  phase3_*.py … phase5_*.py ablation studies
-  phase5_overlap/           overlapping LFR benchmark (C++ generator included)
-  phase6_baselines/         comparison with Fastgreedy, LPA, Louvain, Walktrap, Infomap, SLPA
-  kernel_final/             Kaggle notebook with the comparison tables
-paper/                      LaTeX source of the paper (template.tex → build_paper.py → main.tex)
-paper/figures/              generator of the worked-example figures (make_figures.py, run on the real code)
-datasets/MANIFEST.json      list of all graphs used
+git clone <this repository>
+cd <repository folder>
+pip install -r requirements.txt
 ```
 
-## Installation
+### Run TPOC-LPA and SN-LPA on a dataset
 
-Requires Python 3.12.
-
-```
-pip install networkx numpy scipy scikit-learn
-pip install python-igraph infomap        # only for the baseline comparison
-```
-
-To build the overlapping LFR generator:
+`run.py` runs the baseline (TPOC-LPA), the proposed method (SN-LPA) or both, and prints the number of communities, the number of
+overlapping nodes, modularity Q, NMI against the ground truth and the running time.
 
 ```
-cd kaggle-tpoc-lpa/phase5_overlap
-g++ -O3 -w -o lfrbench lfr_overlap_generator/benchm.cpp
+python3 run.py --dataset karate                    # both algorithms
+python3 run.py --dataset football --algo sn-lpa    # only SN-LPA
+python3 run.py --dataset email-Eu --algo tpoc-lpa  # only TPOC-LPA
+python3 run.py --list                              # all available datasets
 ```
 
-## Usage
+Example output:
+
+```
+email-Eu: 986 nodes, 16064 edges, 42 ground-truth classes
+algorithm  communities overlapping       Q     NMI  time (s)
+tpoc-lpa             1           0  0.0000  0.0000      0.92
+sn-lpa              16         427  0.3984  0.6677      0.93
+```
+
+Available datasets:
+
+| Name | Nodes | Edges | Classes |
+|---|---|---|---|
+| `karate` | 34 | 78 | 2 |
+| `dolphin` | 62 | 159 | 4 |
+| `football` | 115 | 613 | 12 |
+| `polbooks` | 105 | 441 | 3 |
+| `polblogs` | 1,222 | 16,714 | 2 |
+| `email-Eu` | 986 | 16,064 | 42 |
+| `cora` | 2,485 | 5,069 | 7 |
+| `citeseer` | 2,110 | 3,668 | 6 |
+| `amazon`, `dblp`, `youtube` | SNAP ground-truth communities (DBLP and Youtube take about a minute) | | |
+| `lfr` | synthetic LFR graph, set with `--n`, `--mu`, `--seed` | | |
+
+```
+python3 run.py --dataset lfr --n 1000 --mu 0.6 --seed 1
+```
+
+### Run on your own graph
+
+Give an edge list (one `u v` pair per line) and, optionally, the ground truth (one `node label` pair per line):
+
+```
+python3 run.py --edges my_graph.txt --truth my_labels.txt --save result
+```
+
+`--save result` writes `result_tpoc-lpa.tsv` and `result_sn-lpa.tsv` with each node's community and, for overlapping nodes,
+all the communities it belongs to. `--beta` changes the Stage 3 overlap threshold (default 0.8).
+
+### Use it from Python
 
 ```python
 import networkx as nx
-from tpoc_lpa import tpoc_lpa
+from sn_lpa import sn_lpa, tpoc_lpa
 
 G = nx.karate_club_graph()
-
-# original TPOC-LPA
-labels, overlap, NI, iters = tpoc_lpa(G)
-
-# SN-LPA
-labels, overlap, NI, iters = tpoc_lpa(
-    G, sim="tri_overlap", guard=True, refine="granularity",
-    merge=True, merge_criterion="mapeq", moves="synwalk")
+labels, overlap, NI, iters = tpoc_lpa(G)   # baseline TPOC-LPA
+labels, overlap, NI, iters = sn_lpa(G)     # SN-LPA
 ```
 
-The root file `sn_lpa.py` is a self-contained copy of the final model with this configuration preset:
+`labels` maps each node to its community, `overlap` maps each node to the set of communities it belongs to (more than one for
+overlapping nodes), `NI` is the node importance and `iters` the number of Stage 2 rounds. `sn_lpa.py` only needs networkx.
+Ties are broken deterministically; pass `rng=random.Random(seed)` for random tie-breaking.
 
-```python
-from sn_lpa import sn_lpa
-labels, overlap, NI, iters = sn_lpa(G)
-```
+### Compare with other methods
 
-`tpoc_lpa` returns the disjoint labels, the overlapping communities, the node importance scores and the number of iterations.
-Ties are broken deterministically. Pass `rng=random.Random(seed)` for random tie-breaking.
-
-Reproducing the experiments (run from `kaggle-tpoc-lpa/`):
+The comparison with Fastgreedy, LPA, Louvain, Walktrap and Infomap (needs `python-igraph` and `infomap`) is in
+`kaggle-tpoc-lpa/phase6_baselines/`:
 
 ```
-python3 evaluate_phase1.py                    # TPOC-LPA on Karate and Football
-python3 test_stage3.py                        # Stage 3 test
-python3 phase4_vs_paper.py real football      # one real network
-python3 phase4_vs_paper.py lfr 1000 0.6 1     # one LFR graph (n, mu, seed)
-python3 phase6_baselines/run_real.py          # baseline comparison
+cd kaggle-tpoc-lpa/phase6_baselines
+export TPOC_DATA=../../datasets
+python3 run_real.py football        # one real network  -> results/real_football.json
+python3 run_lfr.py N2 5             # LFR setting N2, 5 seeds -> results/lfr_N2.json
+python3 make_tables.py              # collect all results into RESULTS.md
 ```
 
-## Data
+## Repository structure
 
-The datasets are not included because of their size. `datasets/MANIFEST.json` lists every file.
-- **Public networks:** Karate, Dolphin, Football, Les Misérables, Polbooks, Polblogs, email-Eu-core, Cora, Citeseer, the SNAP Amazon/DBLP/Youtube
-  communities, and Amazon/Coauthor/Cora-ML/Pubmed (Shchur et al. 2018; Bojchevski & Günnemann 2018). Place them in `kaggle-tpoc-lpa/data/`,
-  or set `TPOC_DATA` to another directory.
-- **LFR graphs:** generated with `lfr_sweep.generate_lfr(n, mu, seed)`.
+```
+run.py                      command-line runner for TPOC-LPA and SN-LPA
+sn_lpa.py                   standalone SN-LPA (and TPOC-LPA) implementation, needs only networkx
+requirements.txt            Python packages
+datasets/                   the benchmark graphs used by run.py
+diagrams/                   flowcharts of SN-LPA and TPOC-LPA (LaTeX source, PDF, PNG)
+kaggle-tpoc-lpa/
+  tpoc_lpa.py               core implementation (TPOC-LPA and every SN-LPA option)
+  datasets.py, load_snap.py dataset loaders
+  lfr_sweep.py              LFR generator
+  eq_metric.py              extended modularity (EQ)
+  phase6_baselines/         comparison with other methods and the result tables (RESULTS.md)
+paper/                      paper source (template.tex -> build_paper.py -> main.tex) and main.pdf
+paper/figures/              generator of the example figures in the paper
+```
 
 ## Notes
 
-- Karate has edge weights in networkx, so the modularity printed by `evaluate_phase1.py` (0.4036) is weighted. The unweighted value is 0.3715.
-- The SNAP subsets used in the original paper are not published, so SNAP results here use the full ground-truth community subgraphs.
-- The baselines NSA, SimCMR, WLC, UMSTMO, GREESE and MDPA have no public implementation and are not re-run.
+- All graphs are treated as undirected and unweighted. networkx's Karate graph carries edge weights; they are ignored.
+- The SNAP subsets used in the original paper are not published, so the SNAP results use the full ground-truth community subgraphs.
+- The methods NSA, SimCMR, WLC, UMSTMO, GREESE and MDPA have no public implementation and are not re-run.
